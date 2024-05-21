@@ -59,13 +59,13 @@ public:
 			std::cout << i << " ";
 			for (int j = 0; j <= n; j++)
 			{
-				if (isBound(i, j, n))
-				{
-					std::cout << "@";
-				}
 				if(isInField(i, j, n))
 				{
 					std::cout << "*";
+				}
+				if (isBound(i, j, n))
+				{
+					std::cout << "@";
 				}
 				if (!isInField(i, j, n) && !isBound(i, j, n))
 				{
