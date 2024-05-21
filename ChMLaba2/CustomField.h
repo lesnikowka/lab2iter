@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #define kMinSize 4
 
 class CustomField
@@ -16,11 +18,61 @@ public:
 		return fieldSize / kMinSize;
 	}
 
+	// если область 5х5, передаем 4 (количество разбиений), после 5х5 идет 9х9
 	static bool isInField(int row, int col, int fieldSize)
 	{
-		return row < fieldSize / 2 ||
-			col < fieldSize / 4 ||
-			col > fieldSize / 2 && col < fieldSize / 2 + fieldSize / 4 ||
-			row > fieldSize / 2 + fieldSize / 4;
+		int half = fieldSize / 2;
+		int halfHalf = fieldSize / 4;
+
+		return row < half ||
+			   col < halfHalf ||
+			   col > half && col < half + halfHalf ||
+			   row > half + halfHalf;
+	}
+
+	// если область 5х5, передаем 4 (количество разбиений), после 5х5 идет 9х9
+	static bool isBound(int row, int col, int fieldSize)
+	{
+		int half = fieldSize / 2;
+		int halfHalf = fieldSize / 4;
+
+		return row == 0 ||
+			   col == 0 ||
+			   (row == half || row == half + halfHalf) && col >= halfHalf && col <= half ||
+			   (col == half || col == halfHalf) && row <= half + halfHalf && row >= half ||
+			   row == fieldSize && col <= half + halfHalf ||
+			   col == fieldSize && row <= half ||
+			   col == half + halfHalf && row >= half ||
+			   row == half && col >= half + halfHalf;  
+	}
+
+	static void visualizeField(int n)
+	{
+		std::cout << "  ";
+		for (int i = 0; i <= n; i++)
+		{
+			std::cout << i;
+		}
+		std::cout << "\n";
+		for (int i = 0; i <= n; i++)
+		{
+			std::cout << i << " ";
+			for (int j = 0; j <= n; j++)
+			{
+				if (isBound(i, j, n))
+				{
+					std::cout << "@";
+				}
+				else if(isInField(i, j, n))
+				{
+					std::cout << "*";
+				}
+				else
+				{
+					std::cout << ".";
+				}
+			}
+			std::cout << "\n";
+		}
 	}
 };

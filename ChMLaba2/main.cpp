@@ -53,6 +53,10 @@ double testFunc(double x, double y)
 
 void main()
 {
+	CustomField::visualizeField(8);
+
+	std::cout << "\n\n\n";
+
 	double Eps = 1e-8;
 	int N = 20000;
 	double a = 0;
