@@ -24,10 +24,10 @@ public:
 		int half = fieldSize / 2;
 		int halfHalf = fieldSize / 4;
 
-		return row < half ||
-			   col < halfHalf ||
-			   col > half && col < half + halfHalf ||
-			   row > half + halfHalf;
+		return row < half && col > 1 && col < fieldSize ||
+			   col < halfHalf && col > 0 && row > 0 && row < 8||
+			   col > half && col < half + halfHalf && row > 0 && row << fieldSize ||
+			   row > half + halfHalf && row < fieldSize && col > 0 && col < half + halfHalf;
 	}
 
 	// если область 5х5, передаем 4 (количество разбиений), после 5х5 идет 9х9
