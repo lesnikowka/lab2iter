@@ -24,9 +24,9 @@ public:
 		int half = fieldSize / 2;
 		int halfHalf = fieldSize / 4;
 
-		return row < half && col > 1 && col < fieldSize ||
+		return row > 0 && row < half && col > 0 && col < fieldSize ||
 			   col < halfHalf && col > 0 && row > 0 && row < 8||
-			   col > half && col < half + halfHalf && row > 0 && row << fieldSize ||
+			   col > half && col < half + halfHalf && row > 0 && row < fieldSize ||
 			   row > half + halfHalf && row < fieldSize && col > 0 && col < half + halfHalf;
 	}
 
@@ -63,11 +63,11 @@ public:
 				{
 					std::cout << "@";
 				}
-				else if(isInField(i, j, n))
+				if(isInField(i, j, n))
 				{
 					std::cout << "*";
 				}
-				else
+				if (!isInField(i, j, n) && !isBound(i, j, n))
 				{
 					std::cout << ".";
 				}
