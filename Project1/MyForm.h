@@ -439,7 +439,21 @@ private: System::Void drawMainTable()
 		temp->HeaderText = "x" + Convert::ToString(i);
 		dataGridView1->Columns->Add(temp);
 	}
-
+	dataGridView1->Rows->Add(m + 2);
+	dataGridView1->Rows[0]->Cells[0]->Value = "yj";
+	dataGridView1->Rows[0]->Cells[1]->Value = "j/i";
+	for (int i = 1; i <= m + 1; i++)
+	{
+		dataGridView1->Rows[i]->Cells[0]->Value = "y" + Convert::ToString(i - 1);
+	}
+	for (int i = 1; i <= m + 1; i++)
+	{
+		dataGridView1->Rows[i]->Cells[1]->Value = Convert::ToString(i - 1);
+	}
+	for (int i = 2; i <= m + 2; i++)
+	{
+		dataGridView1->Rows[0]->Cells[i]->Value = Convert::ToString(i - 2);
+	}
 }
 private: System::Void handleValues()
 {
