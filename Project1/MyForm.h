@@ -128,6 +128,7 @@ namespace Project1 {
 			this->vxyToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->uxyÈëèV2xyToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->uxyvxyÈëèvxyV2xyToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->ñïğàâêàToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
 			this->label3 = (gcnew System::Windows::Forms::Label());
@@ -136,7 +137,6 @@ namespace Project1 {
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->textBox4 = (gcnew System::Windows::Forms::TextBox());
 			this->button1 = (gcnew System::Windows::Forms::Button());
-			this->ñïğàâêàToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->tabControl1->SuspendLayout();
 			this->tabPage3->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
@@ -295,6 +295,13 @@ namespace Project1 {
 			this->uxyvxyÈëèvxyV2xyToolStripMenuItem->Text = L"|u(x,y)-v(x,y)| èëè |v(x,y) - v2(x,y)|";
 			this->uxyvxyÈëèvxyV2xyToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::uxyvxyÈëèvxyV2xyToolStripMenuItem_Click);
 			// 
+			// ñïğàâêàToolStripMenuItem
+			// 
+			this->ñïğàâêàToolStripMenuItem->Name = L"ñïğàâêàToolStripMenuItem";
+			this->ñïğàâêàToolStripMenuItem->Size = System::Drawing::Size(81, 24);
+			this->ñïğàâêàToolStripMenuItem->Text = L"Ñïğàâêà";
+			this->ñïğàâêàToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::ñïğàâêàToolStripMenuItem_Click);
+			// 
 			// textBox1
 			// 
 			this->textBox1->Location = System::Drawing::Point(175, 63);
@@ -349,7 +356,7 @@ namespace Project1 {
 			this->textBox4->Name = L"textBox4";
 			this->textBox4->Size = System::Drawing::Size(87, 22);
 			this->textBox4->TabIndex = 10;
-			this->textBox4->Text = L"0.00001";
+			this->textBox4->Text = L"0,00001";
 			// 
 			// button1
 			// 
@@ -360,13 +367,6 @@ namespace Project1 {
 			this->button1->Text = L"Ğåøèòü";
 			this->button1->UseVisualStyleBackColor = true;
 			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
-			// 
-			// ñïğàâêàToolStripMenuItem
-			// 
-			this->ñïğàâêàToolStripMenuItem->Name = L"ñïğàâêàToolStripMenuItem";
-			this->ñïğàâêàToolStripMenuItem->Size = System::Drawing::Size(81, 24);
-			this->ñïğàâêàToolStripMenuItem->Text = L"Ñïğàâêà";
-			this->ñïğàâêàToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::ñïğàâêàToolStripMenuItem_Click);
 			// 
 			// MyForm
 			// 
@@ -422,20 +422,35 @@ private: System::Void uxyÈëèV2xyToolStripMenuItem_Click(System::Object^ sender, 
 private: System::Void uxyvxyÈëèvxyV2xyToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	valType = VAL::SUB;
 }
-private: System::Void drawMainTable(DataGridView^ table)
+private: System::Void drawMainTable()
 {
-	
+	DataGridViewColumn^ col = gcnew DataGridViewColumn();
+	col->CellTemplate = gcnew DataGridViewTextBoxCell();
+	col->HeaderText = "";
+	dataGridView1->Columns->Add(col);
+	DataGridViewColumn^ col2 = gcnew DataGridViewColumn();
+	col2->CellTemplate = gcnew DataGridViewTextBoxCell();
+	col2->HeaderText = "xi";
+	dataGridView1->Columns->Add(col2);
+	for (int i = 0; i <= n; i++)
+	{
+		DataGridViewColumn^ temp = gcnew DataGridViewColumn();
+		temp->CellTemplate = gcnew DataGridViewTextBoxCell();
+		temp->HeaderText = "x" + Convert::ToString(i);
+		dataGridView1->Columns->Add(temp);
+	}
+
 }
 private: System::Void handleValues()
 {
 	n = Convert::ToInt32(textBox1->Text);
 	m = Convert::ToInt32(textBox2->Text);
-	maxStep = Convert::ToInt32(textBox4->Text);
-	acc = Convert::ToDouble(textBox3->Text);
+	maxStep = Convert::ToInt32(textBox3->Text);
+	acc = Convert::ToDouble(textBox4->Text);
 }
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 	handleValues();
-
+	drawMainTable();
 }
 private: System::Void ñïğàâêàToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	// Âûâîä ñïğàâêè
