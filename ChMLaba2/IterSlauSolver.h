@@ -5,6 +5,8 @@
 #include <vector>
 #include <cmath>
 
+#include "CustomField.h"
+
 using namespace std;
 
 template<typename T>
