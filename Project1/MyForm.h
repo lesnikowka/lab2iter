@@ -561,6 +561,13 @@ private: System::Void drawTable(const MetData& metData)
 	{
 		dataGridView1->Rows[0]->Cells[i]->Value = Convert::ToString(i - 2);
 	}
+	for (int i = 2; i <= n + 2; i++)
+	{
+		for (int j = 1; j <= m + 1; j++)
+		{
+			dataGridView1->Rows[j]->Cells[i]->Value = Convert::ToString(getValue(i - 2, j - 1, metData));
+		}
+	}
 }
 private: System::Void handleValues()
 {
