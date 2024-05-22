@@ -2,6 +2,8 @@
 
 
 #include <vector>
+#include <algorithm>
+#include <Windows.h>
 #define _USE_MATH_DEFINES
 #include <cmath>
 
@@ -474,6 +476,8 @@ private: System::Void uxyvxyÈëèvxyV2xyToolStripMenuItem_Click(System::Object^ se
 }
 private: System::Void drawTable()
 {
+	dataGridView1->Rows->Clear();
+	dataGridView1->Columns->Clear();
 	DataGridViewColumn^ col = gcnew DataGridViewColumn();
 	col->CellTemplate = gcnew DataGridViewTextBoxCell();
 	col->HeaderText = "";
@@ -482,7 +486,9 @@ private: System::Void drawTable()
 	col2->CellTemplate = gcnew DataGridViewTextBoxCell();
 	col2->HeaderText = "xi";
 	dataGridView1->Columns->Add(col2);
-	for (int i = 0; i <= n; i++)
+	int MaxNumColumns = 600;
+	int realN = min(n,MaxNumColumns);
+	for (int i = 0; i <= realN; i++)
 	{
 		DataGridViewColumn^ temp = gcnew DataGridViewColumn();
 		temp->CellTemplate = gcnew DataGridViewTextBoxCell();
@@ -500,7 +506,7 @@ private: System::Void drawTable()
 	{
 		dataGridView1->Rows[i]->Cells[1]->Value = Convert::ToString(i - 1);
 	}
-	for (int i = 2; i <= m + 2; i++)
+	for (int i = 2; i <= realN + 2; i++)
 	{
 		dataGridView1->Rows[0]->Cells[i]->Value = Convert::ToString(i - 2);
 	}
