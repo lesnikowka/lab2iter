@@ -523,7 +523,7 @@ private: System::Void uxyvxyÈëèvxyV2xyToolStripMenuItem_Click(System::Object^ se
 	valType = VAL::SUB;
 	çíà÷åíèÿÒàáëèöûToolStripMenuItem->Text = "|u(x,y)-v(x,y)| èëè |v(x,y) - v2(x,y)|";
 }
-private: System::Void drawTable()
+private: System::Void drawTable(const MetData& metData)
 {
 	dataGridView1->Rows->Clear();
 	dataGridView1->Columns->Clear();
@@ -541,7 +541,8 @@ private: System::Void drawTable()
 	{
 		DataGridViewColumn^ temp = gcnew DataGridViewColumn();
 		temp->CellTemplate = gcnew DataGridViewTextBoxCell();
-		temp->HeaderText = "x" + Convert::ToString(i);
+		//temp->HeaderText = "x" + Convert::ToString(i);
+		temp->HeaderText = Convert::ToString(metData.X[i]);
 		dataGridView1->Columns->Add(temp);
 	}
 	dataGridView1->Rows->Add(m + 2);
@@ -549,7 +550,8 @@ private: System::Void drawTable()
 	dataGridView1->Rows[0]->Cells[1]->Value = "j/i";
 	for (int i = 1; i <= m + 1; i++)
 	{
-		dataGridView1->Rows[i]->Cells[0]->Value = "y" + Convert::ToString(i - 1);
+		//dataGridView1->Rows[i]->Cells[0]->Value = "y" + Convert::ToString(i - 1);
+		dataGridView1->Rows[i]->Cells[0]->Value = Convert::ToString(metData.Y[i - 1]);
 	}
 	for (int i = 1; i <= m + 1; i++)
 	{
@@ -570,7 +572,7 @@ private: System::Void handleValues()
 }
 type2V getTrueVals(const typeV& x, const std::vector<double>& y)
 {
-	type2V result;
+	type2V result(x.size(), typeV(y.size()));
 
 	for (int i = 0; i < x.size(); i++)
 	{
@@ -585,7 +587,7 @@ type2V getTrueVals(const typeV& x, const std::vector<double>& y)
 
 type2V getSub(const type2V& first, const type2V second)
 {
-	type2V result;
+	type2V result(first.size(), typeV(first[0].size()));
 
 	for (int i = 0; i < first.size(); i++)
 	{
@@ -675,8 +677,8 @@ private: double getValue(int i, int j, const MetData& metData)
 }
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 	handleValues();
-	calculate();
-	drawTable();
+	MetData metData = calculate();
+	drawTable(metData);
 }
 private: System::Void ïîìîùüToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	String^ s = Directory::GetCurrentDirectory();
