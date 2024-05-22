@@ -80,12 +80,21 @@ namespace HelpPr {
 
 		}
 #pragma endregion
+		Image^ resizeImage(Image^ imgToResize, System::Drawing::Size size)
+		{
+			return (Image^)(gcnew Bitmap(imgToResize, size));
+		}
+
 		System::Void showHelp()
 		{
 			String^ s = Directory::GetCurrentDirectory();
 			String^ imageDir = s + "\\..\\help\\help.png";
 
-			pictureBox1->Image = Image::FromFile(imageDir);
+			auto image = Image::FromFile(imageDir);
+
+			image = resizeImage(image, System::Drawing::Size(image->Width * pictureBox1->Height / image->Height, pictureBox1->Height));
+
+			pictureBox1->Image = image;
 		}
 	};
 }
