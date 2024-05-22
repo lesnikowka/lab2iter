@@ -2,14 +2,14 @@
 
 #include "IterSlauSolver.h"
 
-class MSG : public IterSlauSolver
+class MSG_Met : public IterSlauSolver
 {
 public:
 	double alpha;
 	double betta;
 	vector<vector<double>> dir; //это h(s)
 
-	MSG() : IterSlauSolver()
+	MSG_Met() : IterSlauSolver()
 	{
 		alpha = 0;
 		betta = 0;
@@ -17,7 +17,7 @@ public:
 		dir.push_back(vector<double>());
 	}
 
-	MSG(double a, double b, double c, double d, int n, int m) : IterSlauSolver(a, b, c, d, n, m)
+	MSG_Met(double a, double b, double c, double d, int n, int m) : IterSlauSolver(a, b, c, d, n, m)
 	{
 		alpha = 0;
 		betta = 0;

@@ -2,14 +2,14 @@
 
 #include "IterSlauSolver.h"
 
-class MMN : public IterSlauSolver
+class MMN_Met : public IterSlauSolver
 {
 public:
 
 	double tau;
 
-	MMN() : IterSlauSolver() { tau = 0; }
-	MMN(double a, double b, double c, double d, int n, int m) : IterSlauSolver(a, b, c, d, n, m) { tau = 0; }
+	MMN_Met() : IterSlauSolver() { tau = 0; }
+	MMN_Met(double a, double b, double c, double d, int n, int m) : IterSlauSolver(a, b, c, d, n, m) { tau = 0; }
 
 	void calculateTau() 
 	{

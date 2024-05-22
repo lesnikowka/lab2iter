@@ -1,6 +1,9 @@
 #pragma once
 
 
+#include "../ChMLaba2/MMN.h"
+#include "../ChMLaba2/MVR.h"
+#include "../ChMLaba2/MSG.h"
 #include <vector>
 #include <algorithm>
 #include <Windows.h>
@@ -8,7 +11,6 @@
 #include <cmath>
 
 # define M_PI           3.14159265358979323846
-
 #define typeV std::vector<double> 
 #define type2V std::vector<std::vector<double>> 
 
@@ -118,11 +120,6 @@ namespace Project1 {
 	/// </summary>
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
-		std::vector<std::vector<double>*>* V = nullptr;
-		std::vector<std::vector<double>*>* V2_U = nullptr;
-		std::vector<std::vector<double>*>* Sub = nullptr;
-		std::vector<double>* X = nullptr;
-		std::vector<double>* Y = nullptr;
 		MET metType = MET::MVR;
 		VAL valType = VAL::NUM;
 		TASK taskType = TASK::MAIN;
@@ -571,11 +568,51 @@ private: System::Void handleValues()
 	acc = Convert::ToDouble(removeDots(textBox4->Text));
 	w = Convert::ToDouble(removeDots(textBox5->Text));
 }
+type2V getTrueVals(const typeV& x, const std::vector<double>& y)
+{
+	type2V result;
+
+	for (int i = 0; i < x.size(); i++)
+	{
+		for (int j = 0; j < y.size(); j++)	
+		{
+			result[i][j] = testFunc(x[i], y[j]);
+		}
+	}
+
+	return result;
+}
 private: MetData calculateMVR()
 {
-	MetData res;
+	MetData resultData;
 
-	return MetData{};
+	if (taskType == TASK::TEST)
+	{
+		double (*pt1)(double, double) = NULL;
+		double (*pt2)(double, double) = NULL;
+		double (*pt3)(double, double) = NULL;
+		double (*pt4)(double, double) = NULL;
+		double (*ptRight)(double, double) = NULL;
+		pt1 = &boundFunc1Test;
+		pt2 = &boundFunc2Test;
+		pt3 = &boundFunc3Test;
+		pt4 = &boundFunc4Test;
+		ptRight = &rightFuncTest;
+		MVR_Met test(a, b, c, d, n, m, w);
+		test.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
+		test.initRight(ptRight);
+		int iterCount = test.solve(maxStep, acc);
+		double acc = test.getAccuracy();
+		vector<vector<double>> res = test.getV();
+		vector<double> x = test.getX();
+		vector<double> y = test.getY();
+
+		resultData.V = res;
+		resultData.U_V2 = getTrueVals(x, y);
+
+	}
+
+	return resultData;
 }
 private: MetData calculateMMN()
 {
@@ -605,23 +642,23 @@ private: MetData calculate()
 
 	return MetData{};
 }
-double getVecVal(std::vector<std::vector<double>*>* vec, int i, int j)
+double getVecVal(std::vector<typeV*>* vec, int i, int j)
 {
 	return (*((*vec)[i]))[j];
 }
-private: double getValue(int i, int j)
-{
-	switch(valType)
-	{
-	case VAL::NUM:
-		return getVecVal(V, i, j);
-	case VAL::TRUE_OR_HALF:
-		return getVecVal(V2_U, i, j);
-	case VAL::SUB:
-		return abs(getVecVal(V2_U, i, j) - getVecVal(V, i, j));
-	}
-	return 0;
-}
+//private: double getValue(int i, int j)
+//{
+//	switch(valType)
+//	{
+//	case VAL::NUM:
+//		return getVecVal(V, i, j);
+//	case VAL::TRUE_OR_HALF:
+//		return getVecVal(V2_U, i, j);
+//	case VAL::SUB:
+//		return abs(getVecVal(V2_U, i, j) - getVecVal(V, i, j));
+//	}
+//	return 0;
+//}
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 	handleValues();
 	calculate();

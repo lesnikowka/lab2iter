@@ -2,18 +2,18 @@
 
 #include "IterSlauSolver.h"
 
-class MVR : public IterSlauSolver
+class MVR_Met : public IterSlauSolver
 {
 public:
 
 	double w;
 
-	MVR() : IterSlauSolver() 
+	MVR_Met() : IterSlauSolver() 
 	{
 		w = 1.2;
 	}
 
-	MVR(double a, double b, double c, double d, int n, int m, double omega = 1.2) : IterSlauSolver(a, b, c, d, n, m) 
+	MVR_Met(double a, double b, double c, double d, int n, int m, double omega = 1.2) : IterSlauSolver(a, b, c, d, n, m) 
 	{
 		w = omega; 
 	}
@@ -33,7 +33,7 @@ public:
 				vnew += (1 - w) * acoef * v[i][j] + w * right[i][j];
 				vnew /= acoef;
 
-				if  (abs(vold - vnew) >= acc);
+				if  (abs(vold - vnew) >= acc)
 				{
 					acc = abs(vold - vnew);
 				}
