@@ -606,40 +606,51 @@ type2V getSub(const type2V& first, const type2V second)
 
 	return result;
 }
-
-private: MetData calculateMVR()
+private: MetData calculateMVR_test()
 {
 	MetData resultData;
-
+	double (*pt1)(double, double) = NULL;
+	double (*pt2)(double, double) = NULL;
+	double (*pt3)(double, double) = NULL;
+	double (*pt4)(double, double) = NULL;
+	double (*ptRight)(double, double) = NULL;
+	pt1 = &boundFunc1Test;
+	pt2 = &boundFunc2Test;
+	pt3 = &boundFunc3Test;
+	pt4 = &boundFunc4Test;
+	ptRight = &rightFuncTest;
+	MVR_Met test(a, b, c, d, n, m, w);
+	test.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
+	test.initRight(ptRight);
+	int iterCount = test.solve(maxStep, acc);
+	double acc = test.getAccuracy();
+	type2V res = test.getV();
+	typeV x = test.getX();
+	typeV y = test.getY();
+	resultData.V = res;
+	resultData.U_V2 = getTrueVals(x, y);
+	resultData.Sub = getSub(resultData.V, resultData.U_V2);
+	resultData.X = x;
+	resultData.Y = y;
+	return resultData;
+}
+private: MetData calculateMVR_main()
+{
+	MetData resultData;
+	double (*pt1)(double, double) = NULL;
+	double (*pt2)(double, double) = NULL;
+	double (*pt3)(double, double) = NULL;
+	double (*pt4)(double, double) = NULL;
+	double (*ptRight)(double, double) = NULL;
+	
+}
+private: MetData calculateMVR()
+{
 	if (taskType == TASK::TEST)
 	{
-		double (*pt1)(double, double) = NULL;
-		double (*pt2)(double, double) = NULL;
-		double (*pt3)(double, double) = NULL;
-		double (*pt4)(double, double) = NULL;
-		double (*ptRight)(double, double) = NULL;
-		pt1 = &boundFunc1Test;
-		pt2 = &boundFunc2Test;
-		pt3 = &boundFunc3Test;
-		pt4 = &boundFunc4Test;
-		ptRight = &rightFuncTest;
-		MVR_Met test(a, b, c, d, n, m, w);
-		test.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
-		test.initRight(ptRight);
-		int iterCount = test.solve(maxStep, acc);
-		double acc = test.getAccuracy();
-		type2V res = test.getV();
-		typeV x = test.getX();
-		typeV y = test.getY();
-
-		resultData.V = res;
-		resultData.U_V2 = getTrueVals(x, y);
-		resultData.Sub = getSub(resultData.V, resultData.U_V2);
-		resultData.X = x;
-		resultData.Y = y;
+		return calculateMVR_test();
 	}
 
-	return resultData;
 }
 private: MetData calculateMMN()
 {
