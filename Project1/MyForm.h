@@ -73,15 +73,6 @@ enum class TASK
 	TEST
 };
 
-struct MetData
-{
-	static std::vector<std::vector<double>> V;
-	static std::vector<std::vector<double>> V2_U;
-	static std::vector<std::vector<double>> Sub;
-	static std::vector<std::vector<double>> X;
-	static std::vector<std::vector<double>> Y;
-};
-
 namespace Project1 {
 
 	using namespace System;
@@ -98,6 +89,11 @@ namespace Project1 {
 	/// </summary>
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
+		std::vector<std::vector<double>*>* V = nullptr;
+		std::vector<std::vector<double>*>* V2_U = nullptr;
+		std::vector<std::vector<double>*>* Sub = nullptr;
+		std::vector<std::vector<double>*>* X = nullptr;
+		std::vector<std::vector<double>*>* Y = nullptr;
 		MET metType = MET::MVR;
 		VAL valType = VAL::NUM;
 		TASK taskType = TASK::MAIN;
@@ -109,11 +105,14 @@ namespace Project1 {
 		double b = 1;
 		double c = 0;
 		double d = 2;
+		double w = 0;
 	private: System::Windows::Forms::Button^ button1;
 	private: System::Windows::Forms::ToolStripMenuItem^ òèïÇàäà÷èToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ òåñòîâàÿToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ îñíîâíàÿToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ uxyÈëèV2xyToolStripMenuItem;
+	private: System::Windows::Forms::Label^ label5;
+	private: System::Windows::Forms::TextBox^ textBox5;
 	private: System::Windows::Forms::ToolStripMenuItem^ ïîìîùüToolStripMenuItem;
 
 	public:
@@ -205,6 +204,8 @@ namespace Project1 {
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->textBox4 = (gcnew System::Windows::Forms::TextBox());
 			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->label5 = (gcnew System::Windows::Forms::Label());
+			this->textBox5 = (gcnew System::Windows::Forms::TextBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->menuStrip1->SuspendLayout();
 			this->SuspendLayout();
@@ -369,7 +370,7 @@ namespace Project1 {
 			// label3
 			// 
 			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(16, 145);
+			this->label3->Location = System::Drawing::Point(12, 145);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(130, 16);
 			this->label3->TabIndex = 6;
@@ -392,7 +393,7 @@ namespace Project1 {
 			// label4
 			// 
 			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(16, 178);
+			this->label4->Location = System::Drawing::Point(12, 178);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(123, 16);
 			this->label4->TabIndex = 9;
@@ -408,7 +409,7 @@ namespace Project1 {
 			// 
 			// button1
 			// 
-			this->button1->Location = System::Drawing::Point(19, 217);
+			this->button1->Location = System::Drawing::Point(19, 248);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(243, 23);
 			this->button1->TabIndex = 11;
@@ -416,11 +417,30 @@ namespace Project1 {
 			this->button1->UseVisualStyleBackColor = true;
 			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
 			// 
+			// label5
+			// 
+			this->label5->AutoSize = true;
+			this->label5->Location = System::Drawing::Point(16, 210);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(85, 16);
+			this->label5->TabIndex = 12;
+			this->label5->Text = L"w (äëÿ ÌÂÐ):";
+			// 
+			// textBox5
+			// 
+			this->textBox5->Location = System::Drawing::Point(175, 207);
+			this->textBox5->Name = L"textBox5";
+			this->textBox5->Size = System::Drawing::Size(87, 22);
+			this->textBox5->TabIndex = 13;
+			this->textBox5->Text = L"1,2";
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1461, 471);
+			this->Controls->Add(this->textBox5);
+			this->Controls->Add(this->label5);
 			this->Controls->Add(this->dataGridView1);
 			this->Controls->Add(this->button1);
 			this->Controls->Add(this->label1);
@@ -447,18 +467,22 @@ namespace Project1 {
 	private: System::Void ìÂÐToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 		metType = MET::MVR;
 		âûáîðÌåòîäàToolStripMenuItem->Text = "ÌÂÐ";
+		textBox5->Enabled = true;
 	}
 private: System::Void ìÌÍToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	metType = MET::MMN;
 	âûáîðÌåòîäàToolStripMenuItem->Text = "ÌÌÍ";
+	textBox5->Enabled = false;
 }
 private: System::Void ìÑÃToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	metType = MET::MSG;
 	âûáîðÌåòîäàToolStripMenuItem->Text = "ÌÑÃ";
+	textBox5->Enabled = false;
 }
 private: System::Void ìÑÃÓíèêàëüíàÿÎáëàñòüToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	metType = MET::MSG_UN;
 	âûáîðÌåòîäàToolStripMenuItem->Text = "ÌÑÃ óíèêàëüíàÿ îáëàñòü";
+	textBox5->Enabled = false;
 }
 
 private: System::Void vxyToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -516,6 +540,7 @@ private: System::Void handleValues()
 	m = Convert::ToInt32(removeDots(textBox2->Text));
 	maxStep = Convert::ToInt32(removeDots(textBox3->Text));
 	acc = Convert::ToDouble(removeDots(textBox4->Text));
+	w = Convert::ToDouble(removeDots(textBox5->Text));
 }
 private: System::Void calculateMVR()
 {
@@ -550,16 +575,20 @@ private: System::Void calculate()
 		break;
 	}
 }
+double getVecVal(std::vector<std::vector<double>*>* vec, int i, int j)
+{
+	return (*((*vec)[i]))[j];
+}
 private: double getValue(int i, int j)
 {
 	switch(valType)
 	{
 	case VAL::NUM:
-		return MetData::V[i][j];
+		return getVecVal(V, i, j);
 	case VAL::TRUE_OR_HALF:
-		return MetData::V2_U[i][j];
+		return getVecVal(V2_U, i, j);
 	case VAL::SUB:
-		return abs(MetData::V2_U[i][j] - MetData::V[i][j]);
+		return abs(getVecVal(V2_U, i, j) - getVecVal(V, i, j));
 	}
 	return 0;
 }
