@@ -1,8 +1,9 @@
 #include "MyForm.h"
 
+
 #include <Windows.h>
 
-using namespace Project1;
+using namespace HelpPr;
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     Application::EnableVisualStyles();

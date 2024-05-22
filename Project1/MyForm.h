@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include <vector>
 #define _USE_MATH_DEFINES
 #include <cmath>
@@ -86,6 +87,7 @@ namespace Project1 {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Diagnostics;
 
 	/// <summary>
 	/// Summary for MyForm
@@ -224,7 +226,7 @@ namespace Project1 {
 			this->dataGridView1->Name = L"dataGridView1";
 			this->dataGridView1->RowHeadersWidth = 51;
 			this->dataGridView1->RowTemplate->Height = 24;
-			this->dataGridView1->Size = System::Drawing::Size(1161, 375);
+			this->dataGridView1->Size = System::Drawing::Size(1149, 375);
 			this->dataGridView1->TabIndex = 1;
 			// 
 			// menuStrip1
@@ -247,7 +249,7 @@ namespace Project1 {
 					this->ìÌÍToolStripMenuItem, this->ìÑÃToolStripMenuItem, this->ìÑÃÓíèêàëüíàÿÎáëàñòüToolStripMenuItem
 			});
 			this->âûáîğÌåòîäàToolStripMenuItem->Name = L"âûáîğÌåòîäàToolStripMenuItem";
-			this->âûáîğÌåòîäàToolStripMenuItem->Size = System::Drawing::Size(124, 26);
+			this->âûáîğÌåòîäàToolStripMenuItem->Size = System::Drawing::Size(124, 24);
 			this->âûáîğÌåòîäàToolStripMenuItem->Text = L"Âûáîğ ìåòîäà";
 			// 
 			// ìÂĞToolStripMenuItem
@@ -285,7 +287,7 @@ namespace Project1 {
 					this->uxyÈëèV2xyToolStripMenuItem, this->uxyvxyÈëèvxyV2xyToolStripMenuItem
 			});
 			this->çíà÷åíèÿÒàáëèöûToolStripMenuItem->Name = L"çíà÷åíèÿÒàáëèöûToolStripMenuItem";
-			this->çíà÷åíèÿÒàáëèöûToolStripMenuItem->Size = System::Drawing::Size(154, 26);
+			this->çíà÷åíèÿÒàáëèöûToolStripMenuItem->Size = System::Drawing::Size(154, 24);
 			this->çíà÷åíèÿÒàáëèöûToolStripMenuItem->Text = L"Çíà÷åíèÿ òàáëèöû";
 			// 
 			// vxyToolStripMenuItem
@@ -316,20 +318,20 @@ namespace Project1 {
 					this->îñíîâíàÿToolStripMenuItem
 			});
 			this->òèïÇàäà÷èToolStripMenuItem->Name = L"òèïÇàäà÷èToolStripMenuItem";
-			this->òèïÇàäà÷èToolStripMenuItem->Size = System::Drawing::Size(101, 26);
+			this->òèïÇàäà÷èToolStripMenuItem->Size = System::Drawing::Size(101, 24);
 			this->òèïÇàäà÷èToolStripMenuItem->Text = L"Òèï çàäà÷è";
 			// 
 			// òåñòîâàÿToolStripMenuItem
 			// 
 			this->òåñòîâàÿToolStripMenuItem->Name = L"òåñòîâàÿToolStripMenuItem";
-			this->òåñòîâàÿToolStripMenuItem->Size = System::Drawing::Size(224, 26);
+			this->òåñòîâàÿToolStripMenuItem->Size = System::Drawing::Size(161, 26);
 			this->òåñòîâàÿToolStripMenuItem->Text = L"Òåñòîâàÿ";
 			this->òåñòîâàÿToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::òåñòîâàÿToolStripMenuItem_Click);
 			// 
 			// îñíîâíàÿToolStripMenuItem
 			// 
 			this->îñíîâíàÿToolStripMenuItem->Name = L"îñíîâíàÿToolStripMenuItem";
-			this->îñíîâíàÿToolStripMenuItem->Size = System::Drawing::Size(224, 26);
+			this->îñíîâíàÿToolStripMenuItem->Size = System::Drawing::Size(161, 26);
 			this->îñíîâíàÿToolStripMenuItem->Text = L"Îñíîâíàÿ";
 			this->îñíîâíàÿToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::îñíîâíàÿToolStripMenuItem_Click);
 			// 
@@ -508,7 +510,7 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 	drawTable();
 }
 private: System::Void ïîìîùüToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-	// Âûâîä ñïğàâêè
+	Process::Start("C:/Users/lesni/lab2iter/Project1/HelpPr.exe");
 }
 private: System::Void òåñòîâàÿToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	taskType = TASK::TEST;
