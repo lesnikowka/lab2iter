@@ -582,6 +582,22 @@ type2V getTrueVals(const typeV& x, const std::vector<double>& y)
 
 	return result;
 }
+
+type2V getSub(const type2V& first, const type2V second)
+{
+	type2V result;
+
+	for (int i = 0; i < first.size(); i++)
+	{
+		for (int j = 0; i < first[0].size(); i++)
+		{
+			result[i][j] = abs(first[i][j] - second[i][j]);
+		}
+	}
+
+	return result;
+}
+
 private: MetData calculateMVR()
 {
 	MetData resultData;
@@ -603,13 +619,15 @@ private: MetData calculateMVR()
 		test.initRight(ptRight);
 		int iterCount = test.solve(maxStep, acc);
 		double acc = test.getAccuracy();
-		vector<vector<double>> res = test.getV();
-		vector<double> x = test.getX();
-		vector<double> y = test.getY();
+		type2V res = test.getV();
+		typeV x = test.getX();
+		typeV y = test.getY();
 
 		resultData.V = res;
 		resultData.U_V2 = getTrueVals(x, y);
-
+		resultData.Sub = getSub(resultData.V, resultData.U_V2);
+		resultData.X = x;
+		resultData.Y = y;
 	}
 
 	return resultData;
@@ -642,23 +660,19 @@ private: MetData calculate()
 
 	return MetData{};
 }
-double getVecVal(std::vector<typeV*>* vec, int i, int j)
+private: double getValue(int i, int j, const MetData& metData)
 {
-	return (*((*vec)[i]))[j];
+	switch(valType)
+	{
+	case VAL::NUM:
+		return metData.V[i][j];
+	case VAL::TRUE_OR_HALF:
+		return metData.U_V2[i][j];
+	case VAL::SUB:
+		return metData.Sub[i][j];
+	}
+	return 0;
 }
-//private: double getValue(int i, int j)
-//{
-//	switch(valType)
-//	{
-//	case VAL::NUM:
-//		return getVecVal(V, i, j);
-//	case VAL::TRUE_OR_HALF:
-//		return getVecVal(V2_U, i, j);
-//	case VAL::SUB:
-//		return abs(getVecVal(V2_U, i, j) - getVecVal(V, i, j));
-//	}
-//	return 0;
-//}
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 	handleValues();
 	calculate();
