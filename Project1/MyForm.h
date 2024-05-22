@@ -588,13 +588,14 @@ private: System::Void drawTable()
 	{
 		dataGridView1->Rows[0]->Cells[i]->Value = Convert::ToString(i - 2);
 	}
-	for (int i = 2; i <= n + 2; i++)
+	for (int i = 2; i <= realN + 2; i++)
 	{
 		for (int j = 1; j <= m + 1; j++)
 		{
 			dataGridView1->Rows[j]->Cells[i]->Value = Convert::ToString(getValue(i - 2, j - 1));
 		}
 	}
+
 }
 private: System::Void handleValues()
 {
@@ -606,13 +607,13 @@ private: System::Void handleValues()
 }
 type2V getTrueVals(const typeV& x, const std::vector<double>& y)
 {
-	type2V result(x.size(), typeV(y.size()));
+	type2V result(y.size(), typeV(x.size()));
 
 	for (int i = 0; i < x.size(); i++)
 	{
 		for (int j = 0; j < y.size(); j++)	
 		{
-			result[i][j] = testFunc(x[i], y[j]);
+			result[j][i] = testFunc(x[i], y[j]);
 		}
 	}
 
@@ -757,11 +758,11 @@ private: double getValue(int i, int j)
 	switch(valType)
 	{
 	case VAL::NUM:
-		return metData.V[i][j];
+		return metData.V[j][i];
 	case VAL::TRUE_OR_HALF:
-		return metData.U_V2[i][j];
+		return metData.U_V2[j][i];
 	case VAL::SUB:
-		return metData.Sub[i][j];
+		return metData.Sub[j][i];
 	}
 	return 0;
 }
