@@ -1,5 +1,8 @@
 #pragma once
 
+#include <fstream>
+#include <msclr\marshal_cppstd.h>
+
 namespace HelpPr {
 
 	using namespace System;
@@ -8,6 +11,7 @@ namespace HelpPr {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::IO;
 
 	/// <summary>
 	/// Summary for MyForm
@@ -78,7 +82,10 @@ namespace HelpPr {
 #pragma endregion
 		System::Void showHelp()
 		{
-			pictureBox1->Image = Image::FromFile("help.png");
+			String^ s = Directory::GetCurrentDirectory();
+			String^ imageDir = s + "\\..\\help\\help.png";
+
+			pictureBox1->Image = Image::FromFile(imageDir);
 		}
 	};
 }

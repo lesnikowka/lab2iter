@@ -88,6 +88,7 @@ namespace Project1 {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::Diagnostics;
+	using namespace System::IO;
 
 	/// <summary>
 	/// Summary for MyForm
@@ -510,7 +511,9 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 	drawTable();
 }
 private: System::Void ïîìîùüToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-	Process::Start("C:/Users/lesni/lab2iter/Project1/HelpPr.exe");
+	String^ s = Directory::GetCurrentDirectory();
+	String^ processDir = s + "\\..\\x64\\Debug\\HelpPr.exe";
+	Process::Start(processDir);
 }
 private: System::Void òåñòîâàÿToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	taskType = TASK::TEST;
