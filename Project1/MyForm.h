@@ -270,6 +270,7 @@ namespace Project1 {
 			// dataGridView1
 			// 
 			this->dataGridView1->BackgroundColor = System::Drawing::SystemColors::ButtonFace;
+			this->dataGridView1->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
 			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
 			this->dataGridView1->Location = System::Drawing::Point(300, 66);
 			this->dataGridView1->Name = L"dataGridView1";
@@ -624,8 +625,11 @@ type2V getSub(const type2V& first, const type2V second)
 
 	for (int i = 0; i < first.size(); i++)
 	{
-		for (int j = 0; i < first[0].size(); i++)
+		for (int j = 0; j < first[0].size(); j++)
 		{
+			double first_ = first[i][j];
+			double second_ = second[i][j];
+			double sub_ = first_ - second_;
 			result[i][j] = abs(first[i][j] - second[i][j]);
 		}
 	}
@@ -704,7 +708,7 @@ private: void calculateMVR_main()
 	metData.count = iterCount;
 	metData.V = res;
 	metData.U_V2 = res2half;
-	metData.Sub = getSub(metData.V, res2half);
+	metData.Sub = getSub(res, res2half);
 	metData.X = x;
 	metData.Y = y;
 	metData.count2 = iterCount2;
