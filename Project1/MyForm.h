@@ -77,6 +77,8 @@ struct Data
 	static std::vector<std::vector<double>> V_test;
 	static std::vector<std::vector<double>> V2;
 	static std::vector<std::vector<double>> U;
+	static std::vector<std::vector<double>> X;
+	static std::vector<std::vector<double>> Y;
 };
 
 namespace Project1 {
@@ -102,6 +104,10 @@ namespace Project1 {
 		int n = 0;
 		int maxStep = 0;
 		double acc = 0;
+		double a = 0;
+		double b = 1;
+		double c = 0;
+		double d = 2;
 	private: System::Windows::Forms::Button^ button1;
 	private: System::Windows::Forms::ToolStripMenuItem^ òèïÇàäà÷èToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ òåñòîâàÿToolStripMenuItem;
@@ -501,10 +507,10 @@ private: System::Void drawTable()
 }
 private: System::Void handleValues()
 {
-	n = Convert::ToInt32(textBox1->Text);
-	m = Convert::ToInt32(textBox2->Text);
-	maxStep = Convert::ToInt32(textBox3->Text);
-	acc = Convert::ToDouble(textBox4->Text);
+	n = Convert::ToInt32(removeDots(textBox1->Text));
+	m = Convert::ToInt32(removeDots(textBox2->Text));
+	maxStep = Convert::ToInt32(removeDots(textBox3->Text));
+	acc = Convert::ToDouble(removeDots(textBox4->Text));
 }
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 	handleValues();
@@ -522,6 +528,10 @@ private: System::Void òåñòîâàÿToolStripMenuItem_Click(System::Object^ sender, Sy
 private: System::Void îñíîâíàÿToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	taskType = TASK::MAIN;
 	òèïÇàäà÷èToolStripMenuItem->Text = "Îñíîâíàÿ";
+}
+String^ removeDots(String^ s)
+{
+	return s->Replace(".", ",");
 }
 };
 }
