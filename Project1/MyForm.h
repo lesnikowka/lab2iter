@@ -20,8 +20,6 @@ double rightFuncTest2(double x, double y)
 {
 	double a = 2 * M_PI * M_PI * y * y * exp(sin(M_PI * x * y) * sin(M_PI * x * y));
 	double b = 2 * sin(M_PI * x * y) * sin(M_PI * x * y) * cos(M_PI * x * y) * cos(M_PI * x * y) - sin(M_PI * x * y) * sin(M_PI * x * y) + cos(M_PI * x * y) * cos(M_PI * x * y);
-	//double d = ;
-	//double c = ;
 	return a * b;
 }
 
@@ -51,7 +49,7 @@ double testFunc(double x, double y)
 }
 
 
-enum class TASK_TYPE
+enum class MET
 {
 	MVR,
 	MMN,
@@ -64,6 +62,12 @@ enum class VAL
 	NUM,
 	TRUE_OR_HALF,
 	SUB
+};
+
+enum class TASK
+{
+	MAIN,
+	TEST
 };
 
 struct Data
@@ -88,14 +92,20 @@ namespace Project1 {
 	/// </summary>
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
-		TASK_TYPE taskType = TASK_TYPE::MVR;
+		MET metType = MET::MVR;
 		VAL valType = VAL::NUM;
+		TASK taskType = TASK::MAIN;
 		int m = 0;
 		int n = 0;
 		int maxStep = 0;
 		double acc = 0;
 	private: System::Windows::Forms::Button^ button1;
-	private: System::Windows::Forms::ToolStripMenuItem^ ñïðàâêàToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ òèïÇàäà÷èToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ òåñòîâàÿToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ îñíîâíàÿToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ uxyÈëèV2xyToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ ïîìîùüToolStripMenuItem;
+
 	public:
 		MyForm(void)
 		{
@@ -118,12 +128,12 @@ namespace Project1 {
 		}
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::Label^ label2;
-	private: System::Windows::Forms::TabControl^ tabControl1;
+
 
 
 	private: System::Windows::Forms::MenuStrip^ menuStrip1;
-	private: System::Windows::Forms::TabPage^ tabPage3;
-	private: System::Windows::Forms::TabPage^ tabPage4;
+
+
 	private: System::Windows::Forms::ToolStripMenuItem^ âûáîðÌåòîäàToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ ìÂÐToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ ìÌÍToolStripMenuItem;
@@ -137,10 +147,10 @@ namespace Project1 {
 	private: System::Windows::Forms::TextBox^ textBox4;
 	private: System::Windows::Forms::ToolStripMenuItem^ ìÑÃÓíèêàëüíàÿÎáëàñòüToolStripMenuItem;
 	private: System::Windows::Forms::DataGridView^ dataGridView1;
-	private: System::Windows::Forms::DataGridView^ dataGridView2;
+
 	private: System::Windows::Forms::ToolStripMenuItem^ çíà÷åíèÿÒàáëèöûToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ vxyToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^ uxyÈëèV2xyToolStripMenuItem;
+
 	private: System::Windows::Forms::ToolStripMenuItem^ uxyvxyÈëèvxyV2xyToolStripMenuItem;
 
 	private: System::ComponentModel::IContainer^ components;
@@ -162,11 +172,7 @@ namespace Project1 {
 			this->components = (gcnew System::ComponentModel::Container());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
-			this->tabControl1 = (gcnew System::Windows::Forms::TabControl());
-			this->tabPage3 = (gcnew System::Windows::Forms::TabPage());
 			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
-			this->tabPage4 = (gcnew System::Windows::Forms::TabPage());
-			this->dataGridView2 = (gcnew System::Windows::Forms::DataGridView());
 			this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
 			this->âûáîðÌåòîäàToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->ìÂÐToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -177,7 +183,10 @@ namespace Project1 {
 			this->vxyToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->uxyÈëèV2xyToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->uxyvxyÈëèvxyV2xyToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->ñïðàâêàToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->òèïÇàäà÷èToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->òåñòîâàÿToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->îñíîâíàÿToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->ïîìîùüToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
 			this->label3 = (gcnew System::Windows::Forms::Label());
@@ -186,11 +195,7 @@ namespace Project1 {
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->textBox4 = (gcnew System::Windows::Forms::TextBox());
 			this->button1 = (gcnew System::Windows::Forms::Button());
-			this->tabControl1->SuspendLayout();
-			this->tabPage3->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
-			this->tabPage4->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView2))->BeginInit();
 			this->menuStrip1->SuspendLayout();
 			this->SuspendLayout();
 			// 
@@ -212,62 +217,22 @@ namespace Project1 {
 			this->label2->TabIndex = 1;
 			this->label2->Text = L"×èñëî ðàçáèåíèé ïî Y:";
 			// 
-			// tabControl1
-			// 
-			this->tabControl1->Controls->Add(this->tabPage3);
-			this->tabControl1->Controls->Add(this->tabPage4);
-			this->tabControl1->Location = System::Drawing::Point(268, 43);
-			this->tabControl1->Name = L"tabControl1";
-			this->tabControl1->SelectedIndex = 0;
-			this->tabControl1->Size = System::Drawing::Size(1181, 416);
-			this->tabControl1->TabIndex = 2;
-			// 
-			// tabPage3
-			// 
-			this->tabPage3->Controls->Add(this->dataGridView1);
-			this->tabPage3->Location = System::Drawing::Point(4, 25);
-			this->tabPage3->Name = L"tabPage3";
-			this->tabPage3->Size = System::Drawing::Size(1173, 387);
-			this->tabPage3->TabIndex = 2;
-			this->tabPage3->Text = L"Òàáëèöà äëÿ îñíîâíîé";
-			this->tabPage3->UseVisualStyleBackColor = true;
-			// 
 			// dataGridView1
 			// 
 			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->dataGridView1->Location = System::Drawing::Point(6, 6);
+			this->dataGridView1->Location = System::Drawing::Point(300, 66);
 			this->dataGridView1->Name = L"dataGridView1";
 			this->dataGridView1->RowHeadersWidth = 51;
 			this->dataGridView1->RowTemplate->Height = 24;
 			this->dataGridView1->Size = System::Drawing::Size(1161, 375);
 			this->dataGridView1->TabIndex = 1;
 			// 
-			// tabPage4
-			// 
-			this->tabPage4->Controls->Add(this->dataGridView2);
-			this->tabPage4->Location = System::Drawing::Point(4, 25);
-			this->tabPage4->Name = L"tabPage4";
-			this->tabPage4->Size = System::Drawing::Size(1173, 387);
-			this->tabPage4->TabIndex = 3;
-			this->tabPage4->Text = L"Òàáëèöà äëÿ òåñòîâîé";
-			this->tabPage4->UseVisualStyleBackColor = true;
-			// 
-			// dataGridView2
-			// 
-			this->dataGridView2->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->dataGridView2->Location = System::Drawing::Point(6, 6);
-			this->dataGridView2->Name = L"dataGridView2";
-			this->dataGridView2->RowHeadersWidth = 51;
-			this->dataGridView2->RowTemplate->Height = 24;
-			this->dataGridView2->Size = System::Drawing::Size(1161, 375);
-			this->dataGridView2->TabIndex = 2;
-			// 
 			// menuStrip1
 			// 
 			this->menuStrip1->ImageScalingSize = System::Drawing::Size(20, 20);
-			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
+			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(4) {
 				this->âûáîðÌåòîäàToolStripMenuItem,
-					this->çíà÷åíèÿÒàáëèöûToolStripMenuItem, this->ñïðàâêàToolStripMenuItem
+					this->çíà÷åíèÿÒàáëèöûToolStripMenuItem, this->òèïÇàäà÷èToolStripMenuItem, this->ïîìîùüToolStripMenuItem
 			});
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
@@ -282,7 +247,7 @@ namespace Project1 {
 					this->ìÌÍToolStripMenuItem, this->ìÑÃToolStripMenuItem, this->ìÑÃÓíèêàëüíàÿÎáëàñòüToolStripMenuItem
 			});
 			this->âûáîðÌåòîäàToolStripMenuItem->Name = L"âûáîðÌåòîäàToolStripMenuItem";
-			this->âûáîðÌåòîäàToolStripMenuItem->Size = System::Drawing::Size(124, 24);
+			this->âûáîðÌåòîäàToolStripMenuItem->Size = System::Drawing::Size(124, 26);
 			this->âûáîðÌåòîäàToolStripMenuItem->Text = L"Âûáîð ìåòîäà";
 			// 
 			// ìÂÐToolStripMenuItem
@@ -320,7 +285,7 @@ namespace Project1 {
 					this->uxyÈëèV2xyToolStripMenuItem, this->uxyvxyÈëèvxyV2xyToolStripMenuItem
 			});
 			this->çíà÷åíèÿÒàáëèöûToolStripMenuItem->Name = L"çíà÷åíèÿÒàáëèöûToolStripMenuItem";
-			this->çíà÷åíèÿÒàáëèöûToolStripMenuItem->Size = System::Drawing::Size(154, 24);
+			this->çíà÷åíèÿÒàáëèöûToolStripMenuItem->Size = System::Drawing::Size(154, 26);
 			this->çíà÷åíèÿÒàáëèöûToolStripMenuItem->Text = L"Çíà÷åíèÿ òàáëèöû";
 			// 
 			// vxyToolStripMenuItem
@@ -344,12 +309,36 @@ namespace Project1 {
 			this->uxyvxyÈëèvxyV2xyToolStripMenuItem->Text = L"|u(x,y)-v(x,y)| èëè |v(x,y) - v2(x,y)|";
 			this->uxyvxyÈëèvxyV2xyToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::uxyvxyÈëèvxyV2xyToolStripMenuItem_Click);
 			// 
-			// ñïðàâêàToolStripMenuItem
+			// òèïÇàäà÷èToolStripMenuItem
 			// 
-			this->ñïðàâêàToolStripMenuItem->Name = L"ñïðàâêàToolStripMenuItem";
-			this->ñïðàâêàToolStripMenuItem->Size = System::Drawing::Size(81, 24);
-			this->ñïðàâêàToolStripMenuItem->Text = L"Ñïðàâêà";
-			this->ñïðàâêàToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::ñïðàâêàToolStripMenuItem_Click);
+			this->òèïÇàäà÷èToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+				this->òåñòîâàÿToolStripMenuItem,
+					this->îñíîâíàÿToolStripMenuItem
+			});
+			this->òèïÇàäà÷èToolStripMenuItem->Name = L"òèïÇàäà÷èToolStripMenuItem";
+			this->òèïÇàäà÷èToolStripMenuItem->Size = System::Drawing::Size(101, 26);
+			this->òèïÇàäà÷èToolStripMenuItem->Text = L"Òèï çàäà÷è";
+			// 
+			// òåñòîâàÿToolStripMenuItem
+			// 
+			this->òåñòîâàÿToolStripMenuItem->Name = L"òåñòîâàÿToolStripMenuItem";
+			this->òåñòîâàÿToolStripMenuItem->Size = System::Drawing::Size(224, 26);
+			this->òåñòîâàÿToolStripMenuItem->Text = L"Òåñòîâàÿ";
+			this->òåñòîâàÿToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::òåñòîâàÿToolStripMenuItem_Click);
+			// 
+			// îñíîâíàÿToolStripMenuItem
+			// 
+			this->îñíîâíàÿToolStripMenuItem->Name = L"îñíîâíàÿToolStripMenuItem";
+			this->îñíîâíàÿToolStripMenuItem->Size = System::Drawing::Size(224, 26);
+			this->îñíîâíàÿToolStripMenuItem->Text = L"Îñíîâíàÿ";
+			this->îñíîâíàÿToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::îñíîâíàÿToolStripMenuItem_Click);
+			// 
+			// ïîìîùüToolStripMenuItem
+			// 
+			this->ïîìîùüToolStripMenuItem->Name = L"ïîìîùüToolStripMenuItem";
+			this->ïîìîùüToolStripMenuItem->Size = System::Drawing::Size(83, 24);
+			this->ïîìîùüToolStripMenuItem->Text = L"Ïîìîùü";
+			this->ïîìîùüToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::ïîìîùüToolStripMenuItem_Click);
 			// 
 			// textBox1
 			// 
@@ -422,6 +411,7 @@ namespace Project1 {
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1461, 471);
+			this->Controls->Add(this->dataGridView1);
 			this->Controls->Add(this->button1);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->textBox4);
@@ -430,17 +420,12 @@ namespace Project1 {
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->textBox2);
 			this->Controls->Add(this->textBox1);
-			this->Controls->Add(this->tabControl1);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->menuStrip1);
 			this->MainMenuStrip = this->menuStrip1;
 			this->Name = L"MyForm";
 			this->Text = L"Ëàáîðàòîðíàÿ ðàáîòà ¹2";
-			this->tabControl1->ResumeLayout(false);
-			this->tabPage3->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
-			this->tabPage4->ResumeLayout(false);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView2))->EndInit();
 			this->menuStrip1->ResumeLayout(false);
 			this->menuStrip1->PerformLayout();
 			this->ResumeLayout(false);
@@ -450,28 +435,35 @@ namespace Project1 {
 #pragma endregion
 
 	private: System::Void ìÂÐToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-		taskType = TASK_TYPE::MVR;
+		metType = MET::MVR;
+		âûáîðÌåòîäàToolStripMenuItem->Text = "ÌÂÐ";
 	}
 private: System::Void ìÌÍToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-	taskType = TASK_TYPE::MMN;
+	metType = MET::MMN;
+	âûáîðÌåòîäàToolStripMenuItem->Text = "ÌÌÍ";
 }
 private: System::Void ìÑÃToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-	taskType = TASK_TYPE::MSG;
+	metType = MET::MSG;
+	âûáîðÌåòîäàToolStripMenuItem->Text = "ÌÑÃ";
 }
 private: System::Void ìÑÃÓíèêàëüíàÿÎáëàñòüToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-	taskType = TASK_TYPE::MSG_UN;
+	metType = MET::MSG_UN;
+	âûáîðÌåòîäàToolStripMenuItem->Text = "ÌÑÃ óíèêàëüíàÿ îáëàñòü";
 }
 
 private: System::Void vxyToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	valType = VAL::NUM;
+	çíà÷åíèÿÒàáëèöûToolStripMenuItem->Text = "v(x,y)";
 }
 private: System::Void uxyÈëèV2xyToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	valType = VAL::TRUE_OR_HALF;
+	çíà÷åíèÿÒàáëèöûToolStripMenuItem->Text = "u(x,y) èëè v2(x,y)";
 }
 private: System::Void uxyvxyÈëèvxyV2xyToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	valType = VAL::SUB;
+	çíà÷åíèÿÒàáëèöûToolStripMenuItem->Text = "|u(x,y)-v(x,y)| èëè |v(x,y) - v2(x,y)|";
 }
-private: System::Void drawMainTable()
+private: System::Void drawTable()
 {
 	DataGridViewColumn^ col = gcnew DataGridViewColumn();
 	col->CellTemplate = gcnew DataGridViewTextBoxCell();
@@ -513,10 +505,18 @@ private: System::Void handleValues()
 }
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 	handleValues();
-	drawMainTable();
+	drawTable();
 }
-private: System::Void ñïðàâêàToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+private: System::Void ïîìîùüToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	// Âûâîä ñïðàâêè
+}
+private: System::Void òåñòîâàÿToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	taskType = TASK::TEST;
+	òèïÇàäà÷èToolStripMenuItem->Text = "Òåñòîâàÿ";
+}
+private: System::Void îñíîâíàÿToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	taskType = TASK::MAIN;
+	òèïÇàäà÷èToolStripMenuItem->Text = "Îñíîâíàÿ";
 }
 };
 }
