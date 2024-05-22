@@ -69,9 +69,15 @@ double boundFunc3Main(double x, double y)
 {
 	return (sin(M_PI*y)) * (sin(M_PI*y));
 }
+
 double boundFunc4Main(double x, double y)
 {
 	return abs(exp(sin(M_PI * y)) - 1);
+}
+
+double rightMain(double x, double y)
+{
+	return -abs(x - y);
 }
 
 struct MetData
@@ -81,7 +87,13 @@ struct MetData
 	type2V Sub;
 	typeV X;
 	typeV Y;
+	double accuracy;
+	int count;
+	double accuracy2;
+	int count2; 
 };
+
+MetData metData = {};
 
 enum class MET
 {
@@ -132,6 +144,7 @@ namespace Project1 {
 		double c = 0;
 		double d = 2;
 		double w = 0;
+		bool started = false;
 	private: System::Windows::Forms::Button^ button1;
 	private: System::Windows::Forms::ToolStripMenuItem^ òèïÇàäà÷èToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ òåñòîâàÿToolStripMenuItem;
@@ -514,16 +527,28 @@ private: System::Void ìÑÃÓíèêàëüíàÿÎáëàñòüToolStripMenuItem_Click(System::Object
 private: System::Void vxyToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	valType = VAL::NUM;
 	çíà÷åíèÿÒàáëèöûToolStripMenuItem->Text = "v(x,y)";
+	if (started)
+	{
+		drawTable();
+	}
 }
 private: System::Void uxyÈëèV2xyToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	valType = VAL::TRUE_OR_HALF;
 	çíà÷åíèÿÒàáëèöûToolStripMenuItem->Text = "u(x,y) èëè v2(x,y)";
+	if (started)
+	{
+		drawTable();
+	}
 }
 private: System::Void uxyvxyÈëèvxyV2xyToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	valType = VAL::SUB;
 	çíà÷åíèÿÒàáëèöûToolStripMenuItem->Text = "|u(x,y)-v(x,y)| èëè |v(x,y) - v2(x,y)|";
+	if (started)
+	{
+		drawTable();
+	}
 }
-private: System::Void drawTable(const MetData& metData)
+private: System::Void drawTable()
 {
 	dataGridView1->Rows->Clear();
 	dataGridView1->Columns->Clear();
@@ -565,7 +590,7 @@ private: System::Void drawTable(const MetData& metData)
 	{
 		for (int j = 1; j <= m + 1; j++)
 		{
-			dataGridView1->Rows[j]->Cells[i]->Value = Convert::ToString(getValue(i - 2, j - 1, metData));
+			dataGridView1->Rows[j]->Cells[i]->Value = Convert::ToString(getValue(i - 2, j - 1));
 		}
 	}
 }
@@ -606,9 +631,20 @@ type2V getSub(const type2V& first, const type2V second)
 
 	return result;
 }
-private: MetData calculateMVR_test()
+type2V getHalf(const type2V& v)
 {
-	MetData resultData;
+	type2V half(v.size() / 2 + 1, typeV(v[0].size() / 2 + 1));
+	for (int i = 0; i < v.size(); i += 2)
+	{
+		for (int j = 0; j < v[0].size(); j += 2)
+		{
+			half[i / 2][j / 2] = v[i][j];
+		}
+	}
+	return half;
+}
+private: void calculateMVR_test()
+{
 	double (*pt1)(double, double) = NULL;
 	double (*pt2)(double, double) = NULL;
 	double (*pt3)(double, double) = NULL;
@@ -627,60 +663,91 @@ private: MetData calculateMVR_test()
 	type2V res = test.getV();
 	typeV x = test.getX();
 	typeV y = test.getY();
-	resultData.V = res;
-	resultData.U_V2 = getTrueVals(x, y);
-	resultData.Sub = getSub(resultData.V, resultData.U_V2);
-	resultData.X = x;
-	resultData.Y = y;
-	return resultData;
+	metData.accuracy = acc;
+	metData.count = iterCount;
+	metData.V = res;
+	metData.U_V2 = getTrueVals(x, y);
+	metData.Sub = getSub(metData.V, metData.U_V2);
+	metData.X = x;
+	metData.Y = y;
 }
-private: MetData calculateMVR_main()
+private: void calculateMVR_main()
 {
-	MetData resultData;
 	double (*pt1)(double, double) = NULL;
 	double (*pt2)(double, double) = NULL;
 	double (*pt3)(double, double) = NULL;
 	double (*pt4)(double, double) = NULL;
 	double (*ptRight)(double, double) = NULL;
-	
+	pt1 = &boundFunc1Main;
+	pt2 = &boundFunc2Main;
+	pt3 = &boundFunc3Main;
+	pt4 = &boundFunc4Main;
+	ptRight = &rightMain;
+	MVR_Met main(a, b, c, d, n, m, w);
+	main.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
+	main.initRight(ptRight);
+	int iterCount = main.solve(maxStep, acc);
+	double acc = main.getAccuracy();
+	type2V res = main.getV();
+	typeV x = main.getX();
+	typeV y = main.getY();
+
+	MVR_Met main2(a, b, c, d, n * 2, m * 2, w);
+	main2.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
+	main2.initRight(ptRight);
+	int iterCount2 = main2.solve(maxStep * 2, acc * 1e-2);
+	double acc2 = main2.getAccuracy();
+	type2V res2 = main2.getV();
+	type2V res2half = getHalf(res2);
+	metData.accuracy = acc;
+	metData.count = iterCount;
+	metData.V = res;
+	metData.U_V2 = res2half;
+	metData.Sub = getSub(metData.V, res2half);
+	metData.X = x;
+	metData.Y = y;
+	metData.count2 = iterCount2;
+	metData.accuracy2 = acc2;
 }
-private: MetData calculateMVR()
+private: void calculateMVR()
 {
 	if (taskType == TASK::TEST)
 	{
-		return calculateMVR_test();
+		calculateMVR_test();
 	}
-
+	else
+	{
+		calculateMVR_main();
+	}
 }
-private: MetData calculateMMN()
+private: void calculateMMN()
 {
-	return MetData{};
 }
-private: MetData calculateMSG()
+private: void calculateMSG()
 {
-	return MetData{};
 }
-private: MetData calculateMSG_UN()
+private: void calculateMSG_UN()
 {
-	return MetData{};
 }
-private: MetData calculate()
+private: void calculate()
 {
 	switch (metType)
 	{
 	case MET::MVR:
-		return calculateMVR();
+		calculateMVR();
+		break;
 	case MET::MMN:
-		return calculateMMN();
+		calculateMMN();
+		break;
 	case MET::MSG:
-		return calculateMSG();
+		calculateMSG();
+		break;
 	case MET::MSG_UN:
-		return calculateMSG_UN();
+		calculateMSG_UN();
+		break;
 	}
-
-	return MetData{};
 }
-private: double getValue(int i, int j, const MetData& metData)
+private: double getValue(int i, int j)
 {
 	switch(valType)
 	{
@@ -695,8 +762,9 @@ private: double getValue(int i, int j, const MetData& metData)
 }
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 	handleValues();
-	MetData metData = calculate();
-	drawTable(metData);
+	calculate();
+	drawTable();
+	started = true;
 }
 private: System::Void ïîìîùüToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	String^ s = Directory::GetCurrentDirectory();
