@@ -9,6 +9,8 @@
 
 # define M_PI           3.14159265358979323846
 
+#define typeV std::vector<double> 
+#define type2V std::vector<std::vector<double>> 
 
 double rightFuncTest(double x, double y)
 {
@@ -51,6 +53,33 @@ double testFunc(double x, double y)
 	return exp(sin(y * M_PI * x) * sin(y * M_PI * x));
 }
 
+double boundFunc1Main(double x, double y)
+{
+	return x * (1 - x);
+}
+
+double boundFunc2Main(double x, double y)
+{
+	return x * (1-x) * exp(x);
+}
+
+double boundFunc3Main(double x, double y)
+{
+	return (sin(M_PI*y)) * (sin(M_PI*y));
+}
+double boundFunc4Main(double x, double y)
+{
+	return abs(exp(sin(M_PI * y)) - 1);
+}
+
+struct MetData
+{
+	type2V V;
+	type2V U_V2;
+	type2V Sub;
+	typeV X;
+	typeV Y;
+};
 
 enum class MET
 {
@@ -92,8 +121,8 @@ namespace Project1 {
 		std::vector<std::vector<double>*>* V = nullptr;
 		std::vector<std::vector<double>*>* V2_U = nullptr;
 		std::vector<std::vector<double>*>* Sub = nullptr;
-		std::vector<std::vector<double>*>* X = nullptr;
-		std::vector<std::vector<double>*>* Y = nullptr;
+		std::vector<double>* X = nullptr;
+		std::vector<double>* Y = nullptr;
 		MET metType = MET::MVR;
 		VAL valType = VAL::NUM;
 		TASK taskType = TASK::MAIN;
@@ -542,38 +571,39 @@ private: System::Void handleValues()
 	acc = Convert::ToDouble(removeDots(textBox4->Text));
 	w = Convert::ToDouble(removeDots(textBox5->Text));
 }
-private: System::Void calculateMVR()
+private: MetData calculateMVR()
 {
-	
+	MetData res;
+
+	return MetData{};
 }
-private: System::Void calculateMMN()
+private: MetData calculateMMN()
 {
-	
+	return MetData{};
 }
-private: System::Void calculateMSG()
+private: MetData calculateMSG()
 {
-	
+	return MetData{};
 }
-private: System::Void calculateMSG_UN()
+private: MetData calculateMSG_UN()
 {
-	
+	return MetData{};
 }
-private: System::Void calculate()
+private: MetData calculate()
 {
 	switch (metType)
 	{
 	case MET::MVR:
-		calculateMVR();
-		break;
+		return calculateMVR();
 	case MET::MMN:
-		calculateMMN();
-		break;
+		return calculateMMN();
 	case MET::MSG:
-		calculateMSG();
+		return calculateMSG();
 	case MET::MSG_UN:
-		calculateMSG_UN();
-		break;
+		return calculateMSG_UN();
 	}
+
+	return MetData{};
 }
 double getVecVal(std::vector<std::vector<double>*>* vec, int i, int j)
 {
