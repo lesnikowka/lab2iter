@@ -73,12 +73,11 @@ enum class TASK
 	TEST
 };
 
-struct Data
+struct MetData
 {
-	static std::vector<std::vector<double>> V_main;
-	static std::vector<std::vector<double>> V_test;
-	static std::vector<std::vector<double>> V2;
-	static std::vector<std::vector<double>> U;
+	static std::vector<std::vector<double>> V;
+	static std::vector<std::vector<double>> V2_U;
+	static std::vector<std::vector<double>> Sub;
 	static std::vector<std::vector<double>> X;
 	static std::vector<std::vector<double>> Y;
 };
@@ -518,14 +517,61 @@ private: System::Void handleValues()
 	maxStep = Convert::ToInt32(removeDots(textBox3->Text));
 	acc = Convert::ToDouble(removeDots(textBox4->Text));
 }
+private: System::Void calculateMVR()
+{
+	
+}
+private: System::Void calculateMMN()
+{
+	
+}
+private: System::Void calculateMSG()
+{
+	
+}
+private: System::Void calculateMSG_UN()
+{
+	
+}
+private: System::Void calculate()
+{
+	switch (metType)
+	{
+	case MET::MVR:
+		calculateMVR();
+		break;
+	case MET::MMN:
+		calculateMMN();
+		break;
+	case MET::MSG:
+		calculateMSG();
+	case MET::MSG_UN:
+		calculateMSG_UN();
+		break;
+	}
+}
+private: double getValue(int i, int j)
+{
+	switch(valType)
+	{
+	case VAL::NUM:
+		return MetData::V[i][j];
+	case VAL::TRUE_OR_HALF:
+		return MetData::V2_U[i][j];
+	case VAL::SUB:
+		return abs(MetData::V2_U[i][j] - MetData::V[i][j]);
+	}
+	return 0;
+}
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 	handleValues();
+	calculate();
 	drawTable();
 }
 private: System::Void ïîìîùüToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	String^ s = Directory::GetCurrentDirectory();
 	String^ processDir = s + "\\..\\x64\\Debug\\HelpPr.exe";
-	Process::Start(processDir);
+	auto process = Process::Start(processDir);
 }
 private: System::Void òåñòîâàÿToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	taskType = TASK::TEST;
