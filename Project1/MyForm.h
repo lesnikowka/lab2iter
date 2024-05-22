@@ -276,7 +276,7 @@ namespace Project1 {
 			this->dataGridView1->Name = L"dataGridView1";
 			this->dataGridView1->RowHeadersWidth = 51;
 			this->dataGridView1->RowTemplate->Height = 24;
-			this->dataGridView1->Size = System::Drawing::Size(1149, 375);
+			this->dataGridView1->Size = System::Drawing::Size(1484, 652);
 			this->dataGridView1->TabIndex = 1;
 			// 
 			// menuStrip1
@@ -288,7 +288,7 @@ namespace Project1 {
 			});
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(1461, 28);
+			this->menuStrip1->Size = System::Drawing::Size(1796, 28);
 			this->menuStrip1->TabIndex = 3;
 			this->menuStrip1->Text = L"menuStrip1";
 			// 
@@ -479,7 +479,7 @@ namespace Project1 {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1461, 471);
+			this->ClientSize = System::Drawing::Size(1796, 730);
 			this->Controls->Add(this->textBox5);
 			this->Controls->Add(this->label5);
 			this->Controls->Add(this->dataGridView1);
