@@ -276,7 +276,7 @@ namespace Project1 {
 			this->dataGridView1->Name = L"dataGridView1";
 			this->dataGridView1->RowHeadersWidth = 51;
 			this->dataGridView1->RowTemplate->Height = 24;
-			this->dataGridView1->Size = System::Drawing::Size(1590, 825);
+			this->dataGridView1->Size = System::Drawing::Size(1590, 663);
 			this->dataGridView1->TabIndex = 1;
 			// 
 			// menuStrip1
@@ -398,7 +398,7 @@ namespace Project1 {
 			this->textBox1->Name = L"textBox1";
 			this->textBox1->Size = System::Drawing::Size(87, 22);
 			this->textBox1->TabIndex = 4;
-			this->textBox1->Text = L"100";
+			this->textBox1->Text = L"10";
 			// 
 			// textBox2
 			// 
@@ -406,7 +406,7 @@ namespace Project1 {
 			this->textBox2->Name = L"textBox2";
 			this->textBox2->Size = System::Drawing::Size(87, 22);
 			this->textBox2->TabIndex = 5;
-			this->textBox2->Text = L"100";
+			this->textBox2->Text = L"10";
 			// 
 			// label3
 			// 
@@ -479,7 +479,7 @@ namespace Project1 {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1902, 903);
+			this->ClientSize = System::Drawing::Size(1902, 741);
 			this->Controls->Add(this->textBox5);
 			this->Controls->Add(this->label5);
 			this->Controls->Add(this->dataGridView1);
@@ -649,7 +649,7 @@ type2V getHalf(const type2V& v)
 	}
 	return half;
 }
-private: void calculateMVR_test()
+private: void calculate_test(IterSlauSolver* test)
 {
 	double (*pt1)(double, double) = NULL;
 	double (*pt2)(double, double) = NULL;
@@ -661,14 +661,14 @@ private: void calculateMVR_test()
 	pt3 = &boundFunc3Test;
 	pt4 = &boundFunc4Test;
 	ptRight = &rightFuncTest;
-	MVR_Met test(a, b, c, d, n, m, w);
-	test.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
-	test.initRight(ptRight);
-	int iterCount = test.solve(maxStep, acc);
-	double acc = test.getAccuracy();
-	type2V res = test.getV();
-	typeV x = test.getX();
-	typeV y = test.getY();
+	//MVR_Met test(a, b, c, d, n, m, w);
+	test->initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
+	test->initRight(ptRight);
+	int iterCount = test->solve(maxStep, acc);
+	double acc = test->getAccuracy();
+	type2V res = test->getV();
+	typeV x = test->getX();
+	typeV y = test->getY();
 	metData.accuracy = acc;
 	metData.count = iterCount;
 	metData.V = res;
@@ -677,7 +677,7 @@ private: void calculateMVR_test()
 	metData.X = x;
 	metData.Y = y;
 }
-private: void calculateMVR_main()
+private: void calculate_main(IterSlauSolver* main, IterSlauSolver* main2)
 {
 	double (*pt1)(double, double) = NULL;
 	double (*pt2)(double, double) = NULL;
@@ -689,21 +689,21 @@ private: void calculateMVR_main()
 	pt3 = &boundFunc3Main;
 	pt4 = &boundFunc4Main;
 	ptRight = &rightMain;
-	MVR_Met main(a, b, c, d, n, m, w);
-	main.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
-	main.initRight(ptRight);
-	int iterCount = main.solve(maxStep, acc);
-	double acc = main.getAccuracy();
-	type2V res = main.getV();
-	typeV x = main.getX();
-	typeV y = main.getY();
+	//MVR_Met main(a, b, c, d, n, m, w);
+	main->initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
+	main->initRight(ptRight);
+	int iterCount = main->solve(maxStep, acc);
+	double acc = main->getAccuracy();
+	type2V res = main->getV();
+	typeV x = main->getX();
+	typeV y = main->getY();
 
-	MVR_Met main2(a, b, c, d, n * 2, m * 2, w);
-	main2.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
-	main2.initRight(ptRight);
-	int iterCount2 = main2.solve(maxStep * 2, acc * 1e-2);
-	double acc2 = main2.getAccuracy();
-	type2V res2 = main2.getV();
+	//MVR_Met main2(a, b, c, d, n * 2, m * 2, w);
+	main2->initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
+	main2->initRight(ptRight);
+	int iterCount2 = main2->solve(maxStep * 2, acc * 1e-2);
+	double acc2 = main2->getAccuracy();
+	type2V res2 = main2->getV();
 	type2V res2half = getHalf(res2);
 	metData.accuracy = acc;
 	metData.count = iterCount;
@@ -719,18 +719,52 @@ private: void calculateMVR()
 {
 	if (taskType == TASK::TEST)
 	{
-		calculateMVR_test();
+		MVR_Met* test = new MVR_Met(a, b, c, d, n, m, w);
+		calculate_test(test);
+		delete test;
 	}
 	else
 	{
-		calculateMVR_main();
+		MVR_Met* main = new MVR_Met(a, b, c, d, n, m, w);
+		MVR_Met* main2 = new MVR_Met(a, b, c, d, n * 2, m * 2, w);
+		calculate_main(main, main2);
+		delete main;
+		delete main2;
 	}
 }
 private: void calculateMMN()
 {
+	if (taskType == TASK::TEST)
+	{
+		MMN_Met* test = new MMN_Met(a, b, c, d, n, m);
+		calculate_test(test);
+		delete test;
+	}
+	else
+	{
+		MMN_Met* main = new MMN_Met(a, b, c, d, n, m);
+		MMN_Met* main2 = new MMN_Met(a, b, c, d, n * 2, m * 2);
+		calculate_main(main, main2);
+		delete main;
+		delete main2;
+	}
 }
 private: void calculateMSG()
 {
+	if (taskType == TASK::TEST)
+	{
+		MSG_Met* test = new MSG_Met(a, b, c, d, n, m);
+		calculate_test(test);
+		delete test;
+	}
+	else
+	{
+		MSG_Met* main = new MSG_Met(a, b, c, d, n, m);
+		MSG_Met* main2 = new MSG_Met(a, b, c, d, n * 2, m * 2);
+		calculate_main(main, main2);
+		delete main;
+		delete main2;
+	}
 }
 private: void calculateMSG_UN()
 {
