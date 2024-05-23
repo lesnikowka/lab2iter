@@ -753,17 +753,72 @@ private: void calculateMSG()
 {
 	if (taskType == TASK::TEST)
 	{
-		MSG_Met* test = new MSG_Met(a, b, c, d, n, m);
-		calculate_test(test);
-		delete test;
+		double (*pt1)(double, double) = NULL;
+		double (*pt2)(double, double) = NULL;
+		double (*pt3)(double, double) = NULL;
+		double (*pt4)(double, double) = NULL;
+		double (*ptRight)(double, double) = NULL;
+		pt1 = &boundFunc1Test;
+		pt2 = &boundFunc2Test;
+		pt3 = &boundFunc3Test;
+		pt4 = &boundFunc4Test;
+		ptRight = &rightFuncTest;
+		MSG_Met test(a, b, c, d, n, m);
+		test.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
+		test.initRight(ptRight);
+		double acc = test.firstStep();
+		int iterCount = test.solve(maxStep, acc);
+		acc = test.getAccuracy();
+		type2V res = test.getV();
+		typeV x = test.getX();
+		typeV y = test.getY();
+		metData.accuracy = acc;
+		metData.count = iterCount;
+		metData.V = res;
+		metData.U_V2 = getTrueVals(x, y);
+		metData.Sub = getSub(metData.V, metData.U_V2);
+		metData.X = x;
+		metData.Y = y;
 	}
 	else
 	{
-		MSG_Met* main = new MSG_Met(a, b, c, d, n, m);
-		MSG_Met* main2 = new MSG_Met(a, b, c, d, n * 2, m * 2);
-		calculate_main(main, main2);
-		delete main;
-		delete main2;
+		double (*pt1)(double, double) = NULL;
+		double (*pt2)(double, double) = NULL;
+		double (*pt3)(double, double) = NULL;
+		double (*pt4)(double, double) = NULL;
+		double (*ptRight)(double, double) = NULL;
+		pt1 = &boundFunc1Main;
+		pt2 = &boundFunc2Main;
+		pt3 = &boundFunc3Main;
+		pt4 = &boundFunc4Main;
+		ptRight = &rightMain;
+		MSG_Met main(a, b, c, d, n, m);
+		main.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
+		main.initRight(ptRight);
+		double acc = main.firstStep();
+		int iterCount = main.solve(maxStep, acc);
+		acc = main.getAccuracy();
+		type2V res = main.getV();
+		typeV x = main.getX();
+		typeV y = main.getY();
+
+		MSG_Met main2(a, b, c, d, n * 2, m * 2);
+		main2.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
+		main2.initRight(ptRight);
+		double acc2 = main2.firstStep();
+		int iterCount2 = main2.solve(maxStep * 2, acc * 1e-2);
+		acc2 = main2.getAccuracy();
+		type2V res2 = main2.getV();
+		type2V res2half = getHalf(res2);
+		metData.accuracy = acc;
+		metData.count = iterCount;
+		metData.V = res;
+		metData.U_V2 = res2half;
+		metData.Sub = getSub(res, res2half);
+		metData.X = x;
+		metData.Y = y;
+		metData.count2 = iterCount2;
+		metData.accuracy2 = acc2;
 	}
 }
 private: void calculateMSG_UN()
