@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 #include <iostream>
 #include <string>
@@ -34,8 +34,8 @@ public:
 	double hcoef;
 	double acoef;
 	double accuracy;
-	int nX; //Количесвто промежутков по х
-	int mY; //Количесвто промежутков по y
+	int nX; //РљРѕР»РёС‡РµСЃРІС‚Рѕ РїСЂРѕРјРµР¶СѓС‚РєРѕРІ РїРѕ С…
+	int mY; //РљРѕР»РёС‡РµСЃРІС‚Рѕ РїСЂРѕРјРµР¶СѓС‚РєРѕРІ РїРѕ y
 	vector<vector<double>> right;
 	vector<vector<double>> v;
 	vector<vector<double>> r;
@@ -54,8 +54,8 @@ public:
 		hcoef = 0;
 		acoef = 0;
 		accuracy = 0;
-		nX = 0; //Количество  разбиений по x
-		mY = 0; //Количество  разбиений по y
+		nX = 0; //РљРѕР»РёС‡РµСЃС‚РІРѕ  СЂР°Р·Р±РёРµРЅРёР№ РїРѕ x
+		mY = 0; //РљРѕР»РёС‡РµСЃС‚РІРѕ  СЂР°Р·Р±РёРµРЅРёР№ РїРѕ y
 		yArr.push_back(0);
 		xArr.push_back(0);
 		right.push_back(vector<double>());
@@ -259,6 +259,35 @@ public:
 			if (accuracy < eps)
 			{
 				return res;
+			}
+		}
+		return res;
+	}
+
+	double calcNorm2R()
+	{
+		double res = 0;
+		for (int i = 1; i < v.size() - 1; i++)
+		{
+			for (int j = 1; j < v[i].size() - 1; j++)
+			{
+				res += r[i][j] * r[i][j];
+			}
+		}
+		return sqrt(res);
+	}
+
+	double calcNormR()
+	{
+		double res = 0;
+		for (int i = 1; i < v.size() - 1; i++)
+		{
+			for (int j = 1; j < v[i].size() - 1; j++)
+			{
+				if (res <= r[i][j])
+				{
+					res = r[i][j];
+				}
 			}
 		}
 		return res;
