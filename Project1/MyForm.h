@@ -33,6 +33,7 @@ struct MetData
 	double R0;
 	double R02;
 	double testPrecision;
+	double mainPrecision;
 	double Nmax2;
 	double x;
 	double y;
@@ -93,6 +94,7 @@ namespace Project1 {
 		double w = 0;
 		bool started = false;
 		InfoText^ infoData;
+		double accMult = 1e-2;
 	private: System::Windows::Forms::Button^ button1;
 	private: System::Windows::Forms::ToolStripMenuItem^ òèïÇàäà÷èToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ òåñòîâàÿToolStripMenuItem;
@@ -168,7 +170,6 @@ namespace Project1 {
 		void InitializeComponent(void)
 		{
 			this->components = (gcnew System::ComponentModel::Container());
-			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm::typeid));
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
@@ -433,7 +434,7 @@ namespace Project1 {
 			this->richTextBox1->Name = L"richTextBox1";
 			this->richTextBox1->Size = System::Drawing::Size(245, 441);
 			this->richTextBox1->TabIndex = 14;
-			this->richTextBox1->Text = resources->GetString(L"richTextBox1.Text");
+			this->richTextBox1->Text = L"";
 			this->richTextBox1->TextChanged += gcnew System::EventHandler(this, &MyForm::richTextBox1_TextChanged);
 			// 
 			// MyForm
@@ -655,6 +656,26 @@ type2V getHalf(const type2V& v)
 	}
 	return half;
 }
+std::pair<int, int> getMaxIndexes(const type2V& sub, int& maxSub)
+{
+	int imax = 0;
+	int jmax = 0;
+	int max = 0;
+	for (int j = 0; j < sub.size(); j++)
+	{
+		for (int i = 0; i < sub[0].size(); i++)
+		{
+			if (sub[j][i] > max)
+			{
+				imax = i;
+				jmax = j;
+				max = sub[j][i];
+			}
+		}
+	}
+	maxSub = max;
+	return {jmax, imax};
+}
 private: void calculate_test(IterSlauSolver* test)
 {
 	double (*pt1)(double, double) = NULL;
@@ -670,11 +691,15 @@ private: void calculate_test(IterSlauSolver* test)
 	//MVR_Met test(a, b, c, d, n, m, w);
 	test->initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
 	test->initRight(ptRight);
+	test->calculateR();
+	metData.R0 = test->calcNorm2R();
 	int iterCount = test->solve(maxStep, acc);
 	double acc = test->getAccuracy();
 	type2V res = test->getV();
 	typeV x = test->getX();
 	typeV y = test->getY();
+	test->calculateR();
+	metData.Rn = test->calcNorm2R();
 	metData.accuracy = acc;
 	metData.count = iterCount;
 	metData.V = res;
@@ -682,6 +707,11 @@ private: void calculate_test(IterSlauSolver* test)
 	metData.Sub = getSub(metData.V, metData.U_V2);
 	metData.X = x;
 	metData.Y = y;
+	int maxSub;
+	auto yx = getMaxIndexes(metData.Sub, maxSub);
+	metData.testPrecision = maxSub;
+	metData.y = yx.first;
+	metData.x = yx.second;
 
 }
 private: void calculate_main(IterSlauSolver* main, IterSlauSolver* main2)
@@ -699,7 +729,11 @@ private: void calculate_main(IterSlauSolver* main, IterSlauSolver* main2)
 	//MVR_Met main(a, b, c, d, n, m, w);
 	main->initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
 	main->initRight(ptRight);
+	main->calculateR();
+	metData.R0 = main->calcNorm2R();
 	int iterCount = main->solve(maxStep, acc);
+	main->calculateR();
+	metData.Rn = main->calcNorm2R();
 	double acc = main->getAccuracy();
 	type2V res = main->getV();
 	typeV x = main->getX();
@@ -708,7 +742,11 @@ private: void calculate_main(IterSlauSolver* main, IterSlauSolver* main2)
 	//MVR_Met main2(a, b, c, d, n * 2, m * 2, w);
 	main2->initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
 	main2->initRight(ptRight);
-	int iterCount2 = main2->solve(maxStep * 2, acc * 1e-2);
+	main2->calculateR();
+	metData.R02 = main2->calcNorm2R();
+	int iterCount2 = main2->solve(maxStep * 2, acc * accMult);
+	main2->calculateR();
+	metData.Rn2 = main2->calcNorm2R();
 	double acc2 = main2->getAccuracy();
 	type2V res2 = main2->getV();
 	type2V res2half = getHalf(res2);
@@ -721,8 +759,11 @@ private: void calculate_main(IterSlauSolver* main, IterSlauSolver* main2)
 	metData.Y = y;
 	metData.count2 = iterCount2;
 	metData.accuracy2 = acc2;
-
-
+	int maxSub;
+	auto yx = getMaxIndexes(metData.Sub, maxSub);
+	metData.mainPrecision = maxSub;
+	metData.y = yx.first;
+	metData.x = yx.second;
 }
 private: void calculateMVR()
 {
@@ -731,6 +772,21 @@ private: void calculateMVR()
 		MVR_Met* test = new MVR_Met(a, b, c, d, n, m, w);
 		calculate_test(test);
 		delete test;
+		System::Collections::Generic::List<String^>^ forReplace = 
+			gcnew System::Collections::Generic::List<String^>;
+		forReplace->Add(Convert::ToString(n));
+		forReplace->Add(Convert::ToString(m));
+		forReplace->Add(Convert::ToString(w));
+		forReplace->Add(Convert::ToString(maxStep));
+		forReplace->Add(Convert::ToString(acc));
+		forReplace->Add(Convert::ToString(metData.count));
+		forReplace->Add(Convert::ToString(metData.accuracy));
+		forReplace->Add(Convert::ToString(metData.Rn));
+		forReplace->Add(Convert::ToString(metData.testPrecision));
+		forReplace->Add(Convert::ToString(metData.x));
+		forReplace->Add(Convert::ToString(metData.y));
+		forReplace->Add("ÒÈÏ ÏÐÈÁËÈÆÅÍÈß");
+		richTextBox1->Text = buildInfo(infoData->testMVR, forReplace);
 	}
 	else
 	{
@@ -739,6 +795,28 @@ private: void calculateMVR()
 		calculate_main(main, main2);
 		delete main;
 		delete main2;
+		System::Collections::Generic::List<String^>^ forReplace = 
+			gcnew System::Collections::Generic::List<String^>;
+		forReplace->Add(Convert::ToString(n));
+		forReplace->Add(Convert::ToString(m));
+		forReplace->Add(Convert::ToString(w));
+		forReplace->Add(Convert::ToString(acc));
+		forReplace->Add(Convert::ToString(maxStep));
+		forReplace->Add(Convert::ToString(metData.count));
+		forReplace->Add(Convert::ToString(metData.accuracy));
+		forReplace->Add(Convert::ToString(metData.Rn2));
+		forReplace->Add(Convert::ToString(w));
+		forReplace->Add(Convert::ToString(acc * accMult));
+		forReplace->Add(Convert::ToString(maxStep * 2));
+		forReplace->Add(Convert::ToString(metData.count2));
+		forReplace->Add(Convert::ToString(metData.accuracy2));
+		forReplace->Add(Convert::ToString(metData.Rn2));
+		forReplace->Add(Convert::ToString(metData.mainPrecision));
+		forReplace->Add(Convert::ToString(metData.x));
+		forReplace->Add(Convert::ToString(metData.y));
+		forReplace->Add("ÒÈÏ ÏÐÈÁËÈÆÅÍÈß");
+		forReplace->Add("ÒÈÏ ÏÐÈÁËÈÆÅÍÈß");
+		richTextBox1->Text = buildInfo(infoData->mainMVR, forReplace);
 	}
 }
 private: void calculateMMN()
@@ -815,7 +893,7 @@ private: void calculateMSG()
 		main2.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
 		main2.initRight(ptRight);
 		double acc2 = main2.firstStep();
-		int iterCount2 = main2.solve(maxStep * 2, acc * 1e-2);
+		int iterCount2 = main2.solve(maxStep * 2, acc * accMult);
 		acc2 = main2.getAccuracy();
 		type2V res2 = main2.getV();
 		type2V res2half = getHalf(res2);
