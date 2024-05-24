@@ -656,24 +656,24 @@ type2V getHalf(const type2V& v)
 	}
 	return half;
 }
-std::pair<int, int> getMaxIndexes(const type2V& sub, int& maxSub)
+std::pair<int, int> getMaxIndexes(const type2V& sub, double& maxSub)
 {
 	int imax = 0;
 	int jmax = 0;
-	int max = 0;
+	double max_ = 0;
 	for (int j = 0; j < sub.size(); j++)
 	{
 		for (int i = 0; i < sub[0].size(); i++)
 		{
-			if (sub[j][i] > max)
+			if (sub[j][i] > max_)
 			{
 				imax = i;
 				jmax = j;
-				max = sub[j][i];
+				max_ = sub[j][i];
 			}
 		}
 	}
-	maxSub = max;
+	maxSub = max_;
 	return {jmax, imax};
 }
 private: void calculate_test(IterSlauSolver* test)
@@ -707,11 +707,11 @@ private: void calculate_test(IterSlauSolver* test)
 	metData.Sub = getSub(metData.V, metData.U_V2);
 	metData.X = x;
 	metData.Y = y;
-	int maxSub;
+	double maxSub;
 	auto yx = getMaxIndexes(metData.Sub, maxSub);
 	metData.testPrecision = maxSub;
-	metData.y = yx.first;
-	metData.x = yx.second;
+	metData.y = y[yx.first];
+	metData.x = x[yx.second];
 
 }
 private: void calculate_main(IterSlauSolver* main, IterSlauSolver* main2)
@@ -759,11 +759,11 @@ private: void calculate_main(IterSlauSolver* main, IterSlauSolver* main2)
 	metData.Y = y;
 	metData.count2 = iterCount2;
 	metData.accuracy2 = acc2;
-	int maxSub;
+	double maxSub;
 	auto yx = getMaxIndexes(metData.Sub, maxSub);
 	metData.mainPrecision = maxSub;
-	metData.y = yx.first;
-	metData.x = yx.second;
+	metData.y = y[yx.first];
+	metData.x = x[yx.second];
 }
 private: void calculateMVR()
 {
