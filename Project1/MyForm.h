@@ -894,7 +894,11 @@ private: void calculateMSG()
 		test.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
 		test.initRight(ptRight);
 		double acc = test.firstStep();
+		test.calculateR();
+		metData.R0 = test.calcNorm2R();
 		int iterCount = test.solve(maxStep, acc);
+		test.calculateR();
+		metData.Rn = test.calcNorm2R();
 		acc = test.getAccuracy();
 		type2V res = test.getV();
 		typeV x = test.getX();
@@ -906,6 +910,11 @@ private: void calculateMSG()
 		metData.Sub = getSub(metData.V, metData.U_V2);
 		metData.X = x;
 		metData.Y = y;
+		double maxSub;
+		auto yx = getMaxIndexes(metData.Sub, maxSub);
+		metData.testPrecision = maxSub;
+		metData.y = y[yx.first];
+		metData.x = x[yx.second];
 	}
 	else
 	{
@@ -923,7 +932,11 @@ private: void calculateMSG()
 		main.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
 		main.initRight(ptRight);
 		double acc = main.firstStep();
+		main.calculateR();
+		metData.R0 = main.calcNorm2R();
 		int iterCount = main.solve(maxStep, acc);
+		main.calculateR();
+		metData.Rn = main.calcNorm2R();
 		acc = main.getAccuracy();
 		type2V res = main.getV();
 		typeV x = main.getX();
@@ -933,7 +946,11 @@ private: void calculateMSG()
 		main2.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
 		main2.initRight(ptRight);
 		double acc2 = main2.firstStep();
+		main2.calculateR();
+		metData.R02 = main2.calcNorm2R();
 		int iterCount2 = main2.solve(maxStep * 2, acc * accMult);
+		main2.calculateR();
+		metData.Rn2 = main2.calcNorm2R();
 		acc2 = main2.getAccuracy();
 		type2V res2 = main2.getV();
 		type2V res2half = getHalf(res2);
@@ -946,6 +963,11 @@ private: void calculateMSG()
 		metData.Y = y;
 		metData.count2 = iterCount2;
 		metData.accuracy2 = acc2;
+		double maxSub;
+		auto yx = getMaxIndexes(metData.Sub, maxSub);
+		metData.mainPrecision = maxSub;
+		metData.y = y[yx.first];
+		metData.x = x[yx.second];
 	}
 }
 private: void calculateMSG_UN()
