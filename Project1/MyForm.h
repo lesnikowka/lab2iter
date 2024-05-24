@@ -819,18 +819,15 @@ private: void calculateMVR()
 		richTextBox1->Text = buildInfo(infoData->mainMVR, forReplace);
 	}
 }
-private: void calculateMMN()
+private: void showInfoMMNMSG(String^ metName)
 {
 	if (taskType == TASK::TEST)
 	{
-		MMN_Met* test = new MMN_Met(a, b, c, d, n, m);
-		calculate_test(test);
-		delete test;
 		System::Collections::Generic::List<String^>^ forReplace = 
 			gcnew System::Collections::Generic::List<String^>;
 		forReplace->Add(Convert::ToString(n));
 		forReplace->Add(Convert::ToString(m));
-		forReplace->Add("ÌÌÍ");
+		forReplace->Add(metName);
 		forReplace->Add(Convert::ToString(acc));
 		forReplace->Add(Convert::ToString(maxStep));
 		forReplace->Add(Convert::ToString(metData.count));
@@ -845,11 +842,6 @@ private: void calculateMMN()
 	}
 	else
 	{
-		MMN_Met* main = new MMN_Met(a, b, c, d, n, m);
-		MMN_Met* main2 = new MMN_Met(a, b, c, d, n * 2, m * 2);
-		calculate_main(main, main2);
-		delete main;
-		delete main2;
 		System::Collections::Generic::List<String^>^ forReplace = 
 			gcnew System::Collections::Generic::List<String^>;
 		forReplace->Add(Convert::ToString(n));
@@ -875,6 +867,24 @@ private: void calculateMMN()
 		forReplace->Add(Convert::ToString(metData.R02));
 		richTextBox1->Text = buildInfo(infoData->mainMMNMSG, forReplace);
 	}
+}
+private: void calculateMMN()
+{
+	if (taskType == TASK::TEST)
+	{
+		MMN_Met* test = new MMN_Met(a, b, c, d, n, m);
+		calculate_test(test);
+		delete test;
+	}
+	else
+	{
+		MMN_Met* main = new MMN_Met(a, b, c, d, n, m);
+		MMN_Met* main2 = new MMN_Met(a, b, c, d, n * 2, m * 2);
+		calculate_main(main, main2);
+		delete main;
+		delete main2;
+	}
+	showInfoMMNMSG("ÌÌÍ");
 }
 private: void calculateMSG()
 {
@@ -915,23 +925,6 @@ private: void calculateMSG()
 		metData.testPrecision = maxSub;
 		metData.y = y[yx.first];
 		metData.x = x[yx.second];
-
-		System::Collections::Generic::List<String^>^ forReplace = 
-			gcnew System::Collections::Generic::List<String^>;
-		forReplace->Add(Convert::ToString(n));
-		forReplace->Add(Convert::ToString(m));
-		forReplace->Add("ÌÑÃ");
-		forReplace->Add(Convert::ToString(acc));
-		forReplace->Add(Convert::ToString(maxStep));
-		forReplace->Add(Convert::ToString(metData.count));
-		forReplace->Add(Convert::ToString(metData.accuracy));
-		forReplace->Add(Convert::ToString(metData.Rn));
-		forReplace->Add(Convert::ToString(metData.testPrecision));
-		forReplace->Add(Convert::ToString(metData.x));
-		forReplace->Add(Convert::ToString(metData.y));
-		forReplace->Add("ÒÈÏ ÏÐÈÁËÈÆÅÍÈß");
-		forReplace->Add(Convert::ToString(metData.R0));
-		richTextBox1->Text = buildInfo(infoData->testMMNMSG, forReplace);
 	}
 	else
 	{
@@ -985,32 +978,8 @@ private: void calculateMSG()
 		metData.mainPrecision = maxSub;
 		metData.y = y[yx.first];
 		metData.x = x[yx.second];
-
-		System::Collections::Generic::List<String^>^ forReplace = 
-			gcnew System::Collections::Generic::List<String^>;
-		forReplace->Add(Convert::ToString(n));
-		forReplace->Add(Convert::ToString(m));
-		forReplace->Add("ÌÑÃ");
-		forReplace->Add(Convert::ToString(acc));
-		forReplace->Add(Convert::ToString(maxStep));
-		forReplace->Add(Convert::ToString(metData.count));
-		forReplace->Add(Convert::ToString(metData.accuracy));
-		forReplace->Add(Convert::ToString(metData.Rn));
-		forReplace->Add("ÒÈÏ ÏÐÈÁËÈÆÅÍÈß");
-		forReplace->Add(Convert::ToString(metData.R0));
-		forReplace->Add("ÌÌÍ");
-		forReplace->Add(Convert::ToString(acc * accMult));
-		forReplace->Add(Convert::ToString(maxStep * 2));
-		forReplace->Add(Convert::ToString(metData.count));
-		forReplace->Add(Convert::ToString(metData.accuracy2));
-		forReplace->Add(Convert::ToString(metData.Rn2));
-		forReplace->Add(Convert::ToString(metData.mainPrecision));
-		forReplace->Add(Convert::ToString(metData.x));
-		forReplace->Add(Convert::ToString(metData.y));
-		forReplace->Add("ÒÈÏ ÏÐÈÁËÈÆÅÍÈß");
-		forReplace->Add(Convert::ToString(metData.R02));
-		richTextBox1->Text = buildInfo(infoData->mainMMNMSG, forReplace);
 	}
+	showInfoMMNMSG("ÌÑÃ");
 }
 private: void calculateMSG_UN()
 {
