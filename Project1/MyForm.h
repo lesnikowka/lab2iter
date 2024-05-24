@@ -29,10 +29,15 @@ struct MetData
 	double accuracy2;
 	int count2;
 	double Rn2;
+	double Rn;
+	double R0;
+	double R02;
 	double testPrecision;
-	double w2;
-	double eps2;
 	double Nmax2;
+	double x;
+	double y;
+	double x2;
+	double y2;
 };
 
 MetData metData = {};
@@ -677,6 +682,7 @@ private: void calculate_test(IterSlauSolver* test)
 	metData.Sub = getSub(metData.V, metData.U_V2);
 	metData.X = x;
 	metData.Y = y;
+
 }
 private: void calculate_main(IterSlauSolver* main, IterSlauSolver* main2)
 {
@@ -715,6 +721,8 @@ private: void calculate_main(IterSlauSolver* main, IterSlauSolver* main2)
 	metData.Y = y;
 	metData.count2 = iterCount2;
 	metData.accuracy2 = acc2;
+
+
 }
 private: void calculateMVR()
 {
