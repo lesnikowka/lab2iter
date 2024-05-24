@@ -1021,6 +1021,8 @@ private: void calculateMSG_UN()
 	metData.testPrecision = maxSub;
 	metData.y = y[yx.first];
 	metData.x = x[yx.second];
+
+	showInfoMMNMSG("МСГ на уникальной области");
 }
 private: void calculate()
 {
