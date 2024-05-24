@@ -6,9 +6,12 @@
 #include "../ChMLaba2/MSG.h"
 #include "../ChMLaba2/MSG_UN.h"
 #include "../ChMLaba2/Functions.h"
+#include "InfoText.h"
 #include <vector>
 #include <algorithm>
 #include <Windows.h>
+#include <filesystem>
+#include <fstream>
 
 #define typeV std::vector<double> 
 #define type2V std::vector<std::vector<double>> 
@@ -78,6 +81,7 @@ namespace Project1 {
 		double d = 2;
 		double w = 0;
 		bool started = false;
+		InfoText^ infoData;
 	private: System::Windows::Forms::Button^ button1;
 	private: System::Windows::Forms::ToolStripMenuItem^ òèïÇàäà÷èToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ òåñòîâàÿToolStripMenuItem;
@@ -85,6 +89,7 @@ namespace Project1 {
 	private: System::Windows::Forms::ToolStripMenuItem^ uxyÈëèV2xyToolStripMenuItem;
 	private: System::Windows::Forms::Label^ label5;
 	private: System::Windows::Forms::TextBox^ textBox5;
+	private: System::Windows::Forms::RichTextBox^ richTextBox1;
 	private: System::Windows::Forms::ToolStripMenuItem^ ïîìîùüToolStripMenuItem;
 
 	public:
@@ -94,6 +99,7 @@ namespace Project1 {
 			//
 			//TODO: Add the constructor code here
 			//
+			infoData = gcnew InfoText;
 		}
 
 	protected:
@@ -151,6 +157,7 @@ namespace Project1 {
 		void InitializeComponent(void)
 		{
 			this->components = (gcnew System::ComponentModel::Container());
+			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm::typeid));
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
@@ -178,6 +185,7 @@ namespace Project1 {
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->textBox5 = (gcnew System::Windows::Forms::TextBox());
+			this->richTextBox1 = (gcnew System::Windows::Forms::RichTextBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->menuStrip1->SuspendLayout();
 			this->SuspendLayout();
@@ -408,11 +416,21 @@ namespace Project1 {
 			this->textBox5->TabIndex = 13;
 			this->textBox5->Text = L"1,2";
 			// 
+			// richTextBox1
+			// 
+			this->richTextBox1->Location = System::Drawing::Point(17, 278);
+			this->richTextBox1->Name = L"richTextBox1";
+			this->richTextBox1->Size = System::Drawing::Size(245, 441);
+			this->richTextBox1->TabIndex = 14;
+			this->richTextBox1->Text = resources->GetString(L"richTextBox1.Text");
+			this->richTextBox1->TextChanged += gcnew System::EventHandler(this, &MyForm::richTextBox1_TextChanged);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1902, 741);
+			this->Controls->Add(this->richTextBox1);
 			this->Controls->Add(this->textBox5);
 			this->Controls->Add(this->label5);
 			this->Controls->Add(this->dataGridView1);
@@ -484,6 +502,33 @@ private: System::Void uxyvxyÈëèvxyV2xyToolStripMenuItem_Click(System::Object^ se
 	{
 		drawTable();
 	}
+}
+private: String^ getInfoFromFile(TASK task, MET met)
+{
+	//auto fileNamePath = std::filesystem::current_path();
+
+	//std::string fileName = fileNamePath.u8string() + "/../info/";
+	std::string fileName =  "/../info/";
+
+	if (task == TASK::TEST)
+	{
+		if (met == MET::MVR)
+		{
+			fileName += "test1.txt";
+		}
+	}
+	else
+	{
+	}
+
+	std::ifstream ifs;
+	ifs.open("C:/Users/lesni/lab2iter/info/test1.txt");
+	std::string source;
+	ifs >> source;
+
+	String^ converted = gcnew String(source.c_str());
+
+	return converted;
 }
 private: System::Void drawTable()
 {
@@ -840,6 +885,8 @@ private: System::Void îñíîâíàÿToolStripMenuItem_Click(System::Object^ sender, Sy
 String^ removeDots(String^ s)
 {
 	return s->Replace(".", ",");
+}
+private: System::Void richTextBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
 }
 };
 }
