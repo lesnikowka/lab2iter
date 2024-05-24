@@ -915,6 +915,23 @@ private: void calculateMSG()
 		metData.testPrecision = maxSub;
 		metData.y = y[yx.first];
 		metData.x = x[yx.second];
+
+		System::Collections::Generic::List<String^>^ forReplace = 
+			gcnew System::Collections::Generic::List<String^>;
+		forReplace->Add(Convert::ToString(n));
+		forReplace->Add(Convert::ToString(m));
+		forReplace->Add("ÌÑÃ");
+		forReplace->Add(Convert::ToString(acc));
+		forReplace->Add(Convert::ToString(maxStep));
+		forReplace->Add(Convert::ToString(metData.count));
+		forReplace->Add(Convert::ToString(metData.accuracy));
+		forReplace->Add(Convert::ToString(metData.Rn));
+		forReplace->Add(Convert::ToString(metData.testPrecision));
+		forReplace->Add(Convert::ToString(metData.x));
+		forReplace->Add(Convert::ToString(metData.y));
+		forReplace->Add("ÒÈÏ ÏÐÈÁËÈÆÅÍÈß");
+		forReplace->Add(Convert::ToString(metData.R0));
+		richTextBox1->Text = buildInfo(infoData->testMMNMSG, forReplace);
 	}
 	else
 	{
@@ -968,6 +985,31 @@ private: void calculateMSG()
 		metData.mainPrecision = maxSub;
 		metData.y = y[yx.first];
 		metData.x = x[yx.second];
+
+		System::Collections::Generic::List<String^>^ forReplace = 
+			gcnew System::Collections::Generic::List<String^>;
+		forReplace->Add(Convert::ToString(n));
+		forReplace->Add(Convert::ToString(m));
+		forReplace->Add("ÌÑÃ");
+		forReplace->Add(Convert::ToString(acc));
+		forReplace->Add(Convert::ToString(maxStep));
+		forReplace->Add(Convert::ToString(metData.count));
+		forReplace->Add(Convert::ToString(metData.accuracy));
+		forReplace->Add(Convert::ToString(metData.Rn));
+		forReplace->Add("ÒÈÏ ÏÐÈÁËÈÆÅÍÈß");
+		forReplace->Add(Convert::ToString(metData.R0));
+		forReplace->Add("ÌÌÍ");
+		forReplace->Add(Convert::ToString(acc * accMult));
+		forReplace->Add(Convert::ToString(maxStep * 2));
+		forReplace->Add(Convert::ToString(metData.count));
+		forReplace->Add(Convert::ToString(metData.accuracy2));
+		forReplace->Add(Convert::ToString(metData.Rn2));
+		forReplace->Add(Convert::ToString(metData.mainPrecision));
+		forReplace->Add(Convert::ToString(metData.x));
+		forReplace->Add(Convert::ToString(metData.y));
+		forReplace->Add("ÒÈÏ ÏÐÈÁËÈÆÅÍÈß");
+		forReplace->Add(Convert::ToString(metData.R02));
+		richTextBox1->Text = buildInfo(infoData->mainMMNMSG, forReplace);
 	}
 }
 private: void calculateMSG_UN()
