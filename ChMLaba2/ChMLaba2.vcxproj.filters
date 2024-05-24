@@ -26,10 +26,13 @@
     <ClInclude Include="MVR.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="MSG.h">
+    <ClInclude Include="MSG_UN.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="CustomField.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="MSG.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

@@ -133,6 +133,7 @@
     <ClInclude Include="CustomField.h" />
     <ClInclude Include="IterSlauSolver.h" />
     <ClInclude Include="MSG.h" />
+    <ClInclude Include="MSG_UN.h" />
     <ClInclude Include="MVR.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

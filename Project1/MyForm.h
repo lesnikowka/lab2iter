@@ -4,6 +4,7 @@
 #include "../ChMLaba2/MMN.h"
 #include "../ChMLaba2/MVR.h"
 #include "../ChMLaba2/MSG.h"
+#include "../ChMLaba2/MSG_UN.h"
 #include <vector>
 #include <algorithm>
 #include <Windows.h>
@@ -522,6 +523,8 @@ private: System::Void ìÑÃToolStripMenuItem_Click(System::Object^ sender, System:
 }
 private: System::Void ìÑÃÓíèêàëüíàÿÎáëàñòüToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	metType = MET::MSG_UN;
+	taskType = TASK::TEST;
+	òèïÇàäà÷èToolStripMenuItem->Text = "Òåñòîâàÿ";
 	âûáîðÌåòîäàToolStripMenuItem->Text = "ÌÑÃ óíèêàëüíàÿ îáëàñòü";
 	textBox5->Enabled = false;
 }
@@ -823,6 +826,34 @@ private: void calculateMSG()
 }
 private: void calculateMSG_UN()
 {
+	taskType = TASK::TEST;
+	òèïÇàäà÷èToolStripMenuItem->Text = "Òåñòîâàÿ";
+	double (*pt1)(double, double) = NULL;
+	double (*pt2)(double, double) = NULL;
+	double (*pt3)(double, double) = NULL;
+	double (*pt4)(double, double) = NULL;
+	double (*ptRight)(double, double) = NULL;
+	pt1 = &boundFunc1Test;
+	pt2 = &boundFunc2Test;
+	pt3 = &boundFunc3Test;
+	pt4 = &boundFunc4Test;
+	ptRight = &rightFuncTest;
+	MSG_UN_Met test(a, b, c, d, n, m);
+	test.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
+	test.initRight(ptRight);
+	double acc = test.firstStep();
+	int iterCount = test.solve(maxStep, acc);
+	acc = test.getAccuracy();
+	type2V res = test.getV();
+	typeV x = test.getX();
+	typeV y = test.getY();
+	metData.accuracy = acc;
+	metData.count = iterCount;
+	metData.V = res;
+	metData.U_V2 = getTrueVals(x, y);
+	metData.Sub = getSub(metData.V, metData.U_V2);
+	metData.X = x;
+	metData.Y = y;
 }
 private: void calculate()
 {
