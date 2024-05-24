@@ -873,7 +873,7 @@ private: void calculateMMN()
 		forReplace->Add(Convert::ToString(metData.y));
 		forReplace->Add("ÒÈÏ ÏÐÈÁËÈÆÅÍÈß");
 		forReplace->Add(Convert::ToString(metData.R02));
-		richTextBox1->Text = buildInfo(infoData->testMMNMSG, forReplace);
+		richTextBox1->Text = buildInfo(infoData->mainMMNMSG, forReplace);
 	}
 }
 private: void calculateMSG()
