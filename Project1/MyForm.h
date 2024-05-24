@@ -12,6 +12,7 @@
 #include <Windows.h>
 #include <filesystem>
 #include <fstream>
+#include <list>
 
 #define typeV std::vector<double> 
 #define type2V std::vector<std::vector<double>> 
@@ -26,7 +27,12 @@ struct MetData
 	double accuracy;
 	int count;
 	double accuracy2;
-	int count2; 
+	int count2;
+	double Rn2;
+	double testPrecision;
+	double w2;
+	double eps2;
+	double Nmax2;
 };
 
 MetData metData = {};
@@ -503,32 +509,47 @@ private: System::Void uxyvxyÈëèvxyV2xyToolStripMenuItem_Click(System::Object^ se
 		drawTable();
 	}
 }
-private: String^ getInfoFromFile(TASK task, MET met)
+//private: String^ getInfoFromFile(TASK task, MET met)
+//{
+//	//auto fileNamePath = std::filesystem::current_path();
+//
+//	//std::string fileName = fileNamePath.u8string() + "/../info/";
+//	std::string fileName =  "/../info/";
+//
+//	if (task == TASK::TEST)
+//	{
+//		if (met == MET::MVR)
+//		{
+//			fileName += "test1.txt";
+//		}
+//	}
+//	else
+//	{
+//	}
+//
+//	std::ifstream ifs;
+//	ifs.open("C:/Users/lesni/lab2iter/info/test1.txt");
+//	std::string source;
+//	ifs >> source;
+//
+//	String^ converted = gcnew String(source.c_str());
+//
+//	return converted;
+//}
+String^ ReplaceOne(String^ s, String^ searchFor, String^ replaceWith)
 {
-	//auto fileNamePath = std::filesystem::current_path();
-
-	//std::string fileName = fileNamePath.u8string() + "/../info/";
-	std::string fileName =  "/../info/";
-
-	if (task == TASK::TEST)
+    int index = s->IndexOf(searchFor);
+    if (index == -1) return s; // search string was not found.
+    return s->Substring(0, index) + replaceWith + s->Substring(index + searchFor->Length);
+}
+String^ buildInfo(String^ info, System::Collections::Generic::List<String^>^ forReplace)
+{
+	String^ res = info;
+	for (int i = 0; i < forReplace->Count; i++)
 	{
-		if (met == MET::MVR)
-		{
-			fileName += "test1.txt";
-		}
+		res = ReplaceOne(res, "%", forReplace[i]);
 	}
-	else
-	{
-	}
-
-	std::ifstream ifs;
-	ifs.open("C:/Users/lesni/lab2iter/info/test1.txt");
-	std::string source;
-	ifs >> source;
-
-	String^ converted = gcnew String(source.c_str());
-
-	return converted;
+	return res;
 }
 private: System::Void drawTable()
 {
