@@ -13,7 +13,6 @@ public:
 	{
 		alpha = 0;
 		betta = 0;
-
 		dir.push_back(vector<double>());
 	}
 
@@ -21,7 +20,7 @@ public:
 	{
 		alpha = 0;
 		betta = 0;
-
+		dir.clear();
 		for (int i = 0; i < m + 1; i++)
 		{
 			dir.push_back(vector<double>(n + 1));
@@ -44,7 +43,6 @@ public:
 		double Ahij;
 		double AhR = 0;
 		double Ah2 = 0;
-
 		for (int i = 1; i < dir.size() - 1; i++)
 		{
 			for (int j = 1; j < dir[i].size() - 1; j++)
@@ -54,7 +52,6 @@ public:
 				Ah2 += Ahij * dir[i][j];
 			}
 		}
-
 		alpha = -(AhR / Ah2);
 	}
 
@@ -63,7 +60,6 @@ public:
 		double Ahij;
 		double AhR = 0;
 		double Ah2 = 0;
-
 		for (int i = 1; i < dir.size() - 1; i++)
 		{
 			for (int j = 1; j < dir[i].size() - 1; j++)
@@ -77,50 +73,81 @@ public:
 		betta = AhR / Ah2;
 	}
 
-	double firstStep()
+	double firstStep(bool flag = false)
 	{
 		double res = 0;
-
 		calculateR();
 		calcDir();
 		calcAlpha();
-
 		for (int i = 1; i < v.size() - 1; i++)
 		{
 			for (int j = 1; j < v[i].size() - 1; j++)
 			{
-				v[i][j] = v[i][j] + alpha * dir[i][j];
-				if (abs(alpha * dir[i][j]) >= res)
+				if (flag)
 				{
-					res = abs(alpha * dir[i][j]);
+					if (!(CustomField::isBound(i, j, mY, nX)) && CustomField::isInField(i, j, mY, nX))
+					{
+						v[i][j] = v[i][j] + alpha * dir[i][j];
+						if (abs(alpha * dir[i][j]) >= res)
+						{
+							res = abs(alpha * dir[i][j]);
+						}
+					}
+					else
+					{
+						continue;
+					}
+				}
+				else
+				{
+					v[i][j] = v[i][j] + alpha * dir[i][j];
+					if (abs(alpha * dir[i][j]) >= res)
+					{
+						res = abs(alpha * dir[i][j]);
+					}
 				}
 			}
 		}
-
 		return res;
 	}
 
-	double step() override
+	double step(bool flag = false) override
 	{
 		double res = 0;
-
 		calculateR();
 		calcBetta();
 		calcDir();
 		calcAlpha();
-
 		for (int i = 1; i < v.size() - 1; i++)
 		{
 			for (int j = 1; j < v[i].size() - 1; j++)
 			{
-				v[i][j] = v[i][j] + alpha * dir[i][j];
-				if (abs(alpha * dir[i][j]) >= res)
+				if (flag)
 				{
-					res = abs(alpha * dir[i][j]);
+					if (!(CustomField::isBound(i, j, mY, nX)) && CustomField::isInField(i, j, mY, nX))
+					{
+						v[i][j] = v[i][j] + alpha * dir[i][j];
+						if (abs(alpha * dir[i][j]) >= res)
+						{
+							res = abs(alpha * dir[i][j]);
+						}
+					}
+					else
+					{
+						continue;
+					}
+				}
+				else
+				{
+					v[i][j] = v[i][j] + alpha * dir[i][j];
+					if (abs(alpha * dir[i][j]) >= res)
+					{
+						res = abs(alpha * dir[i][j]);
+					}
 				}
 			}
 		}
-
 		return res;
 	}
+
 };

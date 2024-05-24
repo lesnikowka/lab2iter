@@ -30,14 +30,13 @@ public:
 		tau = ArR / Ar2;
 	}
 
-	double step() override//возвращает разность vs - (vs + 1)
+	double step(bool flag = false) override//возвращает разность vs - (vs + 1)
 	{
 		double vij;
 		double res = 0;
 
 		calculateR();
 		calculateTau();
-
 		for (int i = 1; i < v.size() - 1; i++)
 		{
 			for (int j = 1; j < v[i].size() - 1; j++)
@@ -50,7 +49,6 @@ public:
 				}
 			}
 		}
-
 		return res;
 	}
 };

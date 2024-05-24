@@ -95,12 +95,30 @@ public:
 		for (int i = 0; i < xArr.size(); i++)
 		{
 			bound1.push_back((*ptFunc1)(xArr[i], c));
+			v[0][i] = ((*ptFunc1)(xArr[i], c));
 			bound2.push_back((*ptFunc2)(xArr[i], d));
+			v[mY][i] = ((*ptFunc2)(xArr[i], d));
 		}
 		for (int i = 0; i < yArr.size(); i++)
 		{
 			bound3.push_back((*ptFunc3)(a, yArr[i]));
+			v[i][0] = ((*ptFunc3)(a, yArr[i]));
 			bound4.push_back((*ptFunc4)(b, yArr[i]));
+			v[i][nX] = ((*ptFunc4)(b, yArr[i]));
+		}
+	}
+
+	void initBoundSpec(double (*ptFunc)(double, double))
+	{
+		for (int i = 0; i < yArr.size(); i++)
+		{
+			for (int j = 0; i < xArr.size(); j++)
+			{
+				if (CustomField::isBound(i, j, mY, nX))
+				{
+					v[i][j] = ((*ptFunc)(xArr[j], yArr[i]));
+				}
+			}
 		}
 	}
 
@@ -247,22 +265,7 @@ public:
 		}
 	}
 
-	virtual double step() { cout << 0;  return 0; }
-
-	int solve(int n, double eps)
-	{
-		int res = 0;
-		for (int iter = 0; iter < n; iter++)
-		{
-			res++;
-			accuracy = step();
-			if (accuracy < eps)
-			{
-				return res;
-			}
-		}
-		return res;
-	}
+	virtual double step(bool flag = false) { cout << 0;  return 0; }
 
 	double calcNorm2R()
 	{
@@ -277,6 +280,7 @@ public:
 		return sqrt(res);
 	}
 
+	//Бесконечности
 	double calcNormR()
 	{
 		double res = 0;
@@ -288,6 +292,21 @@ public:
 				{
 					res = r[i][j];
 				}
+			}
+		}
+		return res;
+	}
+
+	int solve(int n, double eps)
+	{
+		int res = 0;
+		for (int iter = 0; iter < n; iter++)
+		{
+			res++;
+			accuracy = step();
+			if (accuracy < eps)
+			{
+				return res;
 			}
 		}
 		return res;
