@@ -826,6 +826,22 @@ private: void calculateMMN()
 		MMN_Met* test = new MMN_Met(a, b, c, d, n, m);
 		calculate_test(test);
 		delete test;
+		System::Collections::Generic::List<String^>^ forReplace = 
+			gcnew System::Collections::Generic::List<String^>;
+		forReplace->Add(Convert::ToString(n));
+		forReplace->Add(Convert::ToString(m));
+		forReplace->Add("ÌÌÍ");
+		forReplace->Add(Convert::ToString(acc));
+		forReplace->Add(Convert::ToString(maxStep));
+		forReplace->Add(Convert::ToString(metData.count));
+		forReplace->Add(Convert::ToString(metData.accuracy));
+		forReplace->Add(Convert::ToString(metData.Rn));
+		forReplace->Add(Convert::ToString(metData.testPrecision));
+		forReplace->Add(Convert::ToString(metData.x));
+		forReplace->Add(Convert::ToString(metData.y));
+		forReplace->Add("ÒÈÏ ÏÐÈÁËÈÆÅÍÈß");
+		forReplace->Add(Convert::ToString(metData.R0));
+		richTextBox1->Text = buildInfo(infoData->testMMNMSG, forReplace);
 	}
 	else
 	{
