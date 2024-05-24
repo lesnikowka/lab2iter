@@ -95,6 +95,9 @@ namespace Project1 {
 		bool started = false;
 		InfoText^ infoData;
 		double accMult = 1e-2;
+		int numPage = 0;
+		int countPages = 600;
+		int countColumn = 0;
 	private: System::Windows::Forms::Button^ button1;
 	private: System::Windows::Forms::ToolStripMenuItem^ òèïÇàäà÷èToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ òåñòîâàÿToolStripMenuItem;
@@ -103,6 +106,8 @@ namespace Project1 {
 	private: System::Windows::Forms::Label^ label5;
 	private: System::Windows::Forms::TextBox^ textBox5;
 	private: System::Windows::Forms::RichTextBox^ richTextBox1;
+	private: System::Windows::Forms::Button^ button2;
+	private: System::Windows::Forms::Button^ button3;
 	private: System::Windows::Forms::ToolStripMenuItem^ ïîìîùüToolStripMenuItem;
 
 	public:
@@ -198,6 +203,8 @@ namespace Project1 {
 			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->textBox5 = (gcnew System::Windows::Forms::TextBox());
 			this->richTextBox1 = (gcnew System::Windows::Forms::RichTextBox());
+			this->button2 = (gcnew System::Windows::Forms::Button());
+			this->button3 = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->menuStrip1->SuspendLayout();
 			this->SuspendLayout();
@@ -430,18 +437,40 @@ namespace Project1 {
 			// 
 			// richTextBox1
 			// 
-			this->richTextBox1->Location = System::Drawing::Point(17, 278);
+			this->richTextBox1->Location = System::Drawing::Point(17, 315);
 			this->richTextBox1->Name = L"richTextBox1";
-			this->richTextBox1->Size = System::Drawing::Size(245, 441);
+			this->richTextBox1->Size = System::Drawing::Size(245, 404);
 			this->richTextBox1->TabIndex = 14;
 			this->richTextBox1->Text = L"";
 			this->richTextBox1->TextChanged += gcnew System::EventHandler(this, &MyForm::richTextBox1_TextChanged);
+			// 
+			// button2
+			// 
+			this->button2->Location = System::Drawing::Point(19, 278);
+			this->button2->Name = L"button2";
+			this->button2->Size = System::Drawing::Size(116, 23);
+			this->button2->TabIndex = 15;
+			this->button2->Text = L"Ïðåä. ñòð.";
+			this->button2->UseVisualStyleBackColor = true;
+			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
+			// 
+			// button3
+			// 
+			this->button3->Location = System::Drawing::Point(141, 278);
+			this->button3->Name = L"button3";
+			this->button3->Size = System::Drawing::Size(121, 23);
+			this->button3->TabIndex = 16;
+			this->button3->Text = L"Ñëåä. ñòð.";
+			this->button3->UseVisualStyleBackColor = true;
+			this->button3->Click += gcnew System::EventHandler(this, &MyForm::button3_Click);
 			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1902, 741);
+			this->Controls->Add(this->button3);
+			this->Controls->Add(this->button2);
 			this->Controls->Add(this->richTextBox1);
 			this->Controls->Add(this->textBox5);
 			this->Controls->Add(this->label5);
@@ -570,8 +599,10 @@ private: System::Void drawTable()
 	col2->HeaderText = "xi";
 	dataGridView1->Columns->Add(col2);
 	int MaxNumColumns = 600;
-	int realN = min(n,MaxNumColumns);
-	for (int i = 0; i <= realN; i++)
+	int shift = numPage * countPages;
+	//int realN = min(n,MaxNumColumns);
+	int realN = min(n,(numPage + 1) * countPages);
+	for (int i = shift; i <= realN; i++)
 	{
 		DataGridViewColumn^ temp = gcnew DataGridViewColumn();
 		temp->CellTemplate = gcnew DataGridViewTextBoxCell();
@@ -591,15 +622,15 @@ private: System::Void drawTable()
 	{
 		dataGridView1->Rows[i]->Cells[1]->Value = Convert::ToString(i - 1);
 	}
-	for (int i = 2; i <= realN + 2; i++)
+	for (int i = 2 + shift; i <= realN + 2; i++)
 	{
-		dataGridView1->Rows[0]->Cells[i]->Value = Convert::ToString(i - 2);
+		dataGridView1->Rows[0]->Cells[i - shift]->Value = Convert::ToString(i - 2);
 	}
-	for (int i = 2; i <= realN + 2; i++)
+	for (int i = 2 + shift; i <= realN + 2; i++)
 	{
 		for (int j = 1; j <= m + 1; j++)
 		{
-			dataGridView1->Rows[j]->Cells[i]->Value = Convert::ToString(getValue(i - 2, j - 1));
+			dataGridView1->Rows[j]->Cells[i - shift]->Value = Convert::ToString(getValue(i - 2, j - 1));
 		}
 	}
 
@@ -1056,6 +1087,7 @@ private: double getValue(int i, int j)
 	return 0;
 }
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+	numPage = 0;
 	handleValues();
 	calculate();
 	drawTable();
@@ -1079,6 +1111,23 @@ String^ removeDots(String^ s)
 	return s->Replace(".", ",");
 }
 private: System::Void richTextBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (numPage <= 0 || !started)
+	{
+		return;
+	}
+	numPage--;
+	drawTable();
+}
+private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (!started || (numPage >= (n + 2) / countPages - 1 && (n + 2) / countPages == 0)
+		|| (numPage >= (n + 2) / countPages && (n + 2) / countPages != 0))
+	{
+		return;
+	}
+	numPage++;
+	drawTable();
 }
 };
 }
