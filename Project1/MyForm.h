@@ -985,6 +985,7 @@ private: void calculateMSG_UN()
 {
 	taskType = TASK::TEST;
 	òèïÇàäà÷èToolStripMenuItem->Text = "Òåñòîâàÿ";
+
 	double (*pt1)(double, double) = NULL;
 	double (*pt2)(double, double) = NULL;
 	double (*pt3)(double, double) = NULL;
@@ -999,7 +1000,11 @@ private: void calculateMSG_UN()
 	test.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
 	test.initRight(ptRight);
 	double acc = test.firstStep();
+	test.calculateR();
+	metData.R0 = test.calcNorm2R();
 	int iterCount = test.solve(maxStep, acc);
+	test.calculateR();
+	metData.Rn = test.calcNorm2R();
 	acc = test.getAccuracy();
 	type2V res = test.getV();
 	typeV x = test.getX();
@@ -1011,6 +1016,11 @@ private: void calculateMSG_UN()
 	metData.Sub = getSub(metData.V, metData.U_V2);
 	metData.X = x;
 	metData.Y = y;
+	double maxSub;
+	auto yx = getMaxIndexes(metData.Sub, maxSub);
+	metData.testPrecision = maxSub;
+	metData.y = y[yx.first];
+	metData.x = x[yx.second];
 }
 private: void calculate()
 {
