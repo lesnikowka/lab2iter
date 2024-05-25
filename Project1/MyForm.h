@@ -618,7 +618,7 @@ private: System::Void drawTable()
 		DataGridViewColumn^ temp = gcnew DataGridViewColumn();
 		temp->CellTemplate = gcnew DataGridViewTextBoxCell();
 		//temp->HeaderText = "x" + Convert::ToString(i);
-		temp->HeaderText = Convert::ToString(metData.X[i]);
+		temp->HeaderText = cropNumberString(Convert::ToString(metData.X[i]));
 		dataGridView1->Columns->Add(temp);
 	}
 	dataGridView1->Rows->Add(m + 2);
@@ -627,7 +627,7 @@ private: System::Void drawTable()
 	for (int i = 1; i <= m + 1; i++)
 	{
 		//dataGridView1->Rows[i]->Cells[0]->Value = "y" + Convert::ToString(i - 1);
-		dataGridView1->Rows[i]->Cells[0]->Value = Convert::ToString(metData.Y[i - 1]);
+		dataGridView1->Rows[i]->Cells[0]->Value = cropNumberString(Convert::ToString(metData.Y[i - 1]));
 	}
 	for (int i = 1; i <= m + 1; i++)
 	{
@@ -641,7 +641,7 @@ private: System::Void drawTable()
 	{
 		for (int j = 1; j <= m + 1; j++)
 		{
-			dataGridView1->Rows[j]->Cells[i - shift]->Value = Convert::ToString(getValue(i - 2, j - 1));
+			dataGridView1->Rows[j]->Cells[i - shift]->Value = cropNumberString(Convert::ToString(getValue(i - 2, j - 1)));
 		}
 	}
 
@@ -1120,7 +1120,21 @@ private: System::Void îñíîâíàÿToolStripMenuItem_Click(System::Object^ sender, Sy
 }
 String^ removeDots(String^ s)
 {
+	//cropNumberString("")
 	return s->Replace(".", ",");
+}
+String^ cropNumberString(String^ s)
+{
+	int Eindex = s->IndexOf("E");
+	int comma = s->IndexOf(",");
+	if (Eindex == -1 || comma == -1)
+	{
+		return s;
+	}
+
+	int countDigits = 7;
+	
+	return s->Substring(0, comma + countDigits) + s->Substring(Eindex);
 }
 private: System::Void richTextBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
 }
