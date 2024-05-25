@@ -249,7 +249,7 @@ namespace Project1 {
 			});
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(1902, 30);
+			this->menuStrip1->Size = System::Drawing::Size(1902, 28);
 			this->menuStrip1->TabIndex = 3;
 			this->menuStrip1->Text = L"menuStrip1";
 			// 
@@ -260,7 +260,7 @@ namespace Project1 {
 					this->ìÌÍToolStripMenuItem, this->ìÑÃToolStripMenuItem, this->ìÑÃÓíèêàëüíàÿÎáëàñòüToolStripMenuItem
 			});
 			this->âûáîðÌåòîäàToolStripMenuItem->Name = L"âûáîðÌåòîäàToolStripMenuItem";
-			this->âûáîðÌåòîäàToolStripMenuItem->Size = System::Drawing::Size(124, 26);
+			this->âûáîðÌåòîäàToolStripMenuItem->Size = System::Drawing::Size(124, 24);
 			this->âûáîðÌåòîäàToolStripMenuItem->Text = L"Âûáîð ìåòîäà";
 			// 
 			// ìÂÐToolStripMenuItem
@@ -298,7 +298,7 @@ namespace Project1 {
 					this->uxyÈëèV2xyToolStripMenuItem, this->uxyvxyÈëèvxyV2xyToolStripMenuItem
 			});
 			this->çíà÷åíèÿÒàáëèöûToolStripMenuItem->Name = L"çíà÷åíèÿÒàáëèöûToolStripMenuItem";
-			this->çíà÷åíèÿÒàáëèöûToolStripMenuItem->Size = System::Drawing::Size(154, 26);
+			this->çíà÷åíèÿÒàáëèöûToolStripMenuItem->Size = System::Drawing::Size(154, 24);
 			this->çíà÷åíèÿÒàáëèöûToolStripMenuItem->Text = L"Çíà÷åíèÿ òàáëèöû";
 			// 
 			// vxyToolStripMenuItem
@@ -329,7 +329,7 @@ namespace Project1 {
 					this->îñíîâíàÿToolStripMenuItem
 			});
 			this->òèïÇàäà÷èToolStripMenuItem->Name = L"òèïÇàäà÷èToolStripMenuItem";
-			this->òèïÇàäà÷èToolStripMenuItem->Size = System::Drawing::Size(101, 26);
+			this->òèïÇàäà÷èToolStripMenuItem->Size = System::Drawing::Size(101, 24);
 			this->òèïÇàäà÷èToolStripMenuItem->Text = L"Òèï çàäà÷è";
 			// 
 			// òåñòîâàÿToolStripMenuItem
@@ -349,7 +349,7 @@ namespace Project1 {
 			// ïîìîùüToolStripMenuItem
 			// 
 			this->ïîìîùüToolStripMenuItem->Name = L"ïîìîùüToolStripMenuItem";
-			this->ïîìîùüToolStripMenuItem->Size = System::Drawing::Size(83, 26);
+			this->ïîìîùüToolStripMenuItem->Size = System::Drawing::Size(83, 24);
 			this->ïîìîùüToolStripMenuItem->Text = L"Ïîìîùü";
 			this->ïîìîùüToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::ïîìîùüToolStripMenuItem_Click);
 			// 
@@ -438,16 +438,16 @@ namespace Project1 {
 			// 
 			// richTextBox1
 			// 
-			this->richTextBox1->Location = System::Drawing::Point(17, 315);
+			this->richTextBox1->Location = System::Drawing::Point(17, 288);
 			this->richTextBox1->Name = L"richTextBox1";
-			this->richTextBox1->Size = System::Drawing::Size(245, 404);
+			this->richTextBox1->Size = System::Drawing::Size(245, 431);
 			this->richTextBox1->TabIndex = 14;
 			this->richTextBox1->Text = L"";
 			this->richTextBox1->TextChanged += gcnew System::EventHandler(this, &MyForm::richTextBox1_TextChanged);
 			// 
 			// button2
 			// 
-			this->button2->Location = System::Drawing::Point(19, 278);
+			this->button2->Location = System::Drawing::Point(300, 706);
 			this->button2->Name = L"button2";
 			this->button2->Size = System::Drawing::Size(116, 23);
 			this->button2->TabIndex = 15;
@@ -457,7 +457,7 @@ namespace Project1 {
 			// 
 			// button3
 			// 
-			this->button3->Location = System::Drawing::Point(141, 278);
+			this->button3->Location = System::Drawing::Point(585, 706);
 			this->button3->Name = L"button3";
 			this->button3->Size = System::Drawing::Size(121, 23);
 			this->button3->TabIndex = 16;
@@ -468,7 +468,7 @@ namespace Project1 {
 			// label6
 			// 
 			this->label6->AutoSize = true;
-			this->label6->Location = System::Drawing::Point(300, 713);
+			this->label6->Location = System::Drawing::Point(443, 709);
 			this->label6->Name = L"label6";
 			this->label6->Size = System::Drawing::Size(99, 16);
 			this->label6->TabIndex = 17;
