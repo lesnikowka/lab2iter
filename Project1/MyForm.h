@@ -96,8 +96,7 @@ namespace Project1 {
 		InfoText^ infoData;
 		double accMult = 1e-2;
 		int numPage = 0;
-		int countPages = 600;
-		int countColumn = 0;
+		int countPages = 100;
 	private: System::Windows::Forms::Button^ button1;
 	private: System::Windows::Forms::ToolStripMenuItem^ òèïÇàäà÷èToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ òåñòîâàÿToolStripMenuItem;
@@ -108,6 +107,7 @@ namespace Project1 {
 	private: System::Windows::Forms::RichTextBox^ richTextBox1;
 	private: System::Windows::Forms::Button^ button2;
 	private: System::Windows::Forms::Button^ button3;
+	private: System::Windows::Forms::Label^ label6;
 	private: System::Windows::Forms::ToolStripMenuItem^ ïîìîùüToolStripMenuItem;
 
 	public:
@@ -205,6 +205,7 @@ namespace Project1 {
 			this->richTextBox1 = (gcnew System::Windows::Forms::RichTextBox());
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->button3 = (gcnew System::Windows::Forms::Button());
+			this->label6 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->menuStrip1->SuspendLayout();
 			this->SuspendLayout();
@@ -236,7 +237,7 @@ namespace Project1 {
 			this->dataGridView1->Name = L"dataGridView1";
 			this->dataGridView1->RowHeadersWidth = 51;
 			this->dataGridView1->RowTemplate->Height = 24;
-			this->dataGridView1->Size = System::Drawing::Size(1590, 663);
+			this->dataGridView1->Size = System::Drawing::Size(1590, 631);
 			this->dataGridView1->TabIndex = 1;
 			// 
 			// menuStrip1
@@ -248,7 +249,7 @@ namespace Project1 {
 			});
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(1902, 28);
+			this->menuStrip1->Size = System::Drawing::Size(1902, 30);
 			this->menuStrip1->TabIndex = 3;
 			this->menuStrip1->Text = L"menuStrip1";
 			// 
@@ -259,7 +260,7 @@ namespace Project1 {
 					this->ìÌÍToolStripMenuItem, this->ìÑÃToolStripMenuItem, this->ìÑÃÓíèêàëüíàÿÎáëàñòüToolStripMenuItem
 			});
 			this->âûáîğÌåòîäàToolStripMenuItem->Name = L"âûáîğÌåòîäàToolStripMenuItem";
-			this->âûáîğÌåòîäàToolStripMenuItem->Size = System::Drawing::Size(124, 24);
+			this->âûáîğÌåòîäàToolStripMenuItem->Size = System::Drawing::Size(124, 26);
 			this->âûáîğÌåòîäàToolStripMenuItem->Text = L"Âûáîğ ìåòîäà";
 			// 
 			// ìÂĞToolStripMenuItem
@@ -297,7 +298,7 @@ namespace Project1 {
 					this->uxyÈëèV2xyToolStripMenuItem, this->uxyvxyÈëèvxyV2xyToolStripMenuItem
 			});
 			this->çíà÷åíèÿÒàáëèöûToolStripMenuItem->Name = L"çíà÷åíèÿÒàáëèöûToolStripMenuItem";
-			this->çíà÷åíèÿÒàáëèöûToolStripMenuItem->Size = System::Drawing::Size(154, 24);
+			this->çíà÷åíèÿÒàáëèöûToolStripMenuItem->Size = System::Drawing::Size(154, 26);
 			this->çíà÷åíèÿÒàáëèöûToolStripMenuItem->Text = L"Çíà÷åíèÿ òàáëèöû";
 			// 
 			// vxyToolStripMenuItem
@@ -328,7 +329,7 @@ namespace Project1 {
 					this->îñíîâíàÿToolStripMenuItem
 			});
 			this->òèïÇàäà÷èToolStripMenuItem->Name = L"òèïÇàäà÷èToolStripMenuItem";
-			this->òèïÇàäà÷èToolStripMenuItem->Size = System::Drawing::Size(101, 24);
+			this->òèïÇàäà÷èToolStripMenuItem->Size = System::Drawing::Size(101, 26);
 			this->òèïÇàäà÷èToolStripMenuItem->Text = L"Òèï çàäà÷è";
 			// 
 			// òåñòîâàÿToolStripMenuItem
@@ -348,7 +349,7 @@ namespace Project1 {
 			// ïîìîùüToolStripMenuItem
 			// 
 			this->ïîìîùüToolStripMenuItem->Name = L"ïîìîùüToolStripMenuItem";
-			this->ïîìîùüToolStripMenuItem->Size = System::Drawing::Size(83, 24);
+			this->ïîìîùüToolStripMenuItem->Size = System::Drawing::Size(83, 26);
 			this->ïîìîùüToolStripMenuItem->Text = L"Ïîìîùü";
 			this->ïîìîùüToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::ïîìîùüToolStripMenuItem_Click);
 			// 
@@ -464,11 +465,21 @@ namespace Project1 {
 			this->button3->UseVisualStyleBackColor = true;
 			this->button3->Click += gcnew System::EventHandler(this, &MyForm::button3_Click);
 			// 
+			// label6
+			// 
+			this->label6->AutoSize = true;
+			this->label6->Location = System::Drawing::Point(300, 713);
+			this->label6->Name = L"label6";
+			this->label6->Size = System::Drawing::Size(99, 16);
+			this->label6->TabIndex = 17;
+			this->label6->Text = L"Ñòîëáöû 0-100";
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1902, 741);
+			this->Controls->Add(this->label6);
 			this->Controls->Add(this->button3);
 			this->Controls->Add(this->button2);
 			this->Controls->Add(this->richTextBox1);
@@ -1088,6 +1099,7 @@ private: double getValue(int i, int j)
 }
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 	numPage = 0;
+	label6->Text = "Ñòîëáöû 0-100";
 	handleValues();
 	calculate();
 	drawTable();
@@ -1118,6 +1130,7 @@ private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e
 		return;
 	}
 	numPage--;
+	label6->Text = "Ñòîëáöû " + Convert::ToString(numPage * countPages) + "-" + Convert::ToString(min((numPage + 1) * countPages, n + 2));
 	drawTable();
 }
 private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -1127,6 +1140,7 @@ private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e
 		return;
 	}
 	numPage++;
+	label6->Text = "Ñòîëáöû " + Convert::ToString(numPage * countPages) + "-" + Convert::ToString(min((numPage + 1) * countPages, n + 2));
 	drawTable();
 }
 };
