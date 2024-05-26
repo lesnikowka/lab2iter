@@ -1,13 +1,11 @@
-#pragma once
-
-#include "IterSlauSolver.h"
+п»ї#pragma once
 
 class MSG_Met : public IterSlauSolver
 {
 public:
 	double alpha;
 	double betta;
-	vector<vector<double>> dir; //это h(s)
+	vector<vector<double>> dir; 
 
 	MSG_Met() : IterSlauSolver()
 	{
@@ -73,7 +71,7 @@ public:
 		betta = AhR / Ah2;
 	}
 
-	double firstStep(bool flag = false)
+	double firstStep()
 	{
 		double res = 0;
 		calculateR();
@@ -83,28 +81,10 @@ public:
 		{
 			for (int j = 1; j < v[i].size() - 1; j++)
 			{
-				if (flag)
+				v[i][j] = v[i][j] + alpha * dir[i][j];
+				if (abs(alpha * dir[i][j]) >= res)
 				{
-					if (!(CustomField::isBound(i, j, mY, nX)) && CustomField::isInField(i, j, mY, nX))
-					{
-						v[i][j] = v[i][j] + alpha * dir[i][j];
-						if (abs(alpha * dir[i][j]) >= res)
-						{
-							res = abs(alpha * dir[i][j]);
-						}
-					}
-					else
-					{
-						continue;
-					}
-				}
-				else
-				{
-					v[i][j] = v[i][j] + alpha * dir[i][j];
-					if (abs(alpha * dir[i][j]) >= res)
-					{
-						res = abs(alpha * dir[i][j]);
-					}
+					res = abs(alpha * dir[i][j]);
 				}
 			}
 		}
@@ -122,28 +102,10 @@ public:
 		{
 			for (int j = 1; j < v[i].size() - 1; j++)
 			{
-				if (flag)
+				v[i][j] = v[i][j] + alpha * dir[i][j];
+				if (abs(alpha * dir[i][j]) >= res)
 				{
-					if (!(CustomField::isBound(i, j, mY, nX)) && CustomField::isInField(i, j, mY, nX))
-					{
-						v[i][j] = v[i][j] + alpha * dir[i][j];
-						if (abs(alpha * dir[i][j]) >= res)
-						{
-							res = abs(alpha * dir[i][j]);
-						}
-					}
-					else
-					{
-						continue;
-					}
-				}
-				else
-				{
-					v[i][j] = v[i][j] + alpha * dir[i][j];
-					if (abs(alpha * dir[i][j]) >= res)
-					{
-						res = abs(alpha * dir[i][j]);
-					}
+					res = abs(alpha * dir[i][j]);
 				}
 			}
 		}
