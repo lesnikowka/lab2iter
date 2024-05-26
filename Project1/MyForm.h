@@ -13,6 +13,9 @@
 #include <filesystem>
 #include <fstream>
 #include <list>
+#include <mutex>
+#include <thread>
+#include <future>
 
 #define typeV std::vector<double> 
 #define type2V std::vector<std::vector<double>> 
@@ -97,6 +100,9 @@ namespace Project1 {
 		double accMult = 1e-2;
 		int numPage = 0;
 		int countPages = 100;
+		bool isActive = true;
+		int processCount = 0;
+		System::Collections::Generic::List<String^>^ forReplace;
 	private: System::Windows::Forms::Button^ button1;
 	private: System::Windows::Forms::ToolStripMenuItem^ òèïÇàäà÷èToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ òåñòîâàÿToolStripMenuItem;
@@ -108,12 +114,15 @@ namespace Project1 {
 	private: System::Windows::Forms::Button^ button2;
 	private: System::Windows::Forms::Button^ button3;
 	private: System::Windows::Forms::Label^ label6;
+	private: System::ComponentModel::BackgroundWorker^ backgroundWorker1;
 	private: System::Windows::Forms::ToolStripMenuItem^ ïîìîùüToolStripMenuItem;
 
 	public:
 		MyForm(void)
 		{
 			InitializeComponent();
+			forReplace =
+				gcnew System::Collections::Generic::List<String^>;
 			//
 			//TODO: Add the constructor code here
 			//
@@ -206,6 +215,7 @@ namespace Project1 {
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->button3 = (gcnew System::Windows::Forms::Button());
 			this->label6 = (gcnew System::Windows::Forms::Label());
+			this->backgroundWorker1 = (gcnew System::ComponentModel::BackgroundWorker());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->menuStrip1->SuspendLayout();
 			this->SuspendLayout();
@@ -474,6 +484,11 @@ namespace Project1 {
 			this->label6->TabIndex = 17;
 			this->label6->Text = L"Ñòîëáöû 0-100";
 			// 
+			// backgroundWorker1
+			// 
+			this->backgroundWorker1->DoWork += gcnew System::ComponentModel::DoWorkEventHandler(this, &MyForm::backgroundWorker1_DoWork);
+			this->backgroundWorker1->RunWorkerCompleted += gcnew System::ComponentModel::RunWorkerCompletedEventHandler(this, &MyForm::backgroundWorker1_RunWorkerCompleted);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
@@ -509,21 +524,37 @@ namespace Project1 {
 #pragma endregion
 
 	private: System::Void ìÂÐToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+		if (!isActive)
+		{
+			return;
+		}
 		metType = MET::MVR;
 		âûáîðÌåòîäàToolStripMenuItem->Text = "ÌÂÐ";
 		textBox5->Enabled = true;
 	}
 private: System::Void ìÌÍToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (!isActive)
+	{
+		return;
+	}
 	metType = MET::MMN;
 	âûáîðÌåòîäàToolStripMenuItem->Text = "ÌÌÍ";
 	textBox5->Enabled = false;
 }
 private: System::Void ìÑÃToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (!isActive)
+	{
+		return;
+	}
 	metType = MET::MSG;
 	âûáîðÌåòîäàToolStripMenuItem->Text = "ÌÑÃ";
 	textBox5->Enabled = false;
 }
 private: System::Void ìÑÃÓíèêàëüíàÿÎáëàñòüToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (!isActive)
+	{
+		return;
+	}
 	metType = MET::MSG_UN;
 	taskType = TASK::TEST;
 	òèïÇàäà÷èToolStripMenuItem->Text = "Òåñòîâàÿ";
@@ -532,6 +563,10 @@ private: System::Void ìÑÃÓíèêàëüíàÿÎáëàñòüToolStripMenuItem_Click(System::Object
 }
 
 private: System::Void vxyToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (!isActive)
+	{
+		return;
+	}
 	valType = VAL::NUM;
 	çíà÷åíèÿÒàáëèöûToolStripMenuItem->Text = "v(x,y)";
 	if (started)
@@ -540,6 +575,10 @@ private: System::Void vxyToolStripMenuItem_Click(System::Object^ sender, System:
 	}
 }
 private: System::Void uxyÈëèV2xyToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (!isActive)
+	{
+		return;
+	}
 	valType = VAL::TRUE_OR_HALF;
 	çíà÷åíèÿÒàáëèöûToolStripMenuItem->Text = "u(x,y) èëè v2(x,y)";
 	if (started)
@@ -548,6 +587,10 @@ private: System::Void uxyÈëèV2xyToolStripMenuItem_Click(System::Object^ sender, 
 	}
 }
 private: System::Void uxyvxyÈëèvxyV2xyToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (!isActive)
+	{
+		return;
+	}
 	valType = VAL::SUB;
 	çíà÷åíèÿÒàáëèöûToolStripMenuItem->Text = "|u(x,y)-v(x,y)| èëè |v(x,y) - v2(x,y)|";
 	if (started)
@@ -588,7 +631,7 @@ String^ ReplaceOne(String^ s, String^ searchFor, String^ replaceWith)
     if (index == -1) return s; // search string was not found.
     return s->Substring(0, index) + replaceWith + s->Substring(index + searchFor->Length);
 }
-String^ buildInfo(String^ info, System::Collections::Generic::List<String^>^ forReplace)
+String^ buildInfo(String^ info)
 {
 	String^ res = info;
 	for (int i = 0; i < forReplace->Count; i++)
@@ -644,7 +687,6 @@ private: System::Void drawTable()
 			dataGridView1->Rows[j]->Cells[i - shift]->Value = cropNumberString(Convert::ToString(getValue(i - 2, j - 1)));
 		}
 	}
-
 }
 private: System::Void handleValues()
 {
@@ -814,8 +856,6 @@ private: void calculateMVR()
 		MVR_Met* test = new MVR_Met(a, b, c, d, n, m, w);
 		calculate_test(test);
 		delete test;
-		System::Collections::Generic::List<String^>^ forReplace = 
-			gcnew System::Collections::Generic::List<String^>;
 		forReplace->Add(Convert::ToString(n));
 		forReplace->Add(Convert::ToString(m));
 		forReplace->Add(Convert::ToString(w));
@@ -828,7 +868,7 @@ private: void calculateMVR()
 		forReplace->Add(Convert::ToString(metData.x));
 		forReplace->Add(Convert::ToString(metData.y));
 		forReplace->Add("ÒÈÏ ÏÐÈÁËÈÆÅÍÈß");
-		richTextBox1->Text = buildInfo(infoData->testMVR, forReplace);
+		
 	}
 	else
 	{
@@ -837,8 +877,6 @@ private: void calculateMVR()
 		calculate_main(main, main2);
 		delete main;
 		delete main2;
-		System::Collections::Generic::List<String^>^ forReplace = 
-			gcnew System::Collections::Generic::List<String^>;
 		forReplace->Add(Convert::ToString(n));
 		forReplace->Add(Convert::ToString(m));
 		forReplace->Add(Convert::ToString(w));
@@ -858,15 +896,12 @@ private: void calculateMVR()
 		forReplace->Add(Convert::ToString(metData.y));
 		forReplace->Add("ÒÈÏ ÏÐÈÁËÈÆÅÍÈß");
 		forReplace->Add("ÒÈÏ ÏÐÈÁËÈÆÅÍÈß");
-		richTextBox1->Text = buildInfo(infoData->mainMVR, forReplace);
 	}
 }
 private: void showInfoMMNMSG(String^ metName)
 {
 	if (taskType == TASK::TEST)
 	{
-		System::Collections::Generic::List<String^>^ forReplace = 
-			gcnew System::Collections::Generic::List<String^>;
 		forReplace->Add(Convert::ToString(n));
 		forReplace->Add(Convert::ToString(m));
 		forReplace->Add(metName);
@@ -880,12 +915,10 @@ private: void showInfoMMNMSG(String^ metName)
 		forReplace->Add(Convert::ToString(metData.y));
 		forReplace->Add("ÒÈÏ ÏÐÈÁËÈÆÅÍÈß");
 		forReplace->Add(Convert::ToString(metData.R0));
-		richTextBox1->Text = buildInfo(infoData->testMMNMSG, forReplace);
+		richTextBox1->Text = buildInfo(infoData->testMMNMSG);
 	}
 	else
 	{
-		System::Collections::Generic::List<String^>^ forReplace = 
-			gcnew System::Collections::Generic::List<String^>;
 		forReplace->Add(Convert::ToString(n));
 		forReplace->Add(Convert::ToString(m));
 		forReplace->Add("ÌÌÍ");
@@ -907,7 +940,32 @@ private: void showInfoMMNMSG(String^ metName)
 		forReplace->Add(Convert::ToString(metData.y));
 		forReplace->Add("ÒÈÏ ÏÐÈÁËÈÆÅÍÈß");
 		forReplace->Add(Convert::ToString(metData.R02));
-		richTextBox1->Text = buildInfo(infoData->mainMMNMSG, forReplace);
+		richTextBox1->Text = buildInfo(infoData->mainMMNMSG);
+	}
+}
+private: void showInfoWorker()
+{
+	if (metType == MET::MMN)
+	{
+		showInfoMMNMSG("ÌÌÍ");
+	}
+	else if (metType == MET::MSG)
+	{
+		showInfoMMNMSG("ÌÑÃ");
+	}
+	else if (metType == MET::MSG_UN)
+	{
+		showInfoMMNMSG("ÌÑÃ íà óíèêàëüíîé îáëàñòè");
+	}
+	else {
+		if (taskType == TASK::MAIN)
+		{
+			richTextBox1->Text = buildInfo(infoData->mainMVR);
+		}
+		else
+		{
+			richTextBox1->Text = buildInfo(infoData->testMVR);
+		}
 	}
 }
 private: void calculateMMN()
@@ -926,7 +984,6 @@ private: void calculateMMN()
 		delete main;
 		delete main2;
 	}
-	showInfoMMNMSG("ÌÌÍ");
 }
 private: void calculateMSG()
 {
@@ -1021,7 +1078,6 @@ private: void calculateMSG()
 		metData.y = y[yx.first];
 		metData.x = x[yx.second];
 	}
-	showInfoMMNMSG("ÌÑÃ");
 }
 private: void calculateMSG_UN()
 {
@@ -1063,8 +1119,6 @@ private: void calculateMSG_UN()
 	metData.testPrecision = maxSub;
 	metData.y = y[yx.first];
 	metData.x = x[yx.second];
-
-	showInfoMMNMSG("ÌÑÃ íà óíèêàëüíîé îáëàñòè");
 }
 private: void calculate()
 {
@@ -1098,23 +1152,46 @@ private: double getValue(int i, int j)
 	return 0;
 }
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (!isActive)
+	{
+		return;
+	}
+
 	numPage = 0;
 	label6->Text = "Ñòîëáöû 0-100";
 	handleValues();
-	calculate();
-	drawTable();
-	started = true;
+	
+	isActive = false;
+
+	//afterCalculate();
+
+	if (backgroundWorker1->IsBusy != true)
+	{
+		backgroundWorker1->RunWorkerAsync();
+	}
 }
 private: System::Void ïîìîùüToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (!isActive)
+	{
+		return;
+	}
 	String^ s = Directory::GetCurrentDirectory();
 	String^ processDir = s + "\\..\\x64\\Debug\\HelpPr.exe";
 	auto process = Process::Start(processDir);
 }
 private: System::Void òåñòîâàÿToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (!isActive)
+	{
+		return;
+	}
 	taskType = TASK::TEST;
 	òèïÇàäà÷èToolStripMenuItem->Text = "Òåñòîâàÿ";
 }
 private: System::Void îñíîâíàÿToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (!isActive)
+	{
+		return;
+	}
 	taskType = TASK::MAIN;
 	òèïÇàäà÷èToolStripMenuItem->Text = "Îñíîâíàÿ";
 }
@@ -1139,6 +1216,10 @@ String^ cropNumberString(String^ s)
 private: System::Void richTextBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
 }
 private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (!isActive)
+	{
+		return;
+	}
 	if (numPage <= 0 || !started)
 	{
 		return;
@@ -1148,6 +1229,10 @@ private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e
 	drawTable();
 }
 private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (!isActive)
+	{
+		return;
+	}
 	if (!started || (numPage >= (n + 2) / countPages - 1 && (n + 2) / countPages == 0)
 		|| (numPage >= (n + 2) / countPages && (n + 2) / countPages != 0))
 	{
@@ -1156,6 +1241,15 @@ private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e
 	numPage++;
 	label6->Text = "Ñòîëáöû " + Convert::ToString(numPage * countPages) + "-" + Convert::ToString(min((numPage + 1) * countPages, n + 2));
 	drawTable();
+}
+private: System::Void backgroundWorker1_DoWork(System::Object^ sender, System::ComponentModel::DoWorkEventArgs^ e) {
+	calculate();
+}
+private: System::Void backgroundWorker1_RunWorkerCompleted(System::Object^ sender, System::ComponentModel::RunWorkerCompletedEventArgs^ e) {
+	showInfoWorker();
+	drawTable();
+	started = true;
+	isActive = true;
 }
 };
 }
