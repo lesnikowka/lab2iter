@@ -1264,6 +1264,7 @@ private: System::Void backgroundWorker1_RunWorkerCompleted(System::Object^ sende
 	drawTable();
 	started = true;
 	isActive = true;
+	label7->Text = "Прогресс: завершено";
 }
 private: System::Void backgroundWorker1_ProgressChanged(System::Object^ sender, System::ComponentModel::ProgressChangedEventArgs^ e) {
 	int maxRealStep;
