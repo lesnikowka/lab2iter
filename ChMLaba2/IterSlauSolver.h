@@ -4,10 +4,22 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include <Windows.h>
 
 #include "CustomField.h"
 
 using namespace std;
+
+using namespace System;
+using namespace System::ComponentModel;
+using namespace System::Collections;
+using namespace System::Windows::Forms;
+using namespace System::Data;
+using namespace System::Drawing;
+using namespace System::Diagnostics;
+using namespace System::IO;
+
+int progressMethod = 0;
 
 template<typename T>
 double scalarMult(vector<T> r, vector<T> l)
@@ -297,11 +309,13 @@ public:
 		return res;
 	}
 
-	int solve(int n, double eps)
+	int solve(int n, double eps, BackgroundWorker^ worker)
 	{
 		int res = 0;
 		for (int iter = 0; iter < n; iter++)
 		{
+			progressMethod++;
+			worker->ReportProgress(1);
 			res++;
 			accuracy = step();
 			if (accuracy < eps)

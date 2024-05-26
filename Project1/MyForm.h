@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "../ChMLaba2/MMN.h"
 #include "../ChMLaba2/MVR.h"
 #include "../ChMLaba2/MSG.h"
@@ -115,6 +114,7 @@ namespace Project1 {
 	private: System::Windows::Forms::Button^ button3;
 	private: System::Windows::Forms::Label^ label6;
 	private: System::ComponentModel::BackgroundWorker^ backgroundWorker1;
+	private: System::Windows::Forms::Label^ label7;
 	private: System::Windows::Forms::ToolStripMenuItem^ помощьToolStripMenuItem;
 
 	public:
@@ -216,6 +216,7 @@ namespace Project1 {
 			this->button3 = (gcnew System::Windows::Forms::Button());
 			this->label6 = (gcnew System::Windows::Forms::Label());
 			this->backgroundWorker1 = (gcnew System::ComponentModel::BackgroundWorker());
+			this->label7 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->menuStrip1->SuspendLayout();
 			this->SuspendLayout();
@@ -486,14 +487,26 @@ namespace Project1 {
 			// 
 			// backgroundWorker1
 			// 
+			this->backgroundWorker1->WorkerReportsProgress = true;
 			this->backgroundWorker1->DoWork += gcnew System::ComponentModel::DoWorkEventHandler(this, &MyForm::backgroundWorker1_DoWork);
+			this->backgroundWorker1->ProgressChanged += gcnew System::ComponentModel::ProgressChangedEventHandler(this, &MyForm::backgroundWorker1_ProgressChanged);
 			this->backgroundWorker1->RunWorkerCompleted += gcnew System::ComponentModel::RunWorkerCompletedEventHandler(this, &MyForm::backgroundWorker1_RunWorkerCompleted);
+			// 
+			// label7
+			// 
+			this->label7->AutoSize = true;
+			this->label7->Location = System::Drawing::Point(725, 709);
+			this->label7->Name = L"label7";
+			this->label7->Size = System::Drawing::Size(75, 16);
+			this->label7->TabIndex = 18;
+			this->label7->Text = L"Прогресс: ";
 			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1902, 741);
+			this->Controls->Add(this->label7);
 			this->Controls->Add(this->label6);
 			this->Controls->Add(this->button3);
 			this->Controls->Add(this->button2);
@@ -777,7 +790,7 @@ private: void calculate_test(IterSlauSolver* test)
 	test->initRight(ptRight);
 	test->calculateR();
 	metData.R0 = test->calcNorm2R();
-	int iterCount = test->solve(maxStep, acc);
+	int iterCount = test->solve(maxStep, acc, backgroundWorker1);
 	double acc = test->getAccuracy();
 	type2V res = test->getV();
 	typeV x = test->getX();
@@ -815,7 +828,7 @@ private: void calculate_main(IterSlauSolver* main, IterSlauSolver* main2)
 	main->initRight(ptRight);
 	main->calculateR();
 	metData.R0 = main->calcNorm2R();
-	int iterCount = main->solve(maxStep, acc);
+	int iterCount = main->solve(maxStep, acc, backgroundWorker1);
 	main->calculateR();
 	metData.Rn = main->calcNorm2R();
 	double acc = main->getAccuracy();
@@ -828,7 +841,7 @@ private: void calculate_main(IterSlauSolver* main, IterSlauSolver* main2)
 	main2->initRight(ptRight);
 	main2->calculateR();
 	metData.R02 = main2->calcNorm2R();
-	int iterCount2 = main2->solve(maxStep * 2, acc * accMult);
+	int iterCount2 = main2->solve(maxStep * 2, acc * accMult, backgroundWorker1);
 	main2->calculateR();
 	metData.Rn2 = main2->calcNorm2R();
 	double acc2 = main2->getAccuracy();
@@ -1005,7 +1018,7 @@ private: void calculateMSG()
 		double acc = test.firstStep();
 		test.calculateR();
 		metData.R0 = test.calcNorm2R();
-		int iterCount = test.solve(maxStep, acc);
+		int iterCount = test.solve(maxStep, acc, backgroundWorker1);
 		test.calculateR();
 		metData.Rn = test.calcNorm2R();
 		acc = test.getAccuracy();
@@ -1043,7 +1056,7 @@ private: void calculateMSG()
 		double acc = main.firstStep();
 		main.calculateR();
 		metData.R0 = main.calcNorm2R();
-		int iterCount = main.solve(maxStep, acc);
+		int iterCount = main.solve(maxStep, acc, backgroundWorker1);
 		main.calculateR();
 		metData.Rn = main.calcNorm2R();
 		acc = main.getAccuracy();
@@ -1057,7 +1070,7 @@ private: void calculateMSG()
 		double acc2 = main2.firstStep();
 		main2.calculateR();
 		metData.R02 = main2.calcNorm2R();
-		int iterCount2 = main2.solve(maxStep * 2, acc * accMult);
+		int iterCount2 = main2.solve(maxStep * 2, acc * accMult, backgroundWorker1);
 		main2.calculateR();
 		metData.Rn2 = main2.calcNorm2R();
 		acc2 = main2.getAccuracy();
@@ -1100,7 +1113,7 @@ private: void calculateMSG_UN()
 	double acc = test.firstStep();
 	test.calculateR();
 	metData.R0 = test.calcNorm2R();
-	int iterCount = test.solve(maxStep, acc);
+	int iterCount = test.solve(maxStep, acc, backgroundWorker1);
 	test.calculateR();
 	metData.Rn = test.calcNorm2R();
 	acc = test.getAccuracy();
@@ -1243,6 +1256,7 @@ private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e
 	drawTable();
 }
 private: System::Void backgroundWorker1_DoWork(System::Object^ sender, System::ComponentModel::DoWorkEventArgs^ e) {
+	progressMethod = 0;
 	calculate();
 }
 private: System::Void backgroundWorker1_RunWorkerCompleted(System::Object^ sender, System::ComponentModel::RunWorkerCompletedEventArgs^ e) {
@@ -1250,6 +1264,20 @@ private: System::Void backgroundWorker1_RunWorkerCompleted(System::Object^ sende
 	drawTable();
 	started = true;
 	isActive = true;
+}
+private: System::Void backgroundWorker1_ProgressChanged(System::Object^ sender, System::ComponentModel::ProgressChangedEventArgs^ e) {
+	int maxRealStep;
+
+	if (taskType == TASK::MAIN)
+	{
+		maxRealStep = maxStep * 3;
+	}
+	else
+	{
+		maxRealStep = maxStep;
+	}
+
+	label7->Text = "Прогресс: " + Convert::ToString((int)((double)progressMethod / maxRealStep * 100)) + "% (относительно максимального количества итераций)";
 }
 };
 }
