@@ -300,9 +300,9 @@ public:
 		{
 			for (int j = 1; j < v[i].size() - 1; j++)
 			{
-				if (res <= r[i][j])
+				if (res <= abs(r[i][j]))
 				{
-					res = r[i][j];
+					res = abs(r[i][j]);
 				}
 			}
 		}

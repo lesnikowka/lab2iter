@@ -789,14 +789,14 @@ private: void calculate_test(IterSlauSolver* test)
 	test->initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
 	test->initRight(ptRight);
 	test->calculateR();
-	metData.R0 = test->calcNorm2R();
+	metData.R0 = test->calcNormR();
 	int iterCount = test->solve(maxStep, acc, backgroundWorker1);
 	double acc = test->getAccuracy();
 	type2V res = test->getV();
 	typeV x = test->getX();
 	typeV y = test->getY();
 	test->calculateR();
-	metData.Rn = test->calcNorm2R();
+	metData.Rn = test->calcNormR();
 	metData.accuracy = acc;
 	metData.count = iterCount;
 	metData.V = res;
@@ -827,10 +827,10 @@ private: void calculate_main(IterSlauSolver* main, IterSlauSolver* main2)
 	main->initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
 	main->initRight(ptRight);
 	main->calculateR();
-	metData.R0 = main->calcNorm2R();
+	metData.R0 = main->calcNormR();
 	int iterCount = main->solve(maxStep, acc, backgroundWorker1);
 	main->calculateR();
-	metData.Rn = main->calcNorm2R();
+	metData.Rn = main->calcNormR();
 	double acc = main->getAccuracy();
 	type2V res = main->getV();
 	typeV x = main->getX();
@@ -840,10 +840,10 @@ private: void calculate_main(IterSlauSolver* main, IterSlauSolver* main2)
 	main2->initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
 	main2->initRight(ptRight);
 	main2->calculateR();
-	metData.R02 = main2->calcNorm2R();
+	metData.R02 = main2->calcNormR();
 	int iterCount2 = main2->solve(maxStep * 2, acc * accMult, backgroundWorker1);
 	main2->calculateR();
-	metData.Rn2 = main2->calcNorm2R();
+	metData.Rn2 = main2->calcNormR();
 	double acc2 = main2->getAccuracy();
 	type2V res2 = main2->getV();
 	type2V res2half = getHalf(res2);
@@ -897,7 +897,7 @@ private: void calculateMVR()
 		forReplace->Add(Convert::ToString(maxStep));
 		forReplace->Add(Convert::ToString(metData.count));
 		forReplace->Add(Convert::ToString(metData.accuracy));
-		forReplace->Add(Convert::ToString(metData.Rn2));
+		forReplace->Add(Convert::ToString(metData.Rn));
 		forReplace->Add(Convert::ToString(w));
 		forReplace->Add(Convert::ToString(acc * accMult));
 		forReplace->Add(Convert::ToString(maxStep * 2));
@@ -1017,10 +1017,10 @@ private: void calculateMSG()
 		test.initRight(ptRight);
 		double acc = test.firstStep();
 		test.calculateR();
-		metData.R0 = test.calcNorm2R();
+		metData.R0 = test.calcNormR();
 		int iterCount = test.solve(maxStep, acc, backgroundWorker1);
 		test.calculateR();
-		metData.Rn = test.calcNorm2R();
+		metData.Rn = test.calcNormR();
 		acc = test.getAccuracy();
 		type2V res = test.getV();
 		typeV x = test.getX();
@@ -1055,10 +1055,10 @@ private: void calculateMSG()
 		main.initRight(ptRight);
 		double acc = main.firstStep();
 		main.calculateR();
-		metData.R0 = main.calcNorm2R();
+		metData.R0 = main.calcNormR();
 		int iterCount = main.solve(maxStep, acc, backgroundWorker1);
 		main.calculateR();
-		metData.Rn = main.calcNorm2R();
+		metData.Rn = main.calcNormR();
 		acc = main.getAccuracy();
 		type2V res = main.getV();
 		typeV x = main.getX();
@@ -1069,10 +1069,10 @@ private: void calculateMSG()
 		main2.initRight(ptRight);
 		double acc2 = main2.firstStep();
 		main2.calculateR();
-		metData.R02 = main2.calcNorm2R();
+		metData.R02 = main2.calcNormR();
 		int iterCount2 = main2.solve(maxStep * 2, acc * accMult, backgroundWorker1);
 		main2.calculateR();
-		metData.Rn2 = main2.calcNorm2R();
+		metData.Rn2 = main2.calcNormR();
 		acc2 = main2.getAccuracy();
 		type2V res2 = main2.getV();
 		type2V res2half = getHalf(res2);
@@ -1110,12 +1110,12 @@ private: void calculateMSG_UN()
 	MSG_UN_Met test(a, b, c, d, n, m);
 	test.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
 	test.initRight(ptRight);
-	double acc = test.firstStep();
+	double acc = test.firstStep(true);
 	test.calculateR();
-	metData.R0 = test.calcNorm2R();
+	metData.R0 = test.calcNormR();
 	int iterCount = test.solve(maxStep, acc, backgroundWorker1);
 	test.calculateR();
-	metData.Rn = test.calcNorm2R();
+	metData.Rn = test.calcNormR();
 	acc = test.getAccuracy();
 	type2V res = test.getV();
 	typeV x = test.getX();
@@ -1261,6 +1261,7 @@ private: System::Void backgroundWorker1_DoWork(System::Object^ sender, System::C
 }
 private: System::Void backgroundWorker1_RunWorkerCompleted(System::Object^ sender, System::ComponentModel::RunWorkerCompletedEventArgs^ e) {
 	showInfoWorker();
+	forReplace->Clear();
 	drawTable();
 	started = true;
 	isActive = true;
