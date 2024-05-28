@@ -345,10 +345,13 @@ public:
 		{
 			for (int j = 1; j < v[i].size() - 1; j++)
 			{
-				v[i][j] = v[i][j] + alpha * dir[i][j];
-				if (abs(alpha * dir[i][j]) >= res)
+				if (CustomField::isInField(i, j, mY, nX))
 				{
-					res = abs(alpha * dir[i][j]);
+					v[i][j] = v[i][j] + alpha * dir[i][j];
+					if (abs(alpha * dir[i][j]) >= res)
+					{
+						res = abs(alpha * dir[i][j]);
+					}
 				}
 			}
 		}
