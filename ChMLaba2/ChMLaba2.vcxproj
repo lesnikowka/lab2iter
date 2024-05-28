@@ -142,6 +142,7 @@
     <ClInclude Include="Functions.h" />
     <ClInclude Include="IterSlauSolver.h" />
     <ClInclude Include="MSG.h" />
+    <ClInclude Include="MSG_new_realization.h" />
     <ClInclude Include="MSG_UN.h" />
     <ClInclude Include="MVR.h" />
     <ClInclude Include="OldMethod.h" />

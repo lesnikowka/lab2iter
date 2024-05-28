@@ -121,8 +121,6 @@ public:
 
 	void initBoundSpec(double (*ptFunc)(double, double))
 	{
-
-		std::vector<int> sizes;
 		for (int i = 0; i < yArr.size(); i++)
 		{
 			for (int j = 0; j < xArr.size(); j++)
@@ -134,9 +132,6 @@ public:
 				}
 			}
 		}
-
-		int kdsnfsdf = 1;
-
 	}
 
 	void initRight(double (*ptFucn)(double, double))
@@ -146,38 +141,38 @@ public:
 			for (int j = 1; j < xArr.size() - 1; j++)
 			{
 				right[i][j] = -((*ptFucn)(xArr[j], yArr[i]));
-				if (i == 1 && j == 1)
-				{
-					right[i][j] -= hcoef * bound3[i] + kcoef * bound1[j];
-				}
-				else if (i == 1 && j == nX - 1)
-				{
-					right[i][j] -= hcoef * bound4[i] + kcoef * bound1[j];
-				}
-				else if (i == 1)
-				{
-					right[i][j] -= kcoef * bound1[j];
-				}
-				else if (i == mY - 1 && j == 1)
-				{
-					right[i][j] -= hcoef * bound3[i] + kcoef * bound2[j];
-				}
-				else if (i == mY - 1 && j == nX - 1)
-				{
-					right[i][j] -= hcoef * bound4[i] + kcoef * bound2[j];
-				}
-				else if (i == mY - 1)
-				{
-					right[i][j] -= kcoef * bound2[j];
-				}
-				else if (j == 1)
-				{
-					right[i][j] -= hcoef * bound3[i];
-				}
-				else if (j == nX - 1)
-				{
-					right[i][j] -= hcoef * bound4[i];
-				}
+				//if (i == 1 && j == 1)
+				//{
+				//	right[i][j] -= hcoef * bound3[i] + kcoef * bound1[j];
+				//}
+				//else if (i == 1 && j == nX - 1)
+				//{
+				//	right[i][j] -= hcoef * bound4[i] + kcoef * bound1[j];
+				//}
+				//else if (i == 1)
+				//{
+				//	right[i][j] -= kcoef * bound1[j];
+				//}
+				//else if (i == mY - 1 && j == 1)
+				//{
+				//	right[i][j] -= hcoef * bound3[i] + kcoef * bound2[j];
+				//}
+				//else if (i == mY - 1 && j == nX - 1)
+				//{
+				//	right[i][j] -= hcoef * bound4[i] + kcoef * bound2[j];
+				//}
+				//else if (i == mY - 1)
+				//{
+				//	right[i][j] -= kcoef * bound2[j];
+				//}
+				//else if (j == 1)
+				//{
+				//	right[i][j] -= hcoef * bound3[i];
+				//}
+				//else if (j == nX - 1)
+				//{
+				//	right[i][j] -= hcoef * bound4[i];
+				//}
 			}
 		}
 	}

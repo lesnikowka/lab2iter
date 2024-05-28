@@ -6,6 +6,7 @@
 #include "../ChMLaba2/MSG_UN.h"
 #include "../ChMLaba2/Functions.h"
 #include "../ChMLaba2/OldMethod.h"
+#include "../ChMLaba2/MSG_new_realization.h"
 #include "InfoText.h"
 #include <vector>
 #include <algorithm>
@@ -757,6 +758,24 @@ type2V getSubTest(const type2V& v, const typeV& x, const typeV& y)
 	return sub;
 }
 
+type2V getSubTestMSG_UN(const type2V& v, const typeV& x, const typeV& y)
+{
+	type2V sub(v.size(), typeV(v[0].size()));
+
+	for (int i = 1; i < y.size() - 1; i++)
+	{
+		for (int j = 1; j < x.size() - 1; j++)
+		{
+			if (CustomField::isInField(i, j, m, n))
+			{
+				sub[i][j] = abs(v[i][j] - testFunc(x[j], y[i]));
+			}
+		}
+	}
+
+	return sub;
+}
+
 type2V getHalf(const type2V& v)
 {
 	type2V half(v.size() / 2 + 1, typeV(v[0].size() / 2 + 1));
@@ -1124,14 +1143,14 @@ private: void calculateMSG_UN()
 	pt3 = &boundFunc3Test;
 	pt4 = &boundFunc4Test;
 	ptRight = &rightFuncTest;
-	MSG_UN_Met test(a, b, c, d, n, m);
-	test.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
-	test.initBoundSpec(&testFunc);
+	MSG_new test(a, b, c, d, n, m);
+	//test.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
+	test.initBounds(&testFunc);
 	test.initRight(ptRight);
-	test.firstStep(true);
+	test.firstStep();
 	test.calculateR();
 	metData.R0 = test.calcNormR();
-	int iterCount = test.solve(maxStep, acc, backgroundWorker1, true);
+	int iterCount = test.solve(maxStep, acc, backgroundWorker1);
 	test.calculateR();
 	metData.Rn = test.calcNormR();
 	double acc = test.getAccuracy();
@@ -1142,7 +1161,7 @@ private: void calculateMSG_UN()
 	metData.count = iterCount;
 	metData.V = res;
 	metData.U_V2 = getTrueVals(x, y);
-	metData.Sub = getSubTest(res, x, y);
+	metData.Sub = getSubTestMSG_UN(res, x, y);
 	metData.X = x;
 	metData.Y = y;
 	double maxSub;
