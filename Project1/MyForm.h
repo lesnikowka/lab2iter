@@ -1110,13 +1110,13 @@ private: void calculateMSG_UN()
 	MSG_UN_Met test(a, b, c, d, n, m);
 	test.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
 	test.initRight(ptRight);
-	double acc = test.firstStep(true);
+	test.firstStep(true);
 	test.calculateR();
 	metData.R0 = test.calcNormR();
-	int iterCount = test.solve(maxStep, acc, backgroundWorker1);
+	int iterCount = test.solve(maxStep, acc, backgroundWorker1, true);
 	test.calculateR();
 	metData.Rn = test.calcNormR();
-	acc = test.getAccuracy();
+	double acc = test.getAccuracy();
 	type2V res = test.getV();
 	typeV x = test.getX();
 	typeV y = test.getY();

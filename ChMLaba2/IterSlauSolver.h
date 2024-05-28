@@ -309,7 +309,7 @@ public:
 		return res;
 	}
 
-	int solve(int n, double eps, BackgroundWorker^ worker)
+	int solve(int n, double eps, BackgroundWorker^ worker, bool isSpecially = false)
 	{
 		int res = 0;
 		for (int iter = 0; iter < n; iter++)
@@ -317,7 +317,7 @@ public:
 			progressMethod++;
 			worker->ReportProgress(1);
 			res++;
-			accuracy = step();
+			accuracy = step(isSpecially);
 			if (accuracy < eps)
 			{
 				return res;
