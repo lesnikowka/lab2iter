@@ -370,7 +370,7 @@ namespace Project1 {
 			this->textBox1->Name = L"textBox1";
 			this->textBox1->Size = System::Drawing::Size(87, 22);
 			this->textBox1->TabIndex = 4;
-			this->textBox1->Text = L"10";
+			this->textBox1->Text = L"100";
 			// 
 			// textBox2
 			// 
@@ -378,7 +378,7 @@ namespace Project1 {
 			this->textBox2->Name = L"textBox2";
 			this->textBox2->Size = System::Drawing::Size(87, 22);
 			this->textBox2->TabIndex = 5;
-			this->textBox2->Text = L"10";
+			this->textBox2->Text = L"100";
 			// 
 			// label3
 			// 
@@ -395,7 +395,7 @@ namespace Project1 {
 			this->textBox3->Name = L"textBox3";
 			this->textBox3->Size = System::Drawing::Size(87, 22);
 			this->textBox3->TabIndex = 7;
-			this->textBox3->Text = L"1000";
+			this->textBox3->Text = L"10000";
 			// 
 			// contextMenuStrip1
 			// 
@@ -418,7 +418,7 @@ namespace Project1 {
 			this->textBox4->Name = L"textBox4";
 			this->textBox4->Size = System::Drawing::Size(87, 22);
 			this->textBox4->TabIndex = 10;
-			this->textBox4->Text = L"0,00001";
+			this->textBox4->Text = L"0,0000000001";
 			// 
 			// button1
 			// 
@@ -1015,13 +1015,13 @@ private: void calculateMSG()
 		MSG_Met test(a, b, c, d, n, m);
 		test.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
 		test.initRight(ptRight);
-		double acc = test.firstStep();
+		test.firstStep();
 		test.calculateR();
 		metData.R0 = test.calcNormR();
 		int iterCount = test.solve(maxStep, acc, backgroundWorker1);
 		test.calculateR();
 		metData.Rn = test.calcNormR();
-		acc = test.getAccuracy();
+		double acc = test.getAccuracy();
 		type2V res = test.getV();
 		typeV x = test.getX();
 		typeV y = test.getY();
@@ -1053,13 +1053,13 @@ private: void calculateMSG()
 		MSG_Met main(a, b, c, d, n, m);
 		main.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
 		main.initRight(ptRight);
-		double acc = main.firstStep();
+		main.firstStep();
 		main.calculateR();
 		metData.R0 = main.calcNormR();
 		int iterCount = main.solve(maxStep, acc, backgroundWorker1);
 		main.calculateR();
 		metData.Rn = main.calcNormR();
-		acc = main.getAccuracy();
+		double acc = main.getAccuracy();
 		type2V res = main.getV();
 		typeV x = main.getX();
 		typeV y = main.getY();
@@ -1067,13 +1067,13 @@ private: void calculateMSG()
 		MSG_Met main2(a, b, c, d, n * 2, m * 2);
 		main2.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
 		main2.initRight(ptRight);
-		double acc2 = main2.firstStep();
+		main2.firstStep();
 		main2.calculateR();
 		metData.R02 = main2.calcNormR();
 		int iterCount2 = main2.solve(maxStep * 2, acc * accMult, backgroundWorker1);
 		main2.calculateR();
 		metData.Rn2 = main2.calcNormR();
-		acc2 = main2.getAccuracy();
+		double acc2 = main2.getAccuracy();
 		type2V res2 = main2.getV();
 		type2V res2half = getHalf(res2);
 		metData.accuracy = acc;
