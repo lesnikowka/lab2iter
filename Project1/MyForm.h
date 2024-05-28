@@ -102,6 +102,8 @@ namespace Project1 {
 		bool isActive = true;
 		int processCount = 0;
 		System::Collections::Generic::List<String^>^ forReplace;
+		String^ startConditionMVR = " íóëåâîå íà÷àëüíîå ïðèáëèæåíèå ";
+		String^ startConditionAll = " íóëåâîå íà÷àëüíîå ïðèáëèæåíèå ";
 	private: System::Windows::Forms::Button^ button1;
 	private: System::Windows::Forms::ToolStripMenuItem^ òèïÇàäà÷èToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ òåñòîâàÿToolStripMenuItem;
@@ -880,7 +882,7 @@ private: void calculateMVR()
 		forReplace->Add(Convert::ToString(metData.testPrecision));
 		forReplace->Add(Convert::ToString(metData.x));
 		forReplace->Add(Convert::ToString(metData.y));
-		forReplace->Add("ÒÈÏ ÏÐÈÁËÈÆÅÍÈß");
+		forReplace->Add(startConditionMVR);
 		
 	}
 	else
@@ -907,8 +909,8 @@ private: void calculateMVR()
 		forReplace->Add(Convert::ToString(metData.mainPrecision));
 		forReplace->Add(Convert::ToString(metData.x));
 		forReplace->Add(Convert::ToString(metData.y));
-		forReplace->Add("ÒÈÏ ÏÐÈÁËÈÆÅÍÈß");
-		forReplace->Add("ÒÈÏ ÏÐÈÁËÈÆÅÍÈß");
+		forReplace->Add(startConditionMVR);
+		forReplace->Add(startConditionMVR);
 	}
 }
 private: void showInfoMMNMSG(String^ metName)
@@ -926,7 +928,7 @@ private: void showInfoMMNMSG(String^ metName)
 		forReplace->Add(Convert::ToString(metData.testPrecision));
 		forReplace->Add(Convert::ToString(metData.x));
 		forReplace->Add(Convert::ToString(metData.y));
-		forReplace->Add("ÒÈÏ ÏÐÈÁËÈÆÅÍÈß");
+		forReplace->Add(startConditionAll);
 		forReplace->Add(Convert::ToString(metData.R0));
 		richTextBox1->Text = buildInfo(infoData->testMMNMSG);
 	}
@@ -951,7 +953,7 @@ private: void showInfoMMNMSG(String^ metName)
 		forReplace->Add(Convert::ToString(metData.mainPrecision));
 		forReplace->Add(Convert::ToString(metData.x));
 		forReplace->Add(Convert::ToString(metData.y));
-		forReplace->Add("ÒÈÏ ÏÐÈÁËÈÆÅÍÈß");
+		forReplace->Add(startConditionAll);
 		forReplace->Add(Convert::ToString(metData.R02));
 		richTextBox1->Text = buildInfo(infoData->mainMMNMSG);
 	}
