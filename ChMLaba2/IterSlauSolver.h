@@ -121,16 +121,22 @@ public:
 
 	void initBoundSpec(double (*ptFunc)(double, double))
 	{
+
+		std::vector<int> sizes;
 		for (int i = 0; i < yArr.size(); i++)
 		{
 			for (int j = 0; i < xArr.size(); j++)
 			{
+				
 				if (CustomField::isBound(i, j, mY, nX))
 				{
 					v[i][j] = ((*ptFunc)(xArr[j], yArr[i]));
 				}
 			}
 		}
+
+		int kdsnfsdf = 1;
+
 	}
 
 	void initRight(double (*ptFucn)(double, double))

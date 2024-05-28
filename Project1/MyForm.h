@@ -1125,7 +1125,8 @@ private: void calculateMSG_UN()
 	pt4 = &boundFunc4Test;
 	ptRight = &rightFuncTest;
 	MSG_UN_Met test(a, b, c, d, n, m);
-	test.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
+	//test.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
+	test.initBoundSpec(&testFunc);
 	test.initRight(ptRight);
 	test.firstStep(true);
 	test.calculateR();
