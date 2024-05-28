@@ -85,7 +85,8 @@ public:
 			{
 				if (flag)
 				{
-					if (!(CustomField::isBound(i, j, mY, nX)) && CustomField::isInField(i, j, mY, nX))
+					//if (!(CustomField::isBound(i, j, mY, nX)) && CustomField::isInField(i, j, mY, nX))
+					if (CustomField::isInField(i, j, mY, nX))
 					{
 						v[i][j] = v[i][j] + alpha * dir[i][j];
 						if (abs(alpha * dir[i][j]) >= res)
@@ -124,7 +125,7 @@ public:
 			{
 				if (flag)
 				{
-					if (!(CustomField::isBound(i, j, mY, nX)) && CustomField::isInField(i, j, mY, nX))
+					if (CustomField::isInField(i, j, mY, nX))
 					{
 						v[i][j] = v[i][j] + alpha * dir[i][j];
 						if (abs(alpha * dir[i][j]) >= res)

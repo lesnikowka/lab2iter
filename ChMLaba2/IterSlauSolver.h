@@ -125,7 +125,7 @@ public:
 		std::vector<int> sizes;
 		for (int i = 0; i < yArr.size(); i++)
 		{
-			for (int j = 0; i < xArr.size(); j++)
+			for (int j = 0; j < xArr.size(); j++)
 			{
 				
 				if (CustomField::isBound(i, j, mY, nX))
