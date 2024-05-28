@@ -1149,7 +1149,7 @@ private: void calculateMSG_UN()
 	test.initRight(ptRight);
 	test.firstStep();
 	//test.calculateR();
-	//metData.R0 = test.calcNormR();
+	metData.R0 = test.calculateRconst();
 	int iterCount = test.solve(maxStep, acc, backgroundWorker1);
 	test.calculateR();
 	metData.Rn = test.calcNormR();

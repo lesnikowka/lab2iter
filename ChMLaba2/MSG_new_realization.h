@@ -267,9 +267,28 @@ public:
 		{
 			for (int j = 1; j < v[i].size() - 1; j++)
 			{
-				r[i][j] = (hcoef * (v[i][j + 1] + v[i][j - 1]) + kcoef * (v[i - 1][j] + v[i + 1][j]) + acoef * v[i][j]) - right[i][j];
+				if (CustomField::isInField(i, j, mY, nX)) {
+					r[i][j] = (hcoef * (v[i][j + 1] + v[i][j - 1]) + kcoef * (v[i - 1][j] + v[i + 1][j]) + acoef * v[i][j]) - right[i][j];
+				}
 			}
 		}
+	}
+
+	double calculateRconst()
+	{
+		double rr = 0;
+
+		for (int i = 1; i < v.size() - 1; i++)
+		{
+			for (int j = 1; j < v[i].size() - 1; j++)
+			{
+				if (CustomField::isInField(i, j, mY, nX)) {
+					rr = max(rr, abs( (hcoef * (v[i][j + 1] + v[i][j - 1]) + kcoef * (v[i - 1][j] + v[i + 1][j]) + acoef * v[i][j]) - right[i][j] ) );
+				}
+			}
+		}
+
+		return rr;
 	}
 
 	int solve(int n, double eps, BackgroundWorker^ worker)
