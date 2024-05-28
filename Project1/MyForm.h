@@ -5,6 +5,7 @@
 #include "../ChMLaba2/MSG.h"
 #include "../ChMLaba2/MSG_UN.h"
 #include "../ChMLaba2/Functions.h"
+#include "../ChMLaba2/OldMethod.h"
 #include "InfoText.h"
 #include <vector>
 #include <algorithm>
@@ -711,13 +712,13 @@ private: System::Void handleValues()
 	acc = Convert::ToDouble(removeDots(textBox4->Text));
 	w = Convert::ToDouble(removeDots(textBox5->Text));
 }
-type2V getTrueVals(const typeV& x, const std::vector<double>& y)
+type2V getTrueVals(const typeV& x, const typeV& y)
 {
 	type2V result(y.size(), typeV(x.size()));
 
-	for (int i = 0; i < x.size(); i++)
+	for (int j = 0; j < y.size(); j++)
 	{
-		for (int j = 0; j < y.size(); j++)	
+		for (int i = 0; i < x.size(); i++)
 		{
 			result[j][i] = testFunc(x[i], y[j]);
 		}
@@ -730,19 +731,32 @@ type2V getSub(const type2V& first, const type2V second)
 {
 	type2V result(first.size(), typeV(first[0].size()));
 
-	for (int i = 0; i < first.size(); i++)
+	for (int i = 1; i < first.size() - 1; i++)
 	{
-		for (int j = 0; j < first[0].size(); j++)
+		for (int j = 1; j < first[0].size() - 1; j++)
 		{
-			double first_ = first[i][j];
-			double second_ = second[i][j];
-			double sub_ = first_ - second_;
 			result[i][j] = abs(first[i][j] - second[i][j]);
 		}
 	}
 
 	return result;
 }
+
+type2V getSubTest(const type2V& v, const typeV& x, const typeV& y)
+{
+	type2V sub(v.size(), typeV(v[0].size()));
+
+	for (int i = 1; i < y.size() - 1; i++)
+	{
+		for (int j = 1; j < x.size() - 1; j++)
+		{
+			sub[i][j] = abs(v[i][j] - testFunc(x[j], y[i]));
+		}
+	}
+
+	return sub;
+}
+
 type2V getHalf(const type2V& v)
 {
 	type2V half(v.size() / 2 + 1, typeV(v[0].size() / 2 + 1));
@@ -775,7 +789,7 @@ std::pair<int, int> getMaxIndexes(const type2V& sub, double& maxSub)
 	maxSub = max_;
 	return {jmax, imax};
 }
-private: void calculate_test(IterSlauSolver* test)
+private: void calculate_test(IterSlauSolverOld* test)
 {
 	double (*pt1)(double, double) = NULL;
 	double (*pt2)(double, double) = NULL;
@@ -803,7 +817,8 @@ private: void calculate_test(IterSlauSolver* test)
 	metData.count = iterCount;
 	metData.V = res;
 	metData.U_V2 = getTrueVals(x, y);
-	metData.Sub = getSub(metData.V, metData.U_V2);
+	metData.Sub = getSubTest(res, x, y);
+	//metData.Sub = getSub(metData.V, metData.U_V2);
 	metData.X = x;
 	metData.Y = y;
 	double maxSub;
@@ -813,7 +828,7 @@ private: void calculate_test(IterSlauSolver* test)
 	metData.x = x[yx.second];
 
 }
-private: void calculate_main(IterSlauSolver* main, IterSlauSolver* main2)
+private: void calculate_main(IterSlauSolverOld* main, IterSlauSolverOld* main2)
 {
 	double (*pt1)(double, double) = NULL;
 	double (*pt2)(double, double) = NULL;
@@ -868,7 +883,7 @@ private: void calculateMVR()
 {
 	if (taskType == TASK::TEST)
 	{
-		MVR_Met* test = new MVR_Met(a, b, c, d, n, m, w);
+		MVR_old* test = new MVR_old(a, b, c, d, n, m, w);
 		calculate_test(test);
 		delete test;
 		forReplace->Add(Convert::ToString(n));
@@ -887,8 +902,8 @@ private: void calculateMVR()
 	}
 	else
 	{
-		MVR_Met* main = new MVR_Met(a, b, c, d, n, m, w);
-		MVR_Met* main2 = new MVR_Met(a, b, c, d, n * 2, m * 2, w);
+		MVR_old* main = new MVR_old(a, b, c, d, n, m, w);
+		MVR_old* main2 = new MVR_old(a, b, c, d, n * 2, m * 2, w);
 		calculate_main(main, main2);
 		delete main;
 		delete main2;
@@ -987,14 +1002,14 @@ private: void calculateMMN()
 {
 	if (taskType == TASK::TEST)
 	{
-		MMN_Met* test = new MMN_Met(a, b, c, d, n, m);
+		MMN_old* test = new MMN_old(a, b, c, d, n, m);
 		calculate_test(test);
 		delete test;
 	}
 	else
 	{
-		MMN_Met* main = new MMN_Met(a, b, c, d, n, m);
-		MMN_Met* main2 = new MMN_Met(a, b, c, d, n * 2, m * 2);
+		MMN_old* main = new MMN_old(a, b, c, d, n, m);
+		MMN_old* main2 = new MMN_old(a, b, c, d, n * 2, m * 2);
 		calculate_main(main, main2);
 		delete main;
 		delete main2;
@@ -1014,7 +1029,7 @@ private: void calculateMSG()
 		pt3 = &boundFunc3Test;
 		pt4 = &boundFunc4Test;
 		ptRight = &rightFuncTest;
-		MSG_Met test(a, b, c, d, n, m);
+		MSG_old test(a, b, c, d, n, m);
 		test.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
 		test.initRight(ptRight);
 		test.firstStep();
@@ -1031,7 +1046,7 @@ private: void calculateMSG()
 		metData.count = iterCount;
 		metData.V = res;
 		metData.U_V2 = getTrueVals(x, y);
-		metData.Sub = getSub(metData.V, metData.U_V2);
+		metData.Sub = getSubTest(res, x, y);
 		metData.X = x;
 		metData.Y = y;
 		double maxSub;
@@ -1052,7 +1067,7 @@ private: void calculateMSG()
 		pt3 = &boundFunc3Main;
 		pt4 = &boundFunc4Main;
 		ptRight = &rightMain;
-		MSG_Met main(a, b, c, d, n, m);
+		MSG_old main(a, b, c, d, n, m);
 		main.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
 		main.initRight(ptRight);
 		main.firstStep();
@@ -1066,7 +1081,7 @@ private: void calculateMSG()
 		typeV x = main.getX();
 		typeV y = main.getY();
 
-		MSG_Met main2(a, b, c, d, n * 2, m * 2);
+		MSG_old main2(a, b, c, d, n * 2, m * 2);
 		main2.initBounds(pt1, pt2, pt3, pt4, a, b, c, d);
 		main2.initRight(ptRight);
 		main2.firstStep();
@@ -1126,7 +1141,7 @@ private: void calculateMSG_UN()
 	metData.count = iterCount;
 	metData.V = res;
 	metData.U_V2 = getTrueVals(x, y);
-	metData.Sub = getSub(metData.V, metData.U_V2);
+	metData.Sub = getSubTest(res, x, y);
 	metData.X = x;
 	metData.Y = y;
 	double maxSub;

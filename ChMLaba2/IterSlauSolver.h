@@ -5,6 +5,7 @@
 #include <vector>
 #include <cmath>
 #include <Windows.h>
+#include "Functions.h"
 
 #include "CustomField.h"
 
@@ -18,8 +19,6 @@ using namespace System::Data;
 using namespace System::Drawing;
 using namespace System::Diagnostics;
 using namespace System::IO;
-
-int progressMethod = 0;
 
 template<typename T>
 double scalarMult(vector<T> r, vector<T> l)
