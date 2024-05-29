@@ -422,7 +422,7 @@ namespace Project1 {
 			this->textBox4->Name = L"textBox4";
 			this->textBox4->Size = System::Drawing::Size(87, 22);
 			this->textBox4->TabIndex = 10;
-			this->textBox4->Text = L"0,0000000001";
+			this->textBox4->Text = L"1e-16";
 			// 
 			// button1
 			// 
@@ -976,7 +976,7 @@ private: void showInfoMMNMSG(String^ metName)
 		forReplace->Add(Convert::ToString(metData.count));
 		forReplace->Add(Convert::ToString(metData.accuracy));
 		forReplace->Add(Convert::ToString(metData.Rn));
-		forReplace->Add("ÒÈÏ ÏÐÈÁËÈÆÅÍÈß");
+		forReplace->Add(" íóëåâîå íà÷àëüíîå ïðèáëèæåíèå ");
 		forReplace->Add(Convert::ToString(metData.R0));
 		forReplace->Add("ÌÌÍ");
 		forReplace->Add(Convert::ToString(acc * accMult));

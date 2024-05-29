@@ -146,6 +146,7 @@
     <ClInclude Include="MSG_UN.h" />
     <ClInclude Include="MVR.h" />
     <ClInclude Include="OldMethod.h" />
+    <ClInclude Include="ValuesSaver.h" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

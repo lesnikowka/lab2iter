@@ -5,6 +5,7 @@
 #include <vector>
 #include <cmath>
 #include "Functions.h"
+#include "ValuesSaver.h"
 using namespace std;
 
 using namespace System;
@@ -305,9 +306,10 @@ public:
 			accuracy = step();
 			if (accuracy < eps)
 			{
-				return res;
+				break;
 			}
 		}
+		saveValuesToFile(v);
 		return res;
 	}
 };

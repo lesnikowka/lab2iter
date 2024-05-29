@@ -7,13 +7,18 @@
 
 int progressMethod = 0;
 
+//double rightFuncTest(double x, double y)
+//{
+//	double a = exp(sin(M_PI * x * y) * sin(M_PI * x * y)) * 0.5;
+//	double b = (x * x + y * y);
+//	double d = M_PI * M_PI;
+//	double c = (-1 - 4 * cos(2 * M_PI * x * y) + cos(4 * M_PI * x * y));
+//	return a * b * c * d;
+//}
+
 double rightFuncTest(double x, double y)
 {
-	double a = exp(sin(M_PI * x * y) * sin(M_PI * x * y)) * 0.5;
-	double b = (x * x + y * y);
-	double d = M_PI * M_PI;
-	double c = (-1 - 4 * cos(2 * M_PI * x * y) + cos(4 * M_PI * x * y));
-	return a * b * c * d;
+	return -M_PI * M_PI * exp(sin(M_PI * x * y) * sin(M_PI * x * y)) * (y * y + x * x) * (sin(2 * M_PI * x * y) * sin(2 * M_PI * x * y) + 2 * cos(2 * M_PI * x * y));
 }
 
 //double rightFuncTest(double x, double y)

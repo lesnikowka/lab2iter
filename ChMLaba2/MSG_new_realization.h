@@ -6,7 +6,7 @@
 #include <cmath>
 #include <Windows.h>
 #include "Functions.h"
-
+#include "ValuesSaver.h"
 #include "CustomField.h"
 
 using namespace std;
@@ -302,9 +302,10 @@ public:
 			accuracy = step();
 			if (accuracy < eps)
 			{
-				return res;
+				break;
 			}
 		}
+		saveValuesToFile(v);
 		return res;
 	}
 
