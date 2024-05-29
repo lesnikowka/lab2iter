@@ -41,9 +41,9 @@ x = [x] * m
 
 new_y = []
 
-for i in range(n):
+for i in range(m):
     y_ = []
-    for j in range(m):
+    for j in range(n):
         y_.append(y[j][i])
     new_y.append(y_)
 

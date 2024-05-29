@@ -309,7 +309,6 @@ public:
 				break;
 			}
 		}
-		saveValuesToFile(v);
 		return res;
 	}
 };
