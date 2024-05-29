@@ -22,7 +22,7 @@ def load_data():
     for i in range(m):
         y_ = []
         for j in range(n):
-            y_.append(float(list_data[i * n + j]))
+            y_.append(float(list_data[i * n + j + 2]))
         z.append(y_)
 
 load_data()
@@ -68,10 +68,11 @@ x = np.array(x)
 #print(z)
 #print()
 
+#print(z)
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 ax.plot_surface(y, x, z, cmap='inferno')
-#plt.show()
+plt.show()
 
-fig.savefig("plane.png")
+#fig.savefig("plane.png")

@@ -18,13 +18,13 @@ void saveValuesToFile(const std::vector<std::vector<double>>& v)
 {
 	std::stringstream stream;
 
-	stream << v.size() << " " << v[0].size() << " ";
+	stream << v.size() - 2 << " " << v[0].size() - 2 << " ";
 
-	for (auto& i : v)
+	for (int i = 1; i < v.size() - 1; i++)
 	{
-		for (auto& j : i)
+		for (int j = 1; j < v[i].size() - 1; j++)
 		{
-			stream << j << " ";
+			stream << v[i][j] << " ";
 		}
 	}
 
@@ -37,4 +37,18 @@ void saveValuesToFile(const std::vector<std::vector<double>>& v)
 	ofs << data.substr(0, data.size() - 1);
 
 	ofs.close();
+
+	STARTUPINFOA process_startup_info{ 0 };
+	process_startup_info.cb = sizeof(process_startup_info); 
+
+	PROCESS_INFORMATION process_info{ 0 };
+
+	std::string dir = "python " + curDir + "\\..\\plane\\visualize.py " + curDir + "\\..\\plane\\planeVals";
+
+	CreateProcessA(NULL, const_cast<char*>(dir.data()), NULL, NULL, TRUE, 0, NULL, NULL, &process_startup_info, &process_info);
+
+	CloseHandle(process_info.hProcess);
+	CloseHandle(process_info.hThread);
+
+
 }
