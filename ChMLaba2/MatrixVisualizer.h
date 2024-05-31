@@ -51,8 +51,8 @@ int getIndex(int i, int j)
 
 void visualizeMatrix()
 {
-	//int nnnn;
-	//std::cin >> nnnn;
+	int nnnn;
+	std::cin >> nnnn;
 
 	saveIndexes();
 
@@ -76,7 +76,7 @@ void visualizeMatrix()
 					for (int k = curPosition; k < index; k++)
 					{
 						curPosition++;
-						coutWithLength("_");
+						coutWithLength(" ");
 					}
 					coutWithLength("1/k2");
 					curPosition++;
@@ -92,7 +92,7 @@ void visualizeMatrix()
 					for (int k = curPosition; k < index; k++)
 					{
 						curPosition++;
-						coutWithLength("_");
+						coutWithLength(" ");
 					}
 					coutWithLength("1/h2");
 					curPosition++;
@@ -111,7 +111,7 @@ void visualizeMatrix()
 					for (int k = curPosition; k < index; k++)
 					{
 						curPosition++;
-						coutWithLength("_");
+						coutWithLength(" ");
 					}
 					coutWithLength("1/h2");
 					curPosition++;
@@ -127,7 +127,7 @@ void visualizeMatrix()
 					for (int k = curPosition; k < index; k++)
 					{
 						curPosition++;
-						coutWithLength("_");
+						coutWithLength(" ");
 					}
 					coutWithLength("1/k2");
 					curPosition++;
@@ -136,10 +136,10 @@ void visualizeMatrix()
 				while (curPosition < numEl)
 				{
 					curPosition++;
-					coutWithLength("_");
+					coutWithLength(" ");
 				}
 
-				//std::cout << right; 
+				std::cout << right; 
 				std::cout << std::endl;
 			}
 		}
