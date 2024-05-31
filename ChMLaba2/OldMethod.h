@@ -120,12 +120,16 @@ public:
 		for (int i = 0; i < xArr.size(); i++)
 		{
 			bound1.push_back((*ptFunc1)(xArr[i], c));
+			v[0][i] = ((*ptFunc1)(xArr[i], c));
 			bound2.push_back((*ptFunc2)(xArr[i], d));
+			v[mY][i] = ((*ptFunc2)(xArr[i], d));
 		}
 		for (int i = 0; i < yArr.size(); i++)
 		{
 			bound3.push_back((*ptFunc3)(a, yArr[i]));
+			v[i][0] = ((*ptFunc3)(a, yArr[i]));
 			bound4.push_back((*ptFunc4)(b, yArr[i]));
+			v[i][nX] = ((*ptFunc4)(b, yArr[i]));
 		}
 	}
 
@@ -136,38 +140,38 @@ public:
 			for (int j = 1; j < xArr.size() - 1; j++)
 			{
 				right[i][j] = -((*ptFucn)(xArr[j], yArr[i]));
-				if (i == 1 && j == 1)
-				{
-					right[i][j] -= hcoef * bound3[i] + kcoef * bound1[j];
-				}
-				else if (i == 1 && j == nX - 1)
-				{
-					right[i][j] -= hcoef * bound4[i] + kcoef * bound1[j];
-				}
-				else if (i == 1)
-				{
-					right[i][j] -= kcoef * bound1[j];
-				}
-				else if (i == mY - 1 && j == 1)
-				{
-					right[i][j] -= hcoef * bound3[i] + kcoef * bound2[j];
-				}
-				else if (i == mY - 1 && j == nX - 1)
-				{
-					right[i][j] -= hcoef * bound4[i] + kcoef * bound2[j];
-				}
-				else if (i == mY - 1)
-				{
-					right[i][j] -= kcoef * bound2[j];
-				}
-				else if (j == 1)
-				{
-					right[i][j] -= hcoef * bound3[i];
-				}
-				else if (j == nX - 1)
-				{
-					right[i][j] -= hcoef * bound4[i];
-				}
+				//if (i == 1 && j == 1)
+				//{
+				//	right[i][j] -= hcoef * bound3[i] + kcoef * bound1[j];
+				//}
+				//else if (i == 1 && j == nX - 1)
+				//{
+				//	right[i][j] -= hcoef * bound4[i] + kcoef * bound1[j];
+				//}
+				//else if (i == 1)
+				//{
+				//	right[i][j] -= kcoef * bound1[j];
+				//}
+				//else if (i == mY - 1 && j == 1)
+				//{
+				//	right[i][j] -= hcoef * bound3[i] + kcoef * bound2[j];
+				//}
+				//else if (i == mY - 1 && j == nX - 1)
+				//{
+				//	right[i][j] -= hcoef * bound4[i] + kcoef * bound2[j];
+				//}
+				//else if (i == mY - 1)
+				//{
+				//	right[i][j] -= kcoef * bound2[j];
+				//}
+				//else if (j == 1)
+				//{
+				//	right[i][j] -= hcoef * bound3[i];
+				//}
+				//else if (j == nX - 1)
+				//{
+				//	right[i][j] -= hcoef * bound4[i];
+				//}
 			}
 		}
 	}

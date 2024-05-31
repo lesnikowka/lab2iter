@@ -14,7 +14,7 @@ using namespace System::Drawing;
 using namespace System::Diagnostics;
 using namespace System::IO;
 
-void saveValuesToFile(const std::vector<std::vector<double>>& v)
+void saveValuesToFile(const std::vector<std::vector<double>>& v, std::string name)
 {
 	std::stringstream stream;
 
@@ -30,7 +30,7 @@ void saveValuesToFile(const std::vector<std::vector<double>>& v)
 
 	auto curDir = msclr::interop::marshal_as<std::string>(Directory::GetCurrentDirectory());
 
-	std::ofstream ofs(curDir +  "\\..\\plane\\planeVals");
+	std::ofstream ofs(curDir +  "\\..\\plane\\" + name);
 
 	std::string data = stream.str();
 
@@ -43,7 +43,8 @@ void saveValuesToFile(const std::vector<std::vector<double>>& v)
 
 	PROCESS_INFORMATION process_info{ 0 };
 
-	std::string dir = "python " + curDir + "\\..\\plane\\visualize.py " + curDir + "\\..\\plane\\planeVals";
+	//std::string dir = "python " + curDir + "\\..\\plane\\visualize.py " + curDir + "\\..\\plane\\planeVals";
+	std::string dir = curDir + "\\..\\plane\\visualize.exe " + curDir + "\\..\\plane\\planeVals";
 
 	CreateProcessA(NULL, const_cast<char*>(dir.data()), NULL, NULL, TRUE, 0, NULL, NULL, &process_startup_info, &process_info);
 

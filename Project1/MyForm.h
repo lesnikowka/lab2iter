@@ -43,6 +43,8 @@ struct MetData
 	double y;
 	double x2;
 	double y2;
+	double RnEvcl;
+	double R0Evcl;
 };
 
 MetData metData = {};
@@ -965,6 +967,8 @@ private: void showInfoMMNMSG(String^ metName)
 		forReplace->Add(startConditionAll);
 		forReplace->Add(Convert::ToString(metData.R0));
 		richTextBox1->Text = buildInfo(infoData->testMMNMSG);
+		richTextBox1->Text += "\n||Rn||2 = " + Convert::ToString(metData.RnEvcl);
+		richTextBox1->Text += "\n||R0||2 = " + Convert::ToString(metData.R0Evcl);
 	}
 	else
 	{
@@ -981,7 +985,7 @@ private: void showInfoMMNMSG(String^ metName)
 		forReplace->Add("ММН");
 		forReplace->Add(Convert::ToString(acc * accMult));
 		forReplace->Add(Convert::ToString(maxStep * 2));
-		forReplace->Add(Convert::ToString(metData.count));
+		forReplace->Add(Convert::ToString(metData.count2));
 		forReplace->Add(Convert::ToString(metData.accuracy2));
 		forReplace->Add(Convert::ToString(metData.Rn2));
 		forReplace->Add(Convert::ToString(metData.mainPrecision));
@@ -1036,6 +1040,7 @@ private: void calculateMMN()
 }
 private: void calculateMSG()
 {
+	maxStep--;
 	if (taskType == TASK::TEST)
 	{
 		double (*pt1)(double, double) = NULL;
@@ -1054,6 +1059,7 @@ private: void calculateMSG()
 		test.firstStep();
 		test.calculateR();
 		metData.R0 = test.calcNormR();
+
 		int iterCount = test.solve(maxStep, acc, backgroundWorker1);
 		test.calculateR();
 		metData.Rn = test.calcNormR();
@@ -1150,9 +1156,11 @@ private: void calculateMSG_UN()
 	test.firstStep();
 	//test.calculateR();
 	metData.R0 = test.calculateRconst();
+	metData.R0Evcl = test.calculateR2const();
 	int iterCount = test.solve(maxStep, acc, backgroundWorker1);
 	test.calculateR();
 	metData.Rn = test.calcNormR();
+	metData.RnEvcl = test.calcNorm2R();
 	double acc = test.getAccuracy();
 	type2V res = test.getV();
 	typeV x = test.getX();
@@ -1296,6 +1304,52 @@ private: System::Void backgroundWorker1_DoWork(System::Object^ sender, System::C
 	progressMethod = 0;
 	calculate();
 }
+
+void getRZ0() 
+{
+	auto v = metData.U_V2;
+
+	double max_ = 0;
+	for (int i = 1; i < v.size() - 1; i++)
+	{
+		for (int j = 1; j < v[0].size() - 1; j++)
+		{
+			max_ = max(max_, abs(v[i][j]));
+		}
+	}
+
+	richTextBox1->Text += " \n||Z0||макс = " + Convert::ToString(max_);
+}
+
+void getR2Z0()
+{
+	auto v = metData.U_V2;
+
+	double max_ = 0;
+	for (int i = 1; i < v.size() - 1; i++)
+	{
+		for (int j = 1; j < v[0].size() - 1; j++)
+		{
+			max_ += v[i][j] * v[i][j];
+		}
+	}
+
+	max_ = sqrt(max_);
+
+	richTextBox1->Text += " \n||Z0||2 = " + Convert::ToString(max_);
+}
+
+void getRZ()
+{
+	if (taskType != TASK::TEST)
+	{
+		return;
+	}
+
+	getRZ0();
+	getR2Z0();
+}
+
 private: System::Void backgroundWorker1_RunWorkerCompleted(System::Object^ sender, System::ComponentModel::RunWorkerCompletedEventArgs^ e) {
 	showInfoWorker();
 	forReplace->Clear();
@@ -1304,7 +1358,11 @@ private: System::Void backgroundWorker1_RunWorkerCompleted(System::Object^ sende
 	isActive = true;
 	label7->Text = "Прогресс: завершено";
 
-	saveValuesToFile(metData.V);
+	getRZ();
+
+	//saveValuesToFile(metData.V, "planeVals");
+	//saveValuesToFile(metData.U_V2, "planeValsTrue");
+	//saveValuesToFile(metData.Sub, "planeValsSub");
 }
 private: System::Void backgroundWorker1_ProgressChanged(System::Object^ sender, System::ComponentModel::ProgressChangedEventArgs^ e) {
 	int maxRealStep;

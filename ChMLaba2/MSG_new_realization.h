@@ -159,13 +159,26 @@ public:
 		{
 			for (int j = 1; j < v[i].size() - 1; j++)
 			{
-				if (res <= abs(r[i][j]))
-				{
-					res = abs(r[i][j]);
-				}
+				if (CustomField::isInField(i, j, mY, nX))
+					res = max(res, abs(r[i][j]));
 			}
 		}
 		return res;
+	}
+
+	double calcNorm2R()
+	{
+		double res = 0;
+		for (int i = 1; i < v.size() - 1; i++)
+		{
+			for (int j = 1; j < v[i].size() - 1; j++)
+			{
+				if (CustomField::isInField(i, j, mY, nX)) {
+					res += r[i][j] * r[i][j];
+				}
+			}
+		}
+		return sqrt(res);
 	}
 
 	//void initB(vector<double> b)
@@ -289,6 +302,24 @@ public:
 		}
 
 		return rr;
+	}
+
+	double calculateR2const()
+	{
+		double rr = 0;
+
+		for (int i = 1; i < v.size() - 1; i++)
+		{
+			for (int j = 1; j < v[i].size() - 1; j++)
+			{
+				if (CustomField::isInField(i, j, mY, nX)) {
+					rr +=  abs((hcoef * (v[i][j + 1] + v[i][j - 1]) + kcoef * (v[i - 1][j] + v[i + 1][j]) + acoef * v[i][j]) - right[i][j])
+						* abs((hcoef * (v[i][j + 1] + v[i][j - 1]) + kcoef * (v[i - 1][j] + v[i + 1][j]) + acoef * v[i][j]) - right[i][j]);
+				}
+			}
+		}
+
+		return sqrt(rr);
 	}
 
 	int solve(int n, double eps, BackgroundWorker^ worker)

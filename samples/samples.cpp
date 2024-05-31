@@ -6,7 +6,7 @@
 
 void main()
 {
-	CustomField::visualizeField(10, 10);
+	CustomField::visualizeField(8,8);
 
 	//double Eps = 1e-10;
 	//int N = 20000;
