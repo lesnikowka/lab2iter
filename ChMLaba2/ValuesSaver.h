@@ -43,8 +43,8 @@ void saveValuesToFile(const std::vector<std::vector<double>>& v, std::string nam
 
 	PROCESS_INFORMATION process_info{ 0 };
 
-	//std::string dir = "python " + curDir + "\\..\\plane\\visualize.py " + curDir + "\\..\\plane\\planeVals";
-	std::string dir = curDir + "\\..\\plane\\visualize.exe " + curDir + "\\..\\plane\\planeVals";
+	std::string dir = "python " + curDir + "\\..\\plane\\visualize.py " + curDir + "\\..\\plane\\planeVals";
+	//std::string dir = curDir + "\\..\\plane\\visualize.exe " + curDir + "\\..\\plane\\planeVals";
 
 	CreateProcessA(NULL, const_cast<char*>(dir.data()), NULL, NULL, TRUE, 0, NULL, NULL, &process_startup_info, &process_info);
 

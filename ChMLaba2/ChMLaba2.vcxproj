@@ -141,6 +141,7 @@
     <ClInclude Include="CustomField.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="IterSlauSolver.h" />
+    <ClInclude Include="MatrixVisualizer.h" />
     <ClInclude Include="MSG.h" />
     <ClInclude Include="MSG_new_realization.h" />
     <ClInclude Include="MSG_UN.h" />

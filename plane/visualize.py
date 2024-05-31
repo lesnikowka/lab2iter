@@ -5,21 +5,15 @@ import os
 
 x = []
 y = []
+z = []
 
 m = 0
 n = 0
 
-dir = "planeVals"
-dir2 = "planeValsTrue"
-dir3 = "planeValsSub"
-
-def load_data(dir_):
+def load_data():
     global m, n
-    #dir = sys.argv[1]
-
-    z = []
-    
-    file = open(dir_)
+    dir = sys.argv[1]
+    file = open(dir)
     data = file.read()
     list_data = list(data.split())
     m = int(list_data[0])
@@ -31,14 +25,12 @@ def load_data(dir_):
             y_.append(float(list_data[i * n + j + 2]))
         z.append(y_)
 
-    return z
+load_data()
 
-z1 = np.array(load_data(dir))
-z2 = np.array(load_data(dir2))
-z3 = np.array(load_data(dir3))
-
+z = np.array(z)
 y = np.linspace(0, 2, m)
 x = np.linspace(0, 1, n)
+
 
 
 
@@ -62,13 +54,26 @@ y = new_y
 y = np.array(y)
 x = np.array(x)
 
+#print(x)
+#print(y)
+#print(z)
+
+#print(x.shape)
+#print(y.shape)
+#print(z.shape)
+
+#print(x)
+#print()
+#print(y)
+#print()
+#print(z)
+#print()
+
+#print(z)
+
 fig = plt.figure()
-ax = fig.add_subplot(131, projection='3d')
-ax.plot_surface(y, x, z1, cmap='inferno')
-ax2 = fig.add_subplot(132, projection='3d')
-ax2.plot_surface(y, x, z2, cmap='inferno')
-ax3 = fig.add_subplot(133, projection='3d')
-ax3.plot_surface(y, x, z3, cmap='inferno')
+ax = fig.add_subplot(111, projection='3d')
+ax.plot_surface(y, x, z, cmap='inferno')
 plt.show()
 
-fig.savefig("plane.png")
+#fig.savefig("plane.png")

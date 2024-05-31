@@ -3,10 +3,11 @@
 #include "../ChMLaba2/MSG.h"
 #include "../ChMLaba2/MSG_UN.h"
 #include "../ChMLaba2/Functions.h"
+#include "../ChMLaba2/MatrixVisualizer.h"
 
 void main()
 {
-	CustomField::visualizeField(8,8);
+	visualizeMatrix();
 
 	//double Eps = 1e-10;
 	//int N = 20000;

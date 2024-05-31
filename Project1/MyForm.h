@@ -1360,7 +1360,7 @@ private: System::Void backgroundWorker1_RunWorkerCompleted(System::Object^ sende
 
 	getRZ();
 
-	//saveValuesToFile(metData.V, "planeVals");
+	saveValuesToFile(metData.V, "planeVals");
 	//saveValuesToFile(metData.U_V2, "planeValsTrue");
 	//saveValuesToFile(metData.Sub, "planeValsSub");
 }
