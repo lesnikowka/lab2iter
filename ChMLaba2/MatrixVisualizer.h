@@ -21,7 +21,7 @@ void coutWithLength(std::string s)
 	std::cout << s;
 }
 
-std::unordered_map<int, int> indexes;
+std::map<std::pair<int, int>, int> indexes;
 
 void saveIndexes()
 {
@@ -34,19 +34,26 @@ void saveIndexes()
 	{
 		for (int j = 0; j <= n; j++)
 		{
-			indexes.insert({ i * 10 + j, index });
-			index++;
+			if (CustomField::isInField(i, j, m, n)) 
+			{
+				indexes.insert({ std::make_pair(i, j), index });
+
+				index++;
+			}
 		}
 	}
 }
 
 int getIndex(int i, int j)
 {
-	return indexes[(i - 1) * 10 + j - 1];
+	return indexes[std::make_pair(i, j)];
 }
 
 void visualizeMatrix()
 {
+	//int nnnn;
+	//std::cin >> nnnn;
+
 	saveIndexes();
 
 	for (int i = 0; i <= m; i++)
@@ -69,7 +76,7 @@ void visualizeMatrix()
 					for (int k = curPosition; k < index; k++)
 					{
 						curPosition++;
-						coutWithLength(" ");
+						coutWithLength("_");
 					}
 					coutWithLength("1/k2");
 					curPosition++;
@@ -85,7 +92,7 @@ void visualizeMatrix()
 					for (int k = curPosition; k < index; k++)
 					{
 						curPosition++;
-						coutWithLength(" ");
+						coutWithLength("_");
 					}
 					coutWithLength("1/h2");
 					curPosition++;
@@ -100,11 +107,11 @@ void visualizeMatrix()
 				}
 				else
 				{
-					int index = 
+					int index = getIndex(i, j + 1);
 					for (int k = curPosition; k < index; k++)
 					{
 						curPosition++;
-						coutWithLength(" ");
+						coutWithLength("_");
 					}
 					coutWithLength("1/h2");
 					curPosition++;
@@ -120,7 +127,7 @@ void visualizeMatrix()
 					for (int k = curPosition; k < index; k++)
 					{
 						curPosition++;
-						coutWithLength(" ");
+						coutWithLength("_");
 					}
 					coutWithLength("1/k2");
 					curPosition++;
@@ -129,7 +136,7 @@ void visualizeMatrix()
 				while (curPosition < numEl)
 				{
 					curPosition++;
-					coutWithLength(" ");
+					coutWithLength("_");
 				}
 
 				//std::cout << right; 
