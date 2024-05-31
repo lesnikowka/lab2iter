@@ -3,10 +3,14 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include <map>
 
-int minLength = 5;
+int minLength = 4;
 int m = 8;
 int n = 8;
+int numEl = 32;
+
+std::string out;
 
 void coutWithLength(std::string s)
 {
@@ -17,10 +21,33 @@ void coutWithLength(std::string s)
 	std::cout << s;
 }
 
+std::unordered_map<int, int> indexes;
+
+void saveIndexes()
+{
+	//int fake;
+	//std::cin >> fake;
+
+
+	int index = 0;
+	for (int i = 0; i <= m; i++)
+	{
+		for (int j = 0; j <= n; j++)
+		{
+			indexes.insert({ i * 10 + j, index });
+			index++;
+		}
+	}
+}
+
+int getIndex(int i, int j)
+{
+	return indexes[(i - 1) * 10 + j - 1];
+}
 
 void visualizeMatrix()
 {
-	int curIndex = 0;
+	saveIndexes();
 
 	for (int i = 0; i <= m; i++)
 	{
@@ -30,30 +57,85 @@ void visualizeMatrix()
 			{
 				std::string right = "-f" + std::to_string(j) + std::to_string(i);
 
+				int curPosition = 0;
+
 				if (CustomField::isBound(i - 1, j, m, n))
 				{
 					right += " - mu" + std::to_string(j) + std::to_string(i - 1) + "/k2";
 				}
-				if (CustomField::isBound(i + 1, j, m, n))
+				else
 				{
-					right += " - mu" + std::to_string(j) + std::to_string(i + 1) + "/k2";
+					int index = getIndex(i - 1, j);
+					for (int k = curPosition; k < index; k++)
+					{
+						curPosition++;
+						coutWithLength(" ");
+					}
+					coutWithLength("1/k2");
+					curPosition++;
 				}
+
 				if (CustomField::isBound(i, j - 1, m, n))
 				{
 					right += " - mu" + std::to_string(j - 1) + std::to_string(i) + "/h2";
 				}
+				else
+				{
+					int index = getIndex(i, j - 1);
+					for (int k = curPosition; k < index; k++)
+					{
+						curPosition++;
+						coutWithLength(" ");
+					}
+					coutWithLength("1/h2");
+					curPosition++;
+				}
+
+				coutWithLength("A");
+				curPosition++;
+
 				if (CustomField::isBound(i, j + 1, m, n))
 				{
 					right += " - mu" + std::to_string(j + 1) + std::to_string(i) + "/h2";
 				}
+				else
+				{
+					int index = 
+					for (int k = curPosition; k < index; k++)
+					{
+						curPosition++;
+						coutWithLength(" ");
+					}
+					coutWithLength("1/h2");
+					curPosition++;
+				}
 
-				std::cout << right << std::endl;
+				if (CustomField::isBound(i + 1, j, m, n))
+				{
+					right += " - mu" + std::to_string(j) + std::to_string(i + 1) + "/k2";
+				}
+				else
+				{
+					int index = getIndex(i + 1, j);
+					for (int k = curPosition; k < index; k++)
+					{
+						curPosition++;
+						coutWithLength(" ");
+					}
+					coutWithLength("1/k2");
+					curPosition++;
+				}
 
+				while (curPosition < numEl)
+				{
+					curPosition++;
+					coutWithLength(" ");
+				}
 
-
-				curIndex++;
+				//std::cout << right; 
+				std::cout << std::endl;
 			}
 		}
-		std::cout << std::endl;
+		//std::cout << std::endl;
 	}
 }
